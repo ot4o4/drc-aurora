@@ -203,7 +203,8 @@ a{color:inherit;text-decoration:none}
 }
 .btn-add:hover{transform:translateY(-2px);filter:brightness(1.05);box-shadow:0 24px 50px -16px rgba(255,110,42,.85),inset 0 1px 0 rgba(255,255,255,.35)}
 .btn-add:active{transform:scale(.985)}
-.btn-add .plus{width:22px;height:22px;border-radius:50%;background:rgba(20,8,3,.16);display:grid;place-items:center;font-size:15px;line-height:1}
+.btn-add .plus{width:22px;height:22px;border-radius:50%;background:rgba(20,8,3,.16);display:grid;place-items:center}
+.btn-add .plus svg{width:12px;height:12px;stroke:#1B0803;stroke-width:1.7;fill:none;stroke-linecap:round;display:block}
 .btn-add .dot-sep{opacity:.45;font-weight:400}
 
 /* ---------- bandeau défilant ---------- */
@@ -271,7 +272,7 @@ h2.title em{font-style:italic;color:var(--or)}
 .price small{font-size:9.5px;letter-spacing:.14em;color:var(--muted);margin-left:3px;font-family:"Inter",sans-serif}
 .add{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto;
   border:1px solid rgba(246,237,227,.28);background:rgba(255,255,255,.09);transition:all .3s var(--ease-out)}
-.add svg{width:14px;height:14px;stroke:var(--cream);stroke-width:1.8;fill:none}
+.add svg{width:14px;height:14px;stroke:var(--cream);stroke-width:1.7;fill:none;stroke-linecap:round;display:block}
 .add:hover{background:var(--braise);border-color:var(--braise)}
 .add:hover svg{stroke:#1B0803}
 
@@ -561,7 +562,7 @@ footer a:hover{color:var(--braise)}
 
     <div class="scene-cta">
       <button class="btn-add" id="addMain">
-        <span class="plus">+</span>
+        <span class="plus"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 3v8M3 7h8"/></svg></span>
         <span id="addLabel">Ajouter au panier</span>
         <span class="dot-sep">·</span>
         <span id="addPrice">4 500 F</span>
