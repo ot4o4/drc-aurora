@@ -445,16 +445,16 @@ footer a:hover{color:var(--braise)}
 #modalBody .kicker{margin-bottom:10px}
 #modalBody p.lead{margin:0 0 20px;color:#C0AEA5;font-size:14px;line-height:1.55;max-width:46ch}
 #modalBody p.lead b{color:var(--cream);font-weight:500}
-.track{list-style:none;counter-reset:s;margin:0 0 22px;padding:0;display:grid;gap:0}
-.track li{counter-increment:s;position:relative;padding:0 0 18px 40px}
-.track li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;
+.timeline{list-style:none;counter-reset:s;margin:0 0 22px;padding:0;display:grid;gap:0}
+.timeline li{counter-increment:s;position:relative;padding:0 0 18px 40px}
+.timeline li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;
   display:grid;place-items:center;font-size:11px;color:#1B0803;background:linear-gradient(180deg,#FF9A5C,#F0672A);
   box-shadow:0 0 0 4px rgba(255,122,52,.1)}
-.track li::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1px;background:rgba(246,237,227,.14)}
-.track li:last-child{padding-bottom:0}
-.track li:last-child::after{display:none}
-.track b{display:block;font-family:"Fraunces",Georgia,serif;font-weight:450;font-size:16px;color:var(--cream);margin-bottom:2px}
-.track span{font-size:12.5px;color:#A7948B;line-height:1.45}
+.timeline li::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1px;background:rgba(246,237,227,.14)}
+.timeline li:last-child{padding-bottom:0}
+.timeline li:last-child::after{display:none}
+.timeline b{display:block;font-family:"Fraunces",Georgia,serif;font-weight:450;font-size:16px;color:var(--cream);margin-bottom:2px}
+.timeline span{font-size:12.5px;color:#A7948B;line-height:1.45}
 .modal .form{margin:0}
 .modal .form + .form{margin-top:0}
 .modal .form input,.modal .form select,.modal .form textarea{border-color:rgba(246,237,227,.18)}
@@ -1227,7 +1227,7 @@ const PANELS = {
     <p class="kicker">Commande en cours</p>
     <h3>Suivi de livraison</h3>
     <p class="lead">Chaque commande passe par ces quatre étapes. Indiquez votre numéro ou la référence reçue sur WhatsApp : on vous répond avec l’état exact.</p>
-    <ol class="track">
+    <ol class="timeline">
       <li><b>Confirmée</b><span>Votre commande est enregistrée sur WhatsApp</span></li>
       <li><b>En préparation</b><span>Découpe et conditionnement du jour</span></li>
       <li><b>En route</b><span>Le livreur vous appelle avant d’arriver</span></li>
