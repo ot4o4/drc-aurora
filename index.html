@@ -613,28 +613,6 @@ footer a:hover{color:var(--braise)}
     </div>
   </section>
 
-  <!-- ══ PILIERS ══ -->
-  <section class="section" style="padding-top:0">
-    <div class="wrap">
-      <div class="pillars">
-        <article class="pillar rise">
-          <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></div>
-          <h4>2 h chrono</h4>
-          <p>Dakar et banlieue, livraison offerte dès 15 000 F. Créneaux express, soirée ou lendemain matin.</p>
-        </article>
-        <article class="pillar rise">
-          <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5l-15.6 9"/><path d="M9.4 4.6 12 6.6l2.6-2M9.4 19.4 12 17.4l2.6 2"/></svg></div>
-          <h4>Chaîne du froid</h4>
-          <p>De la ferme à votre porte, jamais rompue. Découpe possible sur demande : entier, morceaux ou haché.</p>
-        </article>
-        <article class="pillar rise">
-          <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/><path d="M7 15h4"/></svg></div>
-          <h4>Wave · OM · Espèces</h4>
-          <p>Vous payez comme vous voulez, à la commande ou à la livraison. Aucune donnée bancaire conservée.</p>
-        </article>
-      </div>
-    </div>
-  </section>
 
   <!-- ══ REVENDEUR ══ -->
   <section class="section" style="padding-top:0">
@@ -738,8 +716,23 @@ const HIDDEN_NAMES = new Set(['escalopes de poulet','poulet braisé mariné','po
 /* produits visibles mais pas encore en vente */
 const SOON_IDS = new Set([4, 5]);  /* Ailes de Poulet, Foie & Gésiers */
 
+/* produits de la vitrine absents de l'API */
+const EXTRA_PRODUCTS = [
+  {id:9, name:'Cuisses de Poulet', cat:'cuisses', img:'p9.jpg', price:2750, unit:'le kilo',
+   rating:4.8, sold:0, tags:[['green','Frais du jour'],['yellow','Petit prix']],
+   short:'Cuisses charnues, découpées le jour même. Parfaites au four, braisées ou en yassa.'}
+];
+
 /* prix imposés depuis la vitrine (l'API reste la référence du back-office) */
 const PRICE_OVERRIDES = { 8: 3000 };
+const insertExtras = list => {
+  const out = list.slice();
+  const at = out.findIndex(p => p.id === 4);          // juste après les pilons
+  const pos = at > -1 ? at : out.length;
+  EXTRA_PRODUCTS.forEach((extra, k) => out.splice(pos + k, 0, extra));
+  return out;
+};
+
 const withOverrides = list => list.map(p => Object.assign({},
   p,
   (PRICE_OVERRIDES[p.id] != null ? {price: PRICE_OVERRIDES[p.id], old: 0} : {}),
@@ -1332,7 +1325,7 @@ modalEl.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click'
 addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 
 /* ══ démarrage ══ */
-PRODUCTS = withOverrides(PRODUCTS.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim())));
+PRODUCTS = withOverrides(insertExtras(PRODUCTS.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim()))));
 buildStage();
 renderGrid();
 paintCart();
@@ -1348,10 +1341,10 @@ paintCart();
     if(!r.ok) return;
     const j = await r.json();
     if(!j.products || !j.products.length) return;
-    PRODUCTS = withOverrides(j.products.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim())).map(p=>({
+    PRODUCTS = withOverrides(insertExtras(j.products.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim())).map(p=>({
       id:p.id, name:p.name, cat:p.cat, img:p.img, price:p.price, unit:p.unit,
       rating:p.rating, sold:p.sold, stock:p.stock, tags:p.tags,      short:(p.desc||'').replace(/<[^>]+>/g,' ').trim().slice(0,140)
-    })));
+    }))));
     const cur = stage.scrollLeft; buildStage(); renderGrid(); paintCart();
     stage.scrollLeft = Math.min(cur, stage.clientWidth*(PRODUCTS.length-1));
   }catch(e){ /* on reste sur le catalogue local */ }
