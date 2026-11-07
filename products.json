@@ -1,0 +1,203 @@
+[
+ {
+  "id": 1,
+  "name": "Poulet Entier",
+  "cat": "entier",
+  "img": "p1.jpg",
+  "price": 4500,
+  "old": 0,
+  "unit": "la pièce (~1,7 kg)",
+  "rating": 4.9,
+  "sold": 1240,
+  "stock": 38,
+  "tags": [
+   [
+    "green",
+    "Frais du jour"
+   ],
+   [
+    "yellow",
+    "Top vente"
+   ]
+  ],
+  "variants": [
+   "Entier prêt à cuire",
+   "Entier vidé",
+   "4 morceaux"
+  ],
+  "short": "Notre fameux Poulet Bicyclette élevé en plein air dans les fermes familiales de la région de Thiès. Élevage local, nourri au maïs et aux céréales Déco"
+ },
+ {
+  "id": 2,
+  "name": "Blanc de Poulet (Filet)",
+  "cat": "blancs",
+  "img": "p2.jpg",
+  "price": 5000,
+  "old": 0,
+  "unit": "le kg",
+  "rating": 4.8,
+  "sold": 986,
+  "stock": 52,
+  "tags": [
+   [
+    "green",
+    "Riche en protéines"
+   ]
+  ],
+  "variants": [
+   "Filet entier",
+   "Filet en dés",
+   "Filet haché"
+  ],
+  "short": "Le blanc de poulet parfait pour vos recettes légères et riches en protéines. Issu d'élevages locaux du Sénégal Découpe du jour, sans peau et sans arêt"
+ },
+ {
+  "id": 3,
+  "name": "Pilons",
+  "cat": "cuisses",
+  "img": "p3.jpg",
+  "price": 4900,
+  "old": 0,
+  "unit": "le kg",
+  "rating": 4.8,
+  "sold": 2150,
+  "stock": 64,
+  "tags": [
+   [
+    "green",
+    "Frais du jour"
+   ]
+  ],
+  "variants": [
+   "Mélange cuisses/pilons",
+   "Cuisses seules",
+   "Pilons seuls"
+  ],
+  "short": "Le morceau préféré des familles sénégalaises, tendre et savoureux. Élevage local sélectionné avec nos partenaires fermiers Découpe du jour pour une fr"
+ },
+ {
+  "id": 4,
+  "name": "Ailes de Poulet",
+  "cat": "ailes",
+  "img": "p4.jpg",
+  "price": 3900,
+  "old": 0,
+  "unit": "le kg",
+  "rating": 4.7,
+  "sold": 743,
+  "stock": 41,
+  "tags": [
+   [
+    "yellow",
+    "Anti-gaspi"
+   ]
+  ],
+  "variants": [
+   "Ailes entières",
+   "Ailes coupées"
+  ],
+  "short": "Des ailes fraîches et charnues, parfaites pour le frit, le braisé ou les sauces. Produits issus de l'élevage local sénégalais Découpe du jour, soigneu"
+ },
+ {
+  "id": 5,
+  "name": "Foie & Gésiers",
+  "cat": "abats",
+  "img": "p5.jpg",
+  "price": 3200,
+  "old": 0,
+  "unit": "le kg",
+  "rating": 4.6,
+  "sold": 412,
+  "stock": 27,
+  "tags": [
+   [
+    "green",
+    "Riche en fer"
+   ]
+  ],
+  "variants": [
+   "Mélange",
+   "Foie seul",
+   "Gésiers seuls"
+  ],
+  "short": "Des abats frais, riches en fer et en nutriments, appréciés dans toute la cuisine ouest-africaine. Origine locale, élevage responsable Découpe et netto"
+ },
+ {
+  "id": 6,
+  "name": "Poulet Braisé Mariné (prêt à griller)",
+  "cat": "braise",
+  "img": "p6.jpg",
+  "price": 8900,
+  "old": 0,
+  "unit": "le plat (~2 kg)",
+  "rating": 5,
+  "sold": 1876,
+  "stock": 22,
+  "tags": [
+   [
+    "red",
+    "Recette du chef"
+   ],
+   [
+    "green",
+    "Prêt à cuire"
+   ]
+  ],
+  "variants": [
+   "Marinade Yassa",
+   "Marinade Kebab",
+   "Marinade Piment doux"
+  ],
+  "short": "Notre spécialité : un poulet fermier mariné par nos chefs, prêt à griller pour vos braisés de quartier. Élevage local, poulet fermier de qualité Marin"
+ },
+ {
+  "id": 7,
+  "name": "Escalopes de Poulet",
+  "cat": "blancs",
+  "img": "p7.jpg",
+  "price": 6900,
+  "old": 0,
+  "unit": "le kg",
+  "rating": 4.7,
+  "sold": 528,
+  "stock": 35,
+  "tags": [
+   [
+    "green",
+    "Frais du jour"
+   ]
+  ],
+  "variants": [
+   "Escalopes nature",
+   "Escalopes panées maison"
+  ],
+  "short": "Des escalopes tendres et régulières, prêtes à cuisiner en quelques minutes. Poulet d'élevage local du Sénégal Découpe du jour, finesse régulière Chaîn"
+ },
+ {
+  "id": 8,
+  "name": "Œufs Fermiers — Plateau de 30",
+  "cat": "oeufs",
+  "img": "p8.jpg",
+  "price": 5500,
+  "old": 0,
+  "unit": "le plateau",
+  "rating": 4.9,
+  "sold": 3210,
+  "stock": 80,
+  "tags": [
+   [
+    "yellow",
+    "Top vente"
+   ],
+   [
+    "green",
+    "Fermier"
+   ]
+  ],
+  "variants": [
+   "Plateau de 30",
+   "Plateau de 15"
+  ],
+  "short": "Des œufs fermiers frais, pondus par nos poulettes élevées en plein air. Élevage local et responsable Collecte et conditionnement du jour Chaîne du fro"
+ }
+]

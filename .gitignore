@@ -1,0 +1,4 @@
+shots/
+public/
+node_modules/
+.wrangler/
