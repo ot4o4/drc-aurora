@@ -638,17 +638,16 @@ let PRODUCTS = [
   {id:3,name:'Pilons',cat:'cuisses',img:'p3.jpg',price:4900,unit:'le kilo',rating:4.8,sold:2150,tags:[['green','Frais du jour']],short:'Le morceau préféré des familles : tendre, juteux, parfait au four ou braisé.'},
   {id:4,name:'Ailes de Poulet',cat:'cuisses',img:'p4.jpg',price:3900,unit:'le kilo',rating:4.7,sold:734,tags:[['yellow','Anti-gaspi']],short:'À griller, mariner ou frire. Le meilleur rapport plaisir / prix du marché.'},
   {id:5,name:'Foie & Gésiers',cat:'abats',img:'p5.jpg',price:3200,unit:'le kilo',rating:4.6,sold:412,tags:[['green','Riche en fer']],short:'Nettoyés et parés le matin même. Pour un yassa de foie mémorable.'},
-  {id:6,name:'Poulet Braisé Mariné',cat:'braise',img:'p6.jpg',price:8900,unit:'le plat · ~2 kg',rating:5,sold:1876,tags:[['red','Recette du chef'],['green','Prêt à cuire']],short:'Mariné 24 h à l’ail, gingembre, citron et piment doux. Prêt pour la braise.'},
   {id:8,name:'Œufs Fermiers',cat:'oeufs',img:'p8.jpg',price:5500,unit:'le plateau de 30',rating:4.9,sold:3210,tags:[['yellow','Top vente'],['green','Fermier']],short:'Poules élevées au sol, ramassés du jour. Jaune dense, goût franc.'}
 ];
 
 /* produits retirés de la vitrine (même s'ils existent encore dans l'API) */
-const HIDDEN_IDS = new Set([7]);
-const HIDDEN_NAMES = new Set(['escalopes de poulet']);
+const HIDDEN_IDS = new Set([6, 7]);
+const HIDDEN_NAMES = new Set(['escalopes de poulet','poulet braisé mariné','poulet braise marine']);
 
 const CATS = [
   ['tout','Tout le marché'],['entier','Poulet entier'],['blancs','Blancs & filets'],
-  ['cuisses','Cuisses & pilons'],['abats','Foie & gésiers'],['braise','Braisé & mariné'],['oeufs','Œufs fermiers']
+  ['cuisses','Cuisses & pilons'],['abats','Foie & gésiers'],['oeufs','Œufs fermiers']
 ];
 
 const img = f => 'assets/' + f.replace(/\.jpg$/,'.jpg');
