@@ -1,5 +1,7 @@
 # Darou Rahmane Chicken — Édition Aurum
 
+**En ligne : https://ot4o4.github.io/drc-aurora/** (GitHub Pages, branche `main`, racine du dépôt)
+
 Nouvelle vitrine, indépendante du site en production (`darourahmane-chicken.onrender.com`), qui n'a pas été modifiée.
 
 - **Dossier local** : `/home/ot4o4/drc-aurora/`
@@ -36,7 +38,16 @@ node tools/flow.mjs <url> shots/x.png 393 844 3 "<js>" 800    # scénario + capt
 node tools/eval.mjs <url> "<js>" 1440 900                     # mesures géométrie
 ```
 
-## Déploiement
+## Mise à jour du site en ligne
+
+```bash
+cd /home/ot4o4/drc-aurora
+# éditer index.html / assets, puis
+git add -A && git commit -m "maj vitrine" && git push
+```
+GitHub Pages reconstruit tout seul en ~1 min (vérifier : `gh api repos/ot4o4/drc-aurora/pages/builds/latest`).
+
+## Déploiement alternatif
 
 `wrangler.jsonc` + `src/index.js` servent `public/` comme assets statiques.
 
