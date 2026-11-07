@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Darou Rahmane Chicken — Le poulet frais, livré avec la Teranga</title>
-<meta name="description" content="Poulet frais Saf Sap, découpé le jour même, livré en 2 h dans tout Dakar. Commande en 30 secondes, paiement Wave, Orange Money ou espèces.">
+<meta name="description" content="Poulet frais Saf Sap, livré en 2 h dans tout Dakar. Commande en 30 secondes, paiement Wave, Orange Money ou espèces.">
 <meta name="theme-color" content="#0A0708">
 <meta property="og:title" content="Darou Rahmane Chicken — Le poulet frais, livré avec la Teranga">
 <meta property="og:description" content="Poulet fermier du jour, livré en 2 h à Dakar. Wave · Orange Money · Espèces.">
@@ -580,8 +580,8 @@ footer a:hover{color:var(--braise)}
       <div class="sec-head rise">
         <div>
           <p class="kicker">Le marché du jour</p>
-          <h2 class="title">Découpé <em>ce matin</em>,<br>chez vous ce midi.</h2>
-          <p>Poulet frais Saf Sap. Chaque pièce est découpée à la commande, sous chaîne du froid.</p>
+          <h2 class="title">Le poulet frais,<br><em>livré avec la Teranga</em>.</h2>
+          <p>Poulet Saf Sap, sélectionné pièce par pièce. Vous commandez, on prépare votre commande et on vous la livre à Dakar.</p>
         </div>
       </div>
       <div class="chips" id="chips"></div>
@@ -701,8 +701,8 @@ const API = 'https://drc-api-dj8t.onrender.com';
 const PHONE = '221789249555';
 
 let PRODUCTS = [
-  {id:1,name:'Poulet Entier',cat:'entier',img:'p1.jpg',price:4500,unit:'la pièce · ~1,7 kg',rating:4.9,sold:1240,tags:[['green','Frais du jour'],['yellow','Top vente']],short:'Poulet Saf Sap, découpé et préparé le jour même.'},
-  {id:2,name:'Blanc de Poulet',cat:'blancs',img:'p2.jpg',price:5000,unit:'le kilo',rating:4.8,sold:986,tags:[['green','Riche en protéines']],short:'Sans peau, sans arêtes, découpe du jour. Idéal pour vos recettes légères.'},
+  {id:1,name:'Poulet Entier',cat:'entier',img:'p1.jpg',price:4500,unit:'la pièce · ~1,7 kg',rating:4.9,sold:1240,tags:[['green','Frais du jour'],['yellow','Top vente']],short:'Poulet Saf Sap, préparé pour votre commande.'},
+  {id:2,name:'Blanc de Poulet',cat:'blancs',img:'p2.jpg',price:5000,unit:'le kilo',rating:4.8,sold:986,tags:[['green','Riche en protéines']],short:'Sans peau, sans arêtes, préparé à la commande. Idéal pour vos recettes légères.'},
   {id:3,name:'Pilons',cat:'cuisses',img:'p3.jpg',price:4900,unit:'le kilo',rating:4.8,sold:2150,tags:[['green','Frais du jour']],short:'Le morceau préféré des familles : tendre, juteux, parfait au four ou braisé.'},
   {id:4,name:'Ailes de Poulet',cat:'cuisses',img:'p4.jpg',price:3900,unit:'le kilo',rating:4.7,sold:734,tags:[['yellow','Anti-gaspi']],short:'À griller, mariner ou frire. Le meilleur rapport plaisir / prix du marché.'},
   {id:5,name:'Foie & Gésiers',cat:'abats',img:'p5.jpg',price:3200,unit:'le kilo',rating:4.6,sold:412,tags:[['green','Riche en fer']],short:'Nettoyés et parés le matin même. Pour un yassa de foie mémorable.'},
@@ -720,7 +720,7 @@ const SOON_IDS = new Set([4, 5]);  /* Ailes de Poulet, Foie & Gésiers */
 const EXTRA_PRODUCTS = [
   {id:9, name:'Cuisses de Poulet', cat:'cuisses', img:'p9.jpg', price:2750, unit:'le kilo',
    rating:4.8, sold:0, tags:[['green','Frais du jour'],['yellow','Petit prix']],
-   short:'Cuisses charnues, découpées le jour même. Parfaites au four, braisées ou en yassa.'}
+   short:'Cuisses charnues, préparées à la commande. Parfaites au four, braisées ou en yassa.'}
 ];
 
 /* prix imposés depuis la vitrine (l'API reste la référence du back-office) */
@@ -852,7 +852,7 @@ addEventListener('keydown', e=>{
 /* ══════════════════════════════════════════════════════════════
    Bandeau
    ══════════════════════════════════════════════════════════════ */
-const BAND = ['Poulet Saf Sap','Livraison 2 h à Dakar','Découpé le jour même','Wave · Orange Money','Frais et prêts à disposition','Térangay Guinar'];
+const BAND = ['Poulet Saf Sap','Livraison 2 h à Dakar','Frais du jour','Wave · Orange Money','Frais et prêts à disposition','Térangay Guinar'];
 document.getElementById('track').innerHTML = (BAND.concat(BAND)).map(t=>`<span>${t}</span>`).join('');
 
 /* ══════════════════════════════════════════════════════════════
@@ -1222,7 +1222,7 @@ const PANELS = {
     <p class="lead">Chaque commande passe par ces quatre étapes. Indiquez votre numéro ou la référence reçue sur WhatsApp : on vous répond avec l’état exact.</p>
     <ol class="timeline">
       <li><b>Confirmée</b><span>Votre commande est enregistrée sur WhatsApp</span></li>
-      <li><b>En préparation</b><span>Découpe et conditionnement du jour</span></li>
+      <li><b>En préparation</b><span>Préparation et conditionnement de votre commande</span></li>
       <li><b>En route</b><span>Le livreur vous appelle avant d’arriver</span></li>
       <li><b>Livrée</b><span>Paiement Wave, Orange Money ou espèces</span></li>
     </ol>
