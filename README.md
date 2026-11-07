@@ -15,7 +15,7 @@ Nouvelle vitrine, indépendante du site en production (`darourahmane-chicken.onr
 - Marché filtrable par catégories, cartes produits, ajout au panier en un geste.
 - Bloc vedette « braisé », piliers de service (2 h, chaîne du froid, paiement), bloc revendeur.
 - Panier en feuille basse : quantités, nom / téléphone / créneau / adresse, choix Wave · Orange Money · Espèces, livraison offerte dès 15 000 F.
-- Commande envoyée en message WhatsApp formaté vers **+221 70 917 09 20** (aucun back-end nécessaire).
+- Commande envoyée en message WhatsApp formaté vers **+221 78 924 95 55** (aucun back-end nécessaire).
 - Panier persistant (localStorage), navigation clavier ← →, `prefers-reduced-motion` respecté, responsive dès 360 px, composition deux colonnes ≥ 900 px.
 
 ## Aperçu local
