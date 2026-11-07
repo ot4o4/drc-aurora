@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Darou Rahmane Chicken — Le poulet frais, livré avec la Teranga</title>
-<meta name="description" content="Poulet Bicyclette fermier, découpé le jour même, livré en 2 h dans tout Dakar. Commande en 30 secondes, paiement Wave, Orange Money ou espèces.">
+<meta name="description" content="Poulet frais Saf Sap, découpé le jour même, livré en 2 h dans tout Dakar. Commande en 30 secondes, paiement Wave, Orange Money ou espèces.">
 <meta name="theme-color" content="#0A0708">
 <meta property="og:title" content="Darou Rahmane Chicken — Le poulet frais, livré avec la Teranga">
 <meta property="og:description" content="Poulet fermier du jour, livré en 2 h à Dakar. Wave · Orange Money · Espèces.">
@@ -470,7 +470,7 @@ footer a:hover{color:var(--braise)}
         <div>
           <p class="kicker">Le marché du jour</p>
           <h2 class="title">Découpé <em>ce matin</em>,<br>chez vous ce midi.</h2>
-          <p>Poulet Bicyclette des fermes de Thiès. Chaque pièce est préparée à la commande, sous chaîne du froid.</p>
+          <p>Poulet frais Saf Sap, préparé chaque matin. Chaque pièce est découpée à la commande, sous chaîne du froid.</p>
         </div>
       </div>
       <div class="chips" id="chips"></div>
@@ -595,7 +595,7 @@ const API = 'https://drc-api-dj8t.onrender.com';
 const PHONE = '221709170920';
 
 let PRODUCTS = [
-  {id:1,name:'Poulet Entier',cat:'entier',img:'p1.jpg',price:4500,unit:'la pièce · ~1,7 kg',rating:4.9,sold:1240,tags:[['green','Frais du jour'],['yellow','Top vente']],short:'Poulet Bicyclette élevé en plein air dans les fermes familiales de la région de Thiès.'},
+  {id:1,name:'Poulet Entier',cat:'entier',img:'p1.jpg',price:4500,unit:'la pièce · ~1,7 kg',rating:4.9,sold:1240,tags:[['green','Frais du jour'],['yellow','Top vente']],short:'Poulet Saf Sap, découpé et préparé le jour même.'},
   {id:2,name:'Blanc de Poulet',cat:'blancs',img:'p2.jpg',price:5000,unit:'le kilo',rating:4.8,sold:986,tags:[['green','Riche en protéines']],short:'Sans peau, sans arêtes, découpe du jour. Idéal pour vos recettes légères.'},
   {id:3,name:'Pilons',cat:'cuisses',img:'p3.jpg',price:4900,unit:'le kilo',rating:4.8,sold:2150,tags:[['green','Frais du jour']],short:'Le morceau préféré des familles : tendre, juteux, parfait au four ou braisé.'},
   {id:4,name:'Ailes de Poulet',cat:'cuisses',img:'p4.jpg',price:3900,unit:'le kilo',rating:4.7,sold:734,tags:[['yellow','Anti-gaspi']],short:'À griller, mariner ou frire. Le meilleur rapport plaisir / prix du marché.'},
@@ -704,7 +704,7 @@ addEventListener('keydown', e=>{
 /* ══════════════════════════════════════════════════════════════
    Bandeau
    ══════════════════════════════════════════════════════════════ */
-const BAND = ['Poulet Bicyclette de Thiès','Livraison 2 h à Dakar','Découpé le jour même','Wave · Orange Money','Chaîne du froid garantie','Térangay Guinar'];
+const BAND = ['Poulet Saf Sap','Livraison 2 h à Dakar','Découpé le jour même','Wave · Orange Money','Chaîne du froid garantie','Térangay Guinar'];
 document.getElementById('track').innerHTML = (BAND.concat(BAND)).map(t=>`<span>${t}</span>`).join('');
 
 /* ══════════════════════════════════════════════════════════════
