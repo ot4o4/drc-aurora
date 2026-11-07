@@ -259,17 +259,41 @@ h2.title em{font-style:italic;color:var(--or)}
 .add:hover svg{stroke:#1B0803}
 
 /* bloc vedette */
+/* bloc vedette : recette filmée (TikTok) */
 .feature{position:relative;border-radius:calc(var(--radius) + 8px);overflow:hidden;border:1px solid var(--line);
-  min-height:clamp(420px,64vw,520px);display:flex;align-items:flex-end}
-.feature img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.02);
-  filter:saturate(1.05) contrast(1.03) brightness(.82)}
-.feature::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(105deg,rgba(10,7,8,.94) 12%,rgba(10,7,8,.72) 46%,rgba(10,7,8,.15) 82%),
-             linear-gradient(to top,rgba(10,7,8,.92),transparent 55%)}
-.feature-in{position:relative;z-index:2;padding:clamp(22px,5vw,48px);max-width:560px}
-.feature-in .kicker{margin-bottom:10px}
-.feature h3{font-family:"Fraunces",Georgia,serif;font-weight:350;font-size:clamp(28px,6.4vw,46px);line-height:1.03;margin:0 0 14px;letter-spacing:-.02em}
-.feature p{margin:0 0 22px;color:var(--cream-dim);font-size:14.5px;max-width:44ch}
+  display:grid;grid-template-columns:1fr;gap:clamp(20px,4vw,44px);align-items:center;
+  padding:clamp(16px,3vw,34px);
+  background:radial-gradient(130% 150% at 88% 0%,rgba(231,183,95,.12),transparent 58%),
+             radial-gradient(90% 120% at 4% 100%,rgba(255,122,52,.13),transparent 62%),
+             linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012))}
+@media (max-width:520px){.clip{max-width:min(74vw,280px)}}
+@media (min-width:840px){.feature{grid-template-columns:minmax(250px,330px) minmax(0,1fr);gap:clamp(28px,4vw,56px)}
+  .clip{max-width:330px}}
+.clip{position:relative;width:100%;max-width:300px;margin:0 auto;aspect-ratio:9/16;border-radius:22px;overflow:hidden;
+  background:#160C0E;box-shadow:0 30px 60px -26px rgba(0,0,0,.95),0 0 0 1px rgba(246,237,227,.09);
+  isolation:isolate}
+.clip video{width:100%;height:100%;object-fit:cover;display:block}
+.clip::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:22px;
+  background:linear-gradient(to top,rgba(10,7,8,.55),transparent 38%)}
+.clip .sound{position:absolute;z-index:3;right:10px;bottom:10px;width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;background:rgba(10,7,8,.62);border:1px solid rgba(246,237,227,.24);
+  backdrop-filter:blur(8px);transition:transform .25s,background .25s}
+.clip .sound:hover{transform:scale(1.06);background:rgba(10,7,8,.85)}
+.clip .sound svg{width:16px;height:16px;stroke:var(--cream);fill:none;stroke-width:1.6}
+.clip .tt{position:absolute;z-index:3;left:10px;top:10px;display:inline-flex;align-items:center;gap:6px;
+  padding:6px 10px;border-radius:999px;background:rgba(10,7,8,.62);border:1px solid rgba(246,237,227,.2);
+  backdrop-filter:blur(8px);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--cream-dim)}
+.clip .tt i{width:5px;height:5px;border-radius:50%;background:#25F4EE;box-shadow:0 0 10px #25F4EE}
+.feature-in{position:relative;z-index:2;padding:clamp(4px,1.4vw,14px) clamp(4px,1.6vw,18px) clamp(14px,2vw,20px);max-width:600px}
+.feature-in .kicker{margin-bottom:12px}
+.feature h3{font-family:"Fraunces",Georgia,serif;font-weight:350;font-size:clamp(27px,6vw,44px);line-height:1.03;margin:0 0 14px;letter-spacing:-.02em}
+.feature p{margin:0 0 22px;color:#C9B8AE;font-size:14.5px;max-width:44ch}
+.feature p b{color:var(--cream);font-weight:500}
+.steps{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;padding:0}
+.steps li{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;
+  border:1px solid rgba(246,237,227,.16);background:rgba(255,255,255,.035);
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#C6B3A9}
+.steps li::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--braise);box-shadow:0 0 8px var(--braise)}
 .btn-ghost{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;
   border:1px solid rgba(246,237,227,.35);background:rgba(246,237,227,.06);backdrop-filter:blur(8px);
   font-size:12.5px;letter-spacing:.06em;transition:all .3s var(--ease-out)}
@@ -482,12 +506,21 @@ footer a:hover{color:var(--braise)}
   <section class="section" style="padding-top:0">
     <div class="wrap">
       <div class="feature rise">
-        <img src="assets/p6.jpg" alt="Poulet braisé mariné prêt à griller">
+        <div class="clip">
+          <span class="tt"><i></i>TikTok</span>
+          <video id="recetteVid" src="assets/video/recette-preview.mp4" poster="assets/video/recette-poster.jpg"
+                 autoplay muted loop playsinline preload="metadata"
+                 aria-label="Recette au poulet filmée en cuisine"></video>
+          <button class="sound" id="soundBtn" aria-label="Activer le son" aria-pressed="false">
+            <svg viewBox="0 0 24 24" id="soundIcon"><path d="M4 9.5h3.5L12 5.5v13L7.5 14.5H4z"/><path d="M16 9.5a3.6 3.6 0 0 1 0 5"/><path d="M18.6 7a7 7 0 0 1 0 10"/></svg>
+          </button>
+        </div>
         <div class="feature-in">
-          <p class="kicker">Recette de la maison</p>
-          <h3>Le braisé,<br>mariné 24 h.</h3>
-          <p>Ail, gingembre, citron, piment doux et huile de palme. Il ne reste qu'à poser sur la braise — 25 minutes, et Dakar sent bon.</p>
-          <a class="btn-ghost" href="#marche" data-jump="6">Voir le braisé <span>→</span></a>
+          <p class="kicker">La recette du jour</p>
+          <h3>Le wrap dont<br>tout Dakar parle.</h3>
+          <p>Nos <b>blancs de poulet</b>, une poêle et vingt minutes : la recette de <b>@Suukëru keur gui</b>, filmée en cuisine.</p>
+          <ul class="steps"><li>Découpe</li><li>Marinade</li><li>Poêle</li></ul>
+          <a class="btn-ghost" href="https://www.tiktok.com/@darourahmane6/video/7699977943623208200" target="_blank" rel="noopener">Voir la recette complète <span>→</span></a>
         </div>
       </div>
     </div>
@@ -879,10 +912,12 @@ Paiement : ${buyer.pay}`;
   window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
-/* le bouton flottant n'apparaît qu'une fois la scène quittée */
-let sceneInView = true;
-function paintFab(){ fab.classList.toggle('show', count()>0 && !sceneInView); }
+/* le bouton flottant s'efface sur les zones plein écran (scène, recette) */
+let sceneInView = true, featureInView = false;
+function paintFab(){ fab.classList.toggle('show', count()>0 && !sceneInView && !featureInView); }
 new IntersectionObserver(([e])=>{ sceneInView = e.isIntersecting; paintFab(); },{threshold:0.35}).observe(document.getElementById('scene'));
+const featEl = document.querySelector('.feature');
+if (featEl) new IntersectionObserver(([e])=>{ featureInView = e.isIntersecting; paintFab(); },{threshold:0.25}).observe(featEl);
 
 /* interactions panier */
 document.getElementById('cartBtn').onclick = openSheet;
@@ -940,6 +975,26 @@ requestAnimationFrame(()=>rises.forEach(el=>{
   const r = el.getBoundingClientRect();
   if (r.top < innerHeight && r.bottom > 0) el.classList.add('in');
 }));
+
+/* ══ vidéo de la recette : autoplay muet + bouton son ══ */
+(function(){
+  const v = document.getElementById('recetteVid');
+  const b = document.getElementById('soundBtn');
+  if (!v || !b) return;
+  const icon = document.getElementById('soundIcon');
+  const paint = () => {
+    b.setAttribute('aria-pressed', String(!v.muted));
+    b.setAttribute('aria-label', v.muted ? 'Activer le son' : 'Couper le son');
+    if (icon) icon.style.opacity = v.muted ? '1' : '.6';
+  };
+  paint();
+  b.addEventListener('click', () => { v.muted = !v.muted; if (!v.muted) v.play().catch(()=>{}); paint(); });
+  /* si le navigateur bloque la lecture auto, on relance au premier geste */
+  const attempt = () => v.play().catch(()=>{});
+  attempt();
+  ['touchstart','click','scroll'].forEach(ev =>
+    document.addEventListener(ev, () => { if (v.paused) attempt(); }, {passive:true, once:true}));
+})();
 
 /* ══ démarrage ══ */
 PRODUCTS = PRODUCTS.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim()));
