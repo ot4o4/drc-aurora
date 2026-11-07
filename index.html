@@ -361,6 +361,11 @@ footer a:hover{color:var(--braise)}
 .qty{display:flex;align-items:center;gap:9px;border:1px solid var(--line-strong);border-radius:999px;padding:4px 6px}
 .qty button{width:20px;height:20px;display:grid;place-items:center;color:var(--cream-dim);font-size:15px;line-height:1}
 .qty b{font-size:12.5px;min-width:12px;text-align:center;font-weight:600}
+.line .rm{width:26px;height:26px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--line);background:transparent;transition:all .25s var(--ease-out)}
+.line .rm svg{width:11px;height:11px;stroke:#A7948B;stroke-width:1.6;fill:none}
+.line .rm:hover{border-color:rgba(255,122,52,.65);background:rgba(255,122,52,.12)}
+.line .rm:hover svg{stroke:#FFB095}
 .empty{padding:34px 0;text-align:center;color:var(--muted);font-size:13.5px}
 .form{display:grid;gap:10px;padding-top:14px}
 .form label{display:block;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#B9A49A;margin-bottom:6px}
@@ -833,6 +838,9 @@ function paintCart(){
       <img src="${img(l.img)}" alt="">
       <div class="nm"><b>${l.name}</b><span>${l.unit} · ${fcfa(l.price)}</span></div>
       <div class="qty"><button data-q="-1" data-id="${l.id}">−</button><b>${l.qty}</b><button data-q="1" data-id="${l.id}">+</button></div>
+      <button class="rm" data-rm="${l.id}" aria-label="Retirer ${l.name} du panier" title="Retirer">
+        <svg viewBox="0 0 12 12"><path d="M3 3l6 6M9 3l-6 6"/></svg>
+      </button>
     </div>`).join('') + `
     <div class="form">
       <div><label for="fName">Nom</label><input id="fName" placeholder="Awa Diop" value="${buyer.name}"></div>
@@ -856,6 +864,12 @@ function paintCart(){
 
   document.getElementById('fSlot').value = buyer.slot;
   body.querySelectorAll('[data-q]').forEach(b=>b.onclick = ()=> setQty(+b.dataset.id, +b.dataset.q));
+  body.querySelectorAll('[data-rm]').forEach(b=>b.onclick = ()=>{
+    const l = cart.find(x=>x.id === +b.dataset.rm);
+    cart = cart.filter(x=>x.id !== +b.dataset.rm);
+    save(); paintCart();
+    if (l) toast(l.name + ' retiré');
+  });
   body.querySelectorAll('#payPick button').forEach(b=>b.onclick = ()=>{
     buyer.pay = b.dataset.pay;
     body.querySelectorAll('#payPick button').forEach(x=>x.classList.toggle('on', x===b));
