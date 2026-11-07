@@ -638,12 +638,17 @@ let PRODUCTS = [
   {id:3,name:'Pilons',cat:'cuisses',img:'p3.jpg',price:4900,unit:'le kilo',rating:4.8,sold:2150,tags:[['green','Frais du jour']],short:'Le morceau préféré des familles : tendre, juteux, parfait au four ou braisé.'},
   {id:4,name:'Ailes de Poulet',cat:'cuisses',img:'p4.jpg',price:3900,unit:'le kilo',rating:4.7,sold:734,tags:[['yellow','Anti-gaspi']],short:'À griller, mariner ou frire. Le meilleur rapport plaisir / prix du marché.'},
   {id:5,name:'Foie & Gésiers',cat:'abats',img:'p5.jpg',price:3200,unit:'le kilo',rating:4.6,sold:412,tags:[['green','Riche en fer']],short:'Nettoyés et parés le matin même. Pour un yassa de foie mémorable.'},
-  {id:8,name:'Œufs Fermiers',cat:'oeufs',img:'p8.jpg',price:5500,unit:'le plateau de 30',rating:4.9,sold:3210,tags:[['yellow','Top vente'],['green','Fermier']],short:'Poules élevées au sol, ramassés du jour. Jaune dense, goût franc.'}
+  {id:8,name:'Œufs Fermiers',cat:'oeufs',img:'p8.jpg',price:3000,unit:'le plateau de 30',rating:4.9,sold:3210,tags:[['yellow','Top vente'],['green','Fermier']],short:'Poules élevées au sol, ramassés du jour. Jaune dense, goût franc.'}
 ];
 
 /* produits retirés de la vitrine (même s'ils existent encore dans l'API) */
 const HIDDEN_IDS = new Set([6, 7]);
 const HIDDEN_NAMES = new Set(['escalopes de poulet','poulet braisé mariné','poulet braise marine']);
+
+/* prix imposés depuis la vitrine (l'API reste la référence du back-office) */
+const PRICE_OVERRIDES = { 8: 3000 };
+const withOverrides = list => list.map(p =>
+  (PRICE_OVERRIDES[p.id] != null ? Object.assign({}, p, {price: PRICE_OVERRIDES[p.id], old: 0}) : p));
 
 const CATS = [
   ['tout','Tout le marché'],['entier','Poulet entier'],['blancs','Blancs & filets'],
@@ -819,6 +824,11 @@ function setQty(id, d){
 }
 
 function paintCart(){
+  /* le panier garde toujours le prix courant du catalogue */
+  let repriced = false;
+  cart.forEach(l => { const p = PRODUCTS.find(x=>x.id===l.id); if (p && p.price !== l.price){ l.price = p.price; repriced = true; } });
+  if (repriced) save();
+
   const n = count();
   badge.textContent = n; badge.classList.toggle('on', n>0);
   document.getElementById('fabTotal').textContent = fcfa(sub());
@@ -1010,7 +1020,7 @@ requestAnimationFrame(()=>rises.forEach(el=>{
 })();
 
 /* ══ démarrage ══ */
-PRODUCTS = PRODUCTS.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim()));
+PRODUCTS = withOverrides(PRODUCTS.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim())));
 buildStage();
 renderGrid();
 paintCart();
@@ -1026,10 +1036,10 @@ paintCart();
     if(!r.ok) return;
     const j = await r.json();
     if(!j.products || !j.products.length) return;
-    PRODUCTS = j.products.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim())).map(p=>({
+    PRODUCTS = withOverrides(j.products.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim())).map(p=>({
       id:p.id, name:p.name, cat:p.cat, img:p.img, price:p.price, unit:p.unit,
-      rating:p.rating, sold:p.sold, stock:p.stock, tags:p.tags, short:(p.desc||'').replace(/<[^>]+>/g,' ').trim().slice(0,140)
-    }));
+      rating:p.rating, sold:p.sold, stock:p.stock, tags:p.tags,      short:(p.desc||'').replace(/<[^>]+>/g,' ').trim().slice(0,140)
+    })));
     const cur = stage.scrollLeft; buildStage(); renderGrid(); paintCart();
     stage.scrollLeft = Math.min(cur, stage.clientWidth*(PRODUCTS.length-1));
   }catch(e){ /* on reste sur le catalogue local */ }
