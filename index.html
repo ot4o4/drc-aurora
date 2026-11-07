@@ -163,6 +163,23 @@ a{color:inherit;text-decoration:none}
 .pmeta{margin:16px 0 0;font-size:11.5px;color:#A7948B;letter-spacing:.03em}
 .pmeta b{color:var(--cream-dim);font-weight:500}
 
+/* produit « bientôt disponible » */
+.soon-tag{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);
+  padding:9px 15px;border-radius:999px;background:rgba(10,7,8,.8);border:1px solid rgba(246,237,227,.3);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream);white-space:nowrap}
+.panel.soon .pic img{filter:blur(16px) saturate(.55) brightness(.6);transform:scale(1.14)}
+.panel.soon .dish .halo{opacity:.32}
+.card.soon .thumb img{filter:blur(11px) saturate(.6) brightness(.62);transform:scale(1.1);transition:none}
+.card.soon .add{opacity:.8;border-color:rgba(255,122,52,.45);background:rgba(255,122,52,.1)}
+.card.soon .add svg{width:15px;height:15px;stroke:#FFB095}
+.card.soon .add:hover{background:var(--braise);border-color:var(--braise);opacity:1}
+.card.soon .add:hover svg{stroke:#1B0803}
+.soon-price{font-family:"Fraunces",Georgia,serif;font-size:15px;color:#C6B3A9;letter-spacing:.02em}
+.soon-line{margin:14px 0 0;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#D3C4BA}
+.btn-add.is-soon{background:linear-gradient(180deg,rgba(246,237,227,.92),rgba(226,210,198,.92));color:#3B2A22;
+  box-shadow:0 14px 30px -16px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.5)}
+
 /* HUD de la scène */
 .scene-hud{position:absolute;left:0;right:0;bottom:calc(96px + env(safe-area-inset-bottom));z-index:5;
   display:flex;flex-direction:column;align-items:center;gap:16px;pointer-events:none}
@@ -645,10 +662,15 @@ let PRODUCTS = [
 const HIDDEN_IDS = new Set([6, 7]);
 const HIDDEN_NAMES = new Set(['escalopes de poulet','poulet braisé mariné','poulet braise marine']);
 
+/* produits visibles mais pas encore en vente */
+const SOON_IDS = new Set([4]);
+
 /* prix imposés depuis la vitrine (l'API reste la référence du back-office) */
 const PRICE_OVERRIDES = { 8: 3000 };
-const withOverrides = list => list.map(p =>
-  (PRICE_OVERRIDES[p.id] != null ? Object.assign({}, p, {price: PRICE_OVERRIDES[p.id], old: 0}) : p));
+const withOverrides = list => list.map(p => Object.assign({},
+  p,
+  (PRICE_OVERRIDES[p.id] != null ? {price: PRICE_OVERRIDES[p.id], old: 0} : {}),
+  {soon: SOON_IDS.has(p.id)}));
 
 const CATS = [
   ['tout','Tout le marché'],['entier','Poulet entier'],['blancs','Blancs & filets'],
@@ -673,20 +695,23 @@ let active  = 0;
 function panelHTML(p, i){
   const tags = (p.tags||[]).map(([c,t]) => `<span class="tag ${c}">${t}</span>`).join('');
   return `
-  <article class="panel" data-i="${i}" data-cat="${p.cat}">
+  <article class="panel${p.soon?' soon':''}" data-i="${i}" data-cat="${p.cat}">
     <div class="panel-inner">
-      <p class="eyebrow panel-head"><span class="pip"></span>${(p.tags&&p.tags[0])?p.tags[0][1]:'Frais du jour'} · Élevé au Sénégal</p>
+      <p class="eyebrow panel-head"><span class="pip"></span>${p.soon?'Bientôt disponible':((p.tags&&p.tags[0])?p.tags[0][1]:'Frais du jour')+' · Élevé au Sénégal'}</p>
       <div class="dish">
         <div class="halo"></div>
         <div class="pic"><img src="${img(p.img)}" alt="${p.name}" ${i>1?'loading="lazy"':''}></div>
+        ${p.soon?'<span class="soon-tag">Bientôt disponible</span>':''}
         <div class="rim"></div>
       </div>
       <div class="panel-text">
         <p class="eyebrow panel-eyebrow"><span class="pip"></span>${(p.tags&&p.tags[0])?p.tags[0][1]:'Frais du jour'} · Élevé au Sénégal</p>
         <h1 class="pname">${p.name}</h1>
         <p class="punit">${p.unit}</p>
-        <div class="pprice"><b>${p.price.toLocaleString('fr-FR')}</b><em>F CFA</em></div>
-        <p class="pmeta">★ ${String(p.rating).replace('.',',')} · <b>${(p.sold||0).toLocaleString('fr-FR')}</b> vendus · ${p.stock>0?'stock du jour':'sur commande'}</p>
+        ${p.soon
+          ? `<p class="soon-line">Arrive très bientôt · prévenez-moi sur WhatsApp</p>`
+          : `<div class="pprice"><b>${p.price.toLocaleString('fr-FR')}</b><em>F CFA</em></div>
+        <p class="pmeta">★ ${String(p.rating).replace('.',',')} · <b>${(p.sold||0).toLocaleString('fr-FR')}</b> vendus · ${p.stock>0?'stock du jour':'sur commande'}</p>`}
       </div>
     </div>
   </article>`;
@@ -706,9 +731,20 @@ function updateActive(i){
   [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===active));
   [...stage.children].forEach((el,k)=>el.setAttribute('aria-hidden', k===active ? 'false':'true'));
   const p = PRODUCTS[active];
-  document.getElementById('addLabel').textContent = 'Ajouter au panier';
+  const btn = document.getElementById('addMain');
+  const lbl = document.getElementById('addLabel');
+  const prc = document.getElementById('addPrice');
+  const sep = btn.querySelector('.dot-sep');
   const pos = document.getElementById('posNum'); if (pos) pos.textContent = String(active+1).padStart(2,'0');
-  document.getElementById('addPrice').textContent = fcfa(p.price);
+  if (p.soon){
+    lbl.textContent = 'M’avertir sur WhatsApp';
+    prc.textContent = ''; sep.style.display = 'none';
+    btn.classList.add('is-soon');
+  } else {
+    lbl.textContent = 'Ajouter au panier';
+    prc.textContent = fcfa(p.price); sep.style.display = '';
+    btn.classList.remove('is-soon');
+  }
   document.getElementById('hint').style.opacity = active === PRODUCTS.length-1 ? '.35' : '1';
 }
 
@@ -771,8 +807,9 @@ chips.addEventListener('click', e=>{
 function cardHTML(p){
   const tags = (p.tags||[]).map(([c,t])=>`<span class="tag ${c}">${t}</span>`).join('');
   return `
-  <article class="card" data-id="${p.id}">
+  <article class="card${p.soon?' soon':''}" data-id="${p.id}">
     <div class="thumb">
+      ${p.soon?'<span class="soon-tag">Bientôt disponible</span>':''}
       <div class="tagline">${tags}</div>
       <img src="${img(p.img)}" alt="${p.name}" loading="lazy">
     </div>
@@ -780,8 +817,12 @@ function cardHTML(p){
       <h3>${p.name}</h3>
       <span class="u">${p.unit}</span>
       <div class="card-foot">
-        <span class="price">${p.price.toLocaleString('fr-FR')}<small>F</small></span>
-        <button class="add" data-add="${p.id}" aria-label="Ajouter ${p.name}"><svg viewBox="0 0 14 14"><path d="M7 2v10M2 7h10"/></svg></button>
+        ${p.soon
+          ? `<span class="soon-price">Bientôt</span>`
+          : `<span class="price">${p.price.toLocaleString('fr-FR')}<small>F</small></span>`}
+        <button class="add" data-add="${p.id}" aria-label="${p.soon?'Être prévenu pour '+p.name:'Ajouter '+p.name}">${p.soon
+          ? '<svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 19a2 2 0 0 0 4 0"/></svg>'
+          : '<svg viewBox="0 0 14 14"><path d="M7 2v10M2 7h10"/></svg>'}</button>
       </div>
     </div>
   </article>`;
@@ -809,11 +850,17 @@ let buyer = {name:'', phone:'', address:'', slot:'Express 2 h', pay:'Wave'};
 
 function addToCart(id, silent){
   const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  if (p.soon){ toast('Bientôt disponible — je mets en relation WhatsApp'); notifySoon(p); return; }
   const line = cart.find(l=>l.id===id);
   if (line) line.qty++; else cart.push({id, name:p.name, price:p.price, img:p.img, unit:p.unit, qty:1});
   save(); paintCart();
   badge.classList.add('bump'); setTimeout(()=>badge.classList.remove('bump'),450);
   if(!silent) toast(`${p.name} ajouté`);
+}
+
+function notifySoon(p){
+  const msg = `Bonjour Darou Rahmane Chicken 🐔\nPrévenez-moi dès que « ${p.name} » est disponible.`;
+  window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 function setQty(id, d){
@@ -959,7 +1006,7 @@ function closeSheet(){
 }
 
 /* ══ actions globales ══ */
-document.getElementById('addMain').onclick = ()=> addToCart(PRODUCTS[active].id);
+document.getElementById('addMain').onclick = ()=> addToCart(PRODUCTS[active].id);  /* le garde-fou « bientôt » est dans addToCart */
 grid.addEventListener('click', e=>{
   const b = e.target.closest('[data-add]');
   if (b) addToCart(+b.dataset.add);
