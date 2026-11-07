@@ -394,6 +394,24 @@ footer a:hover{color:var(--braise)}
 .pay button{padding:11px 6px;border-radius:12px;border:1px solid var(--line);font-size:11.5px;color:var(--cream-dim);
   background:rgba(255,255,255,.03);transition:all .25s}
 .pay button.on{border-color:rgba(255,140,70,.85);background:rgba(255,122,52,.18);color:#FFD8C0;font-weight:600}
+
+/* géolocalisation */
+.geo-opt{text-transform:none;letter-spacing:.02em;color:#8FD694;font-size:10px;margin-left:4px}
+.geo-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 14px;border-radius:12px;
+  border:1px dashed rgba(246,237,227,.3);background:rgba(255,255,255,.03);color:var(--cream);font-size:13px;
+  transition:all .25s var(--ease-out)}
+.geo-btn svg{width:16px;height:16px;stroke:var(--braise);fill:none;stroke-width:1.6}
+.geo-btn:hover{border-color:rgba(255,122,52,.6);background:rgba(255,122,52,.09)}
+.geo-btn.busy{opacity:.65}
+.geo-note{margin:8px 0 0;font-size:11px;color:#A7948B;line-height:1.45}
+.geo-map{border-radius:12px;overflow:hidden;border:1px solid var(--line);height:clamp(96px,24vw,124px);background:#0E0A0B;margin-top:9px}
+.geo-map iframe{width:100%;height:100%;border:0;display:block}
+.geo-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11.5px}
+.geo-ok{display:inline-flex;align-items:center;gap:6px;color:#B9E7BC}
+.geo-ok i{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.geo-acts{display:inline-flex;gap:14px}
+.geo-acts a,.geo-acts button{color:#C6B3A9;text-decoration:none;font-size:11.5px;border:0;background:none;padding:0;cursor:pointer}
+.geo-acts a:hover,.geo-acts button:hover{color:var(--braise)}
 .sheet-foot{padding:14px 20px calc(18px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:rgba(8,5,6,.6)}
 .totals{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 .totals div{display:flex;justify-content:space-between;font-size:12.5px;color:var(--cream-dim)}
@@ -663,7 +681,7 @@ const HIDDEN_IDS = new Set([6, 7]);
 const HIDDEN_NAMES = new Set(['escalopes de poulet','poulet braisé mariné','poulet braise marine']);
 
 /* produits visibles mais pas encore en vente */
-const SOON_IDS = new Set([4]);
+const SOON_IDS = new Set([4, 5]);  /* Ailes de Poulet, Foie & Gésiers */
 
 /* prix imposés depuis la vitrine (l'API reste la référence du back-office) */
 const PRICE_OVERRIDES = { 8: 3000 };
@@ -846,7 +864,11 @@ const count = () => cart.reduce((s,l)=>s+l.qty,0);
 const sub   = () => cart.reduce((s,l)=>s + l.qty*l.price, 0);
 const ship  = () => sub() === 0 ? 0 : (sub() >= 15000 ? 0 : 2000);
 
-let buyer = {name:'', phone:'', address:'', slot:'Express 2 h', pay:'Wave'};
+let buyer = {name:'', phone:'', address:'', slot:'Express 2 h', pay:'Wave', lat:null, lng:null, acc:null};
+try {
+  const savedPos = JSON.parse(localStorage.getItem('drc_aurora_pos') || 'null');
+  if (savedPos && savedPos.lat) Object.assign(buyer, savedPos);
+} catch(e) {}
 
 function addToCart(id, silent){
   const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
@@ -856,6 +878,62 @@ function addToCart(id, silent){
   save(); paintCart();
   badge.classList.add('bump'); setTimeout(()=>badge.classList.remove('bump'),450);
   if(!silent) toast(`${p.name} ajouté`);
+}
+
+/* ── géolocalisation de livraison ── */
+function geoLink(lat, lng){ return `https://maps.google.com/?q=${lat.toFixed(6)},${lng.toFixed(6)}`; }
+
+function renderGeo(){
+  const box = document.getElementById('geoBox');
+  if (!box) return;
+  if (buyer.lat && buyer.lng){
+    const d = 0.0035;
+    const src = `https://www.openstreetmap.org/export/embed.html?bbox=${(buyer.lng-d)},${(buyer.lat-d)},${(buyer.lng+d)},${(buyer.lat+d)}&layer=mapnik&marker=${buyer.lat},${buyer.lng}`;
+    box.innerHTML = `
+      <div class="geo-row">
+        <span class="geo-ok"><i></i>Position enregistrée${buyer.acc?` · ±${buyer.acc} m`:''}</span>
+        <span class="geo-acts">
+          <a href="${geoLink(buyer.lat, buyer.lng)}" target="_blank" rel="noopener">Ouvrir</a>
+          <button type="button" id="geoClear">Retirer</button>
+        </span>
+      </div>
+      <div class="geo-map"><iframe src="${src}" loading="lazy" title="Position de livraison"></iframe></div>`;
+  } else {
+    box.innerHTML = `
+      <button type="button" class="geo-btn" id="geoBtn">
+        <svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        Utiliser ma position
+      </button>
+      <p class="geo-note">Le point GPS aide le livreur à vous trouver, en plus de l’adresse écrite.</p>`;
+  }
+}
+
+function requestGeo(){
+  const btn = document.getElementById('geoBtn');
+  if (!navigator.geolocation){
+    toast('Géolocalisation indisponible sur ce navigateur');
+    return;
+  }
+  if (btn){ btn.disabled = true; btn.classList.add('busy'); btn.textContent = 'Recherche de votre position…'; }
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      buyer.lat = pos.coords.latitude;
+      buyer.lng = pos.coords.longitude;
+      buyer.acc = Math.round(pos.coords.accuracy || 0) || null;
+      try { localStorage.setItem('drc_aurora_pos', JSON.stringify({lat:buyer.lat,lng:buyer.lng,acc:buyer.acc})); } catch(e){}
+      renderGeo();
+      toast('Position GPS enregistrée');
+      document.getElementById('geoBox')?.scrollIntoView({block:'nearest', behavior:'smooth'});
+    },
+    err => {
+      const msg = err.code === 1 ? 'Autorisez la localisation pour l’utiliser'
+                : err.code === 3 ? 'Position introuvable, réessayez'
+                : 'Impossible d’obtenir la position';
+      toast(msg);
+      renderGeo();
+    },
+    {enableHighAccuracy:true, timeout:12000, maximumAge:0}
+  );
 }
 
 function notifySoon(p){
@@ -908,6 +986,10 @@ function paintCart(){
           </select></div>
       </div>
       <div><label for="fAddr">Adresse de livraison</label><input id="fAddr" placeholder="Parcelles Assainies U20, villa 45" value="${buyer.address}"></div>
+      <div class="geo-block">
+        <label>Position GPS <span class="geo-opt">(recommandé)</span></label>
+        <div id="geoBox"></div>
+      </div>
       <div>
         <label>Paiement</label>
         <div class="pay" id="payPick">
@@ -936,6 +1018,15 @@ function paintCart(){
   });
   document.getElementById('fSlot').onchange = e => buyer.slot = e.target.value;
 
+  renderGeo();
+  document.getElementById('geoBtn')?.addEventListener('click', requestGeo);
+  document.getElementById('geoClear')?.addEventListener('click', () => {
+    buyer.lat = buyer.lng = buyer.acc = null;
+    localStorage.removeItem('drc_aurora_pos');
+    renderGeo();
+    toast('Position GPS retirée');
+  });
+
   const s = sub(), f = ship(), t = s + f;
   foot.innerHTML = `
     <div class="totals">
@@ -957,8 +1048,8 @@ function sendOrder(){
     document.getElementById('fName')?.focus();
     return;
   }
-  if (!buyer.address.trim()){
-    toast('Précisez votre adresse de livraison');
+  if (!buyer.address.trim() && !buyer.lat){
+    toast('Ajoutez une adresse ou votre position GPS');
     document.getElementById('fAddr')?.focus();
     return;
   }
@@ -977,7 +1068,7 @@ Livraison : ${f===0?'offerte':fcfa(f)}
 Nom : ${buyer.name}
 Téléphone : ${buyer.phone}
 Adresse : ${buyer.address || '— à préciser'}
-Créneau : ${buyer.slot}
+${buyer.lat ? `Position GPS : ${geoLink(buyer.lat, buyer.lng)}${buyer.acc?` (±${buyer.acc} m)`:''}\n` : ''}Créneau : ${buyer.slot}
 Paiement : ${buyer.pay}`;
   window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
 }
