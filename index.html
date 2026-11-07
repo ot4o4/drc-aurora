@@ -424,6 +424,53 @@ footer a:hover{color:var(--braise)}
 .btn-send svg{width:16px;height:16px;fill:currentColor}
 .hint{font-size:11px;color:#A7948B;text-align:center;margin:10px 0 0;line-height:1.5}
 
+
+/* ── panneaux (suivi, retours, tarifs pro) ── */
+.modal{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.modal.open{opacity:1;pointer-events:auto}
+.modal-bg{position:absolute;inset:0;background:rgba(4,2,3,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.modal-card{position:relative;width:100%;max-width:580px;max-height:88svh;overflow-y:auto;overscroll-behavior:contain;
+  background:linear-gradient(180deg,#1A1013,#0C0708);border:1px solid var(--line-strong);
+  border-radius:26px 26px 0 0;padding:26px 22px calc(26px + env(safe-area-inset-bottom));
+  transform:translateY(2.5%);transition:transform .45s var(--ease-out);box-shadow:0 -30px 80px rgba(0,0,0,.7)}
+.modal.open .modal-card{transform:none}
+@media (min-width:760px){.modal{align-items:center;padding:28px}
+  .modal-card{border-radius:26px;max-height:82vh;box-shadow:0 40px 90px rgba(0,0,0,.75)}}
+.modal-x{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;
+  border:1px solid var(--line);display:grid;place-items:center;background:rgba(255,255,255,.04)}
+.modal-x svg{width:12px;height:12px;stroke:var(--cream);stroke-width:1.6;fill:none}
+#modalBody h3{font-family:"Fraunces",Georgia,serif;font-weight:350;font-size:clamp(24px,5.4vw,32px);
+  line-height:1.06;margin:0 0 12px;letter-spacing:-.02em;padding-right:34px}
+#modalBody .kicker{margin-bottom:10px}
+#modalBody p.lead{margin:0 0 20px;color:#C0AEA5;font-size:14px;line-height:1.55;max-width:46ch}
+#modalBody p.lead b{color:var(--cream);font-weight:500}
+.track{list-style:none;counter-reset:s;margin:0 0 22px;padding:0;display:grid;gap:0}
+.track li{counter-increment:s;position:relative;padding:0 0 18px 40px}
+.track li::before{content:counter(s);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;
+  display:grid;place-items:center;font-size:11px;color:#1B0803;background:linear-gradient(180deg,#FF9A5C,#F0672A);
+  box-shadow:0 0 0 4px rgba(255,122,52,.1)}
+.track li::after{content:"";position:absolute;left:12.5px;top:30px;bottom:2px;width:1px;background:rgba(246,237,227,.14)}
+.track li:last-child{padding-bottom:0}
+.track li:last-child::after{display:none}
+.track b{display:block;font-family:"Fraunces",Georgia,serif;font-weight:450;font-size:16px;color:var(--cream);margin-bottom:2px}
+.track span{font-size:12.5px;color:#A7948B;line-height:1.45}
+.modal .form{margin:0}
+.modal .form + .form{margin-top:0}
+.modal .form input,.modal .form select,.modal .form textarea{border-color:rgba(246,237,227,.18)}
+.modal textarea{width:100%;min-height:96px;resize:vertical;padding:12px 14px;border-radius:12px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--cream);font:inherit;font-size:14px;
+  outline:none;transition:border-color .3s}
+.modal textarea:focus{border-color:rgba(255,122,52,.55)}
+.pro-table{width:100%;border-collapse:collapse;margin:0 0 16px;font-size:12.5px}
+.pro-table th{text-align:left;font-weight:600;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:#A7948B;padding:0 0 10px;border-bottom:1px solid var(--line)}
+.pro-table th:last-child,.pro-table td:last-child{text-align:right}
+.pro-table td{padding:11px 0;border-bottom:1px solid rgba(246,237,227,.07);color:#D6C6BC}
+.pro-table td:first-child{color:var(--cream)}
+.pro-table td b{font-family:"Fraunces",Georgia,serif;color:var(--or);font-weight:400;font-size:14px}
+.pro-note{margin:0 0 18px;font-size:11.5px;color:#A7948B;line-height:1.5}
+
 /* FAB panier */
 .fab{position:fixed;z-index:45;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));display:none;
   align-items:center;gap:9px;padding:11px 16px;border-radius:999px;
@@ -633,8 +680,9 @@ footer a:hover{color:var(--braise)}
         <h5>La maison</h5>
         <div class="f-links">
           <a href="#marche">Le marché</a>
-          <a href="#marche">Livraison &amp; retours</a>
-          <a href="#marche">Tarifs revendeurs</a>
+          <a href="#" data-panel="suivi">Suivi de livraison</a>
+          <a href="#" data-panel="retours">Livraison &amp; retours</a>
+          <a href="#" data-panel="pro">Tarifs revendeurs</a>
           <a href="https://darourahmane-chicken.onrender.com/" target="_blank" rel="noopener">Boutique classique</a>
         </div>
       </div>
@@ -656,6 +704,14 @@ footer a:hover{color:var(--braise)}
   <div class="sheet-body" id="sheetBody"></div>
   <div class="sheet-foot" id="sheetFoot"></div>
 </section>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-x" data-close aria-label="Fermer"><svg viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12"/></svg></button>
+    <div id="modalBody"></div>
+  </div>
+</div>
 
 <div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M4 12.5 9 17.5 20 6.5"/></svg><span id="toastTxt">Ajouté au panier</span></div>
 
@@ -1155,6 +1211,125 @@ requestAnimationFrame(()=>rises.forEach(el=>{
   ['touchstart','click','scroll'].forEach(ev =>
     document.addEventListener(ev, () => { if (v.paused) attempt(); }, {passive:true, once:true}));
 })();
+
+/* ══════════════════════════════════════════════════════════════
+   Panneaux : suivi de livraison · retours · tarifs revendeurs
+   ══════════════════════════════════════════════════════════════ */
+const modalEl = document.getElementById('modal');
+const modalBody = document.getElementById('modalBody');
+
+const wa = msg => window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(msg)}`, '_blank');
+const unitWord = u => /plateau/i.test(u) ? 'le plateau' : (/pièce/i.test(u) ? 'la pièce' : 'le kg');
+
+const PANELS = {
+  suivi(){
+    return `
+    <p class="kicker">Commande en cours</p>
+    <h3>Suivi de livraison</h3>
+    <p class="lead">Chaque commande passe par ces quatre étapes. Indiquez votre numéro ou la référence reçue sur WhatsApp : on vous répond avec l’état exact.</p>
+    <ol class="track">
+      <li><b>Confirmée</b><span>Votre commande est enregistrée sur WhatsApp</span></li>
+      <li><b>En préparation</b><span>Découpe et conditionnement du jour</span></li>
+      <li><b>En route</b><span>Le livreur vous appelle avant d’arriver</span></li>
+      <li><b>Livrée</b><span>Paiement Wave, Orange Money ou espèces</span></li>
+    </ol>
+    <div class="form">
+      <div><label for="trkRef">Téléphone ou référence</label>
+        <input id="trkRef" inputmode="tel" placeholder="77 123 45 67" value="${buyer.phone || ''}"></div>
+      <button class="btn-send" id="trkSend">Demander l’état sur WhatsApp</button>
+      <p class="hint">Réponse en quelques minutes, 7 j/7 de 8 h à 21 h.</p>
+    </div>`;
+  },
+
+  retours(){
+    return `
+    <p class="kicker">Après-vente</p>
+    <h3>Livraison &amp; retours</h3>
+    <p class="lead">Livraison à Dakar et banlieue, généralement sous 2 h, <b>offerte dès 15 000 F</b> (sinon 2 000 F). Produit non conforme, poids incorrect ou chaîne du froid rompue : signalez-le dans les 2 h suivant la livraison — on remplace ou on rembourse.</p>
+    <div class="form">
+      <div class="row">
+        <div><label for="retName">Nom</label><input id="retName" placeholder="Awa Diop" value="${buyer.name || ''}"></div>
+        <div><label for="retPhone">Téléphone</label><input id="retPhone" inputmode="tel" placeholder="77 123 45 67" value="${buyer.phone || ''}"></div>
+      </div>
+      <div><label for="retRef">Référence de commande <span style="text-transform:none;letter-spacing:0;color:#7f6d66">(optionnel)</span></label>
+        <input id="retRef" placeholder="DRC-1042"></div>
+      <div><label for="retTxt">Votre réclamation</label>
+        <textarea id="retTxt" placeholder="Décrivez le problème : produit, quantité, état à la réception…"></textarea></div>
+      <button class="btn-send" id="retSend">Envoyer la réclamation</button>
+      <p class="hint">Votre message part directement à l’équipe sur WhatsApp.</p>
+    </div>`;
+  },
+
+  pro(){
+    const rows = PRODUCTS.filter(p => !p.soon).map(p => {
+      const pro = Math.round(p.price * 0.82 / 10) * 10;
+      return `<tr>
+        <td>${p.name.split(/ \(| — /)[0]}</td>
+        <td>${p.price.toLocaleString('fr-FR')} F <small style="color:#8b7a72">${unitWord(p.unit)}</small></td>
+        <td><b>${pro.toLocaleString('fr-FR')} F</b></td>
+      </tr>`;
+    }).join('');
+    return `
+    <p class="kicker">Professionnels</p>
+    <h3>Tarifs revendeurs</h3>
+    <p class="lead">Prix départ Dakar, dès <b>50 kg par semaine</b>, livraison sur votre point de vente et facturation mensuelle possible.</p>
+    <table class="pro-table">
+      <thead><tr><th>Produit</th><th>Prix détail</th><th>Prix pro · −18 %</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="pro-note">Au-delà de 100 kg/semaine, remise supplémentaire sur devis. Œufs : prix au plateau de 30. Tarifs indicatifs pour Dakar et banlieue, hors produits « bientôt disponible ».</p>
+    <button class="btn-send" id="proDevis">Demander un devis sur WhatsApp</button>`;
+  }
+};
+
+function openPanel(key){
+  const build = PANELS[key]; if (!build) return;
+  modalBody.innerHTML = build();
+  modalEl.classList.add('open');
+  modalEl.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+  bindPanel(key);
+  modalEl.querySelector('.modal-x')?.focus();
+}
+
+function closePanel(){
+  modalEl.classList.remove('open');
+  modalEl.setAttribute('aria-hidden','true');
+  if (!sheet.classList.contains('open')) document.body.style.overflow = '';
+}
+
+function bindPanel(key){
+  if (key === 'suivi'){
+    const send = document.getElementById('trkSend');
+    send.onclick = () => {
+      const ref = (document.getElementById('trkRef').value || '').trim();
+      if (ref.replace(/\D/g,'').length < 6 && ref.length < 4){ toast('Indiquez votre téléphone ou une référence'); document.getElementById('trkRef').focus(); return; }
+      wa(`Bonjour Darou Rahmane Chicken 🐔\nJe souhaite suivre ma commande.\nTéléphone / référence : ${ref}`);
+    };
+  }
+  if (key === 'retours'){
+    const send = document.getElementById('retSend');
+    send.onclick = () => {
+      const n = document.getElementById('retName').value.trim();
+      const ph = document.getElementById('retPhone').value.trim();
+      const ref = document.getElementById('retRef').value.trim();
+      const txt = document.getElementById('retTxt').value.trim();
+      if (!n || ph.replace(/\D/g,'').length < 9){ toast('Ajoutez votre nom et votre numéro'); return; }
+      if (txt.length < 10){ toast('Décrivez le problème en quelques mots'); document.getElementById('retTxt').focus(); return; }
+      wa(`Bonjour Darou Rahmane Chicken 🐔\nJe signale un problème sur ma commande.\n\nNom : ${n}\nTéléphone : ${ph}${ref?`\nRéférence : ${ref}`:''}\nProblème : ${txt}`);
+    };
+  }
+  if (key === 'pro'){
+    const send = document.getElementById('proDevis');
+    send.onclick = () => wa(`Bonjour, je souhaite recevoir un devis revendeur Darou Rahmane Chicken (commande hebdomadaire dès 50 kg).`);
+  }
+}
+
+document.querySelectorAll('[data-panel]').forEach(a => {
+  a.addEventListener('click', e => { e.preventDefault(); openPanel(a.dataset.panel); });
+});
+modalEl.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', closePanel));
+addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 
 /* ══ démarrage ══ */
 PRODUCTS = withOverrides(PRODUCTS.filter(p => !HIDDEN_IDS.has(p.id) && !HIDDEN_NAMES.has(String(p.name).toLowerCase().trim())));
