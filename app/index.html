@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611172031">
+<link rel="manifest" href="manifest.json?v=202611172037">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -596,7 +596,7 @@ const STATUS = {
 const PAY_LABEL = {wave:'Wave', orange_money:'Orange Money', cod:'Espèces'};
 
 /* ── thème (auto / clair / sombre) ── */
-let THEME = localStorage.getItem('drc_theme') || 'auto';
+let THEME = localStorage.getItem('drc_theme') || 'light';
 const mqDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 function themeResolved(){ return THEME === 'auto' ? (mqDark && mqDark.matches ? 'dark' : 'light') : THEME; }
 function applyTheme(){
@@ -1716,7 +1716,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
     '.inst-ic{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:#F4F0EA;font-size:12px}' +
     '.inst-one{width:100%;margin:2px 0 6px;text-decoration:none}.inst-or{font-size:13.5px!important;margin:12px 0 6px!important}.inst-ok2{display:block;margin:4px auto 0;font-size:15px;font-weight:600;color:#24211F;background:none}' +
     '.inst-ok{width:100%}.inst-no{display:block;margin:12px auto 0;font-size:13px;color:#8C847C}' +
-    '@media(prefers-color-scheme:dark){.inst-card{background:#24211F;color:#F6EDE3}.inst-card p,.inst-steps{color:#CFC6BC}.inst-steps b{color:#fff}.inst-ok{background:#FF7A34}.inst-ok2{background:none;color:#F6EDE3}}';
+    'html[data-theme="dark"] .inst-card{background:#24211F;color:#F6EDE3}html[data-theme="dark"] .inst-card p,html[data-theme="dark"] .inst-steps{color:#CFC6BC}html[data-theme="dark"] .inst-steps b{color:#fff}html[data-theme="dark"] .inst-ok2{color:#F6EDE3}';
   document.head.appendChild(css);
   if (!standalone) setTimeout(sheet, 2600);
   window.showInstall = sheet;
