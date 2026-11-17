@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611170847">
+<link rel="manifest" href="manifest.json?v=202611170852">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1063,7 +1063,7 @@ const tokenOf = id => (myOrders.find(x => x.id === id) || {}).token || '';
 
 /* ════════════════ ÉCRAN DE PAIEMENT ════════════════ */
 let pollT = null;
-function stopPoll(){ if (pollT) { clearInterval(pollT); pollT = null; } }
+function stopPoll(){ if (pollT) { clearInterval(pollT); pollT = null; } stopLivePoll(); }
 async function fetchOrder(id){
   const h = {}; const t = tokenOf(id); if (t) h['X-Order-Token'] = t;
   const j = await api('/api/orders/' + encodeURIComponent(id), {headers:h, timeout:20000});
@@ -1466,7 +1466,43 @@ function paintTrack(){
   drawTrackMap(o);
   if (live) {
     fetchOrder(o.id).then(n => { if (n && route.name === 'track' && JSON.stringify(strip(n)) !== JSON.stringify(o)) paintTrack(); }).catch(() => {});
+    startLivePoll(o.id);
   }
+}
+
+/* ── suivi en direct : position du livreur rafraîchie toutes les 6 s ── */
+let liveT = null, liveMark = null, liveRouteLine = null;
+function stopLivePoll(){ if (liveT) { clearInterval(liveT); liveT = null; } liveMark = null; liveRouteLine = null; }
+function startLivePoll(id){
+  stopLivePoll();
+  let last = JSON.stringify((ordersCache[id] || {}).driver_pos || null);
+  liveT = setInterval(async () => {
+    if (route.name !== 'track' || trackId !== id) { stopLivePoll(); return; }
+    if (document.visibilityState !== 'visible') return;
+    try {
+      const o = await fetchOrder(id);
+      if (!o || route.name !== 'track') return;
+      const dp = driverPos(o);
+      const dest = mapPoint(o);
+      if (dp && trackMap) {
+        if (!liveMark) {
+          liveMark = L.circleMarker([dp.lat, dp.lng], {radius:10, color:'#fff', weight:3, fillColor:'#2E9E5B', fillOpacity:1})
+            .addTo(trackMap).bindTooltip('Livreur');
+          const lg = document.querySelector('.maplegend');
+          if (lg && !lg.querySelector('.d3')) lg.insertAdjacentHTML('beforeend', '<span><i class="d3"></i>Livreur en direct</span>');
+        } else {
+          liveMark.setLatLng([dp.lat, dp.lng]);
+        }
+        if (dest) {
+          if (liveRouteLine) trackMap.removeLayer(liveRouteLine);
+          liveRouteLine = L.polyline([[dp.lat, dp.lng], [dest.lat, dest.lng]], {color:'#2E9E5B', weight:3, dashArray:'4 7'}).addTo(trackMap);
+        }
+      }
+      const now = JSON.stringify(o.driver_pos || null);
+      if (now !== last) { last = now; if (window.NATIVE !== undefined) {} }
+      if ((o.status !== (ordersCache[id] || {}).status)) paintTrack();
+    } catch(e) {}
+  }, 6000);
 }
 function timelineHTML(o){
   if (o.status === 'cancelled') return `<li class="cur"><i></i><div><b>Commande annulée</b><span>${esc(o.payment_refusal_reason || 'Contactez la boutique pour en savoir plus')}</span></div></li>`;
@@ -1550,6 +1586,7 @@ window.appResume = function(){
   else if (route.name === 'order') fetchOrder(route.id).then(() => openOrder(route.id, true)).catch(() => {});
   else if (route.name === 'orders') paintOrders(true);
   else if (route.name === 'track') paintTrack();
+  else if (route.name === 'track') {}
 };
 window.appDeepLink = function(url){
   const m = String(url || '').match(/order\/([A-Za-z0-9-]+)/);
