@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611172045">
+<link rel="manifest" href="manifest.json?v=202611172049">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1729,7 +1729,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
     d.id = 'instSheet';
     d.innerHTML = '<div class="inst-bg"></div><div class="inst-card">' +
       '<button class="inst-x" aria-label="Fermer">✕</button>' +
-      '<img class="inst-logo" src="assets/img/logo.png" alt="">' +
+      '<div class="inst-plate"><img class="inst-logo" src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div>' +
       '<h3>Installer l’application</h3>' +
       (iOS
         ? '<p>Installez l’icône Darou Rahmane Chicken sur votre écran d’accueil, en plein écran comme une vraie app.</p>' +
@@ -1752,8 +1752,9 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
     '.inst-bg{position:absolute;inset:0;background:rgba(20,16,12,.42)}' +
     '.inst-card{position:relative;width:100%;max-width:520px;background:#fff;border-radius:28px 28px 0 0;padding:26px 22px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px rgba(0,0,0,.25);animation:instUp .35s cubic-bezier(.16,1,.3,1)}' +
     '@keyframes instUp{from{transform:translateY(30%);opacity:.6}}' +
-    '.inst-x{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;background:#F4F0EA;font-size:14px;line-height:1}' +
-    '.inst-logo{height:40px;width:auto;margin-bottom:10px}' +
+    '.inst-x{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;background:#F4F0EA;color:#24211F;font-size:15px;font-weight:700;line-height:1;display:grid;place-items:center}' +
+    '.inst-plate{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;margin-bottom:14px;border-radius:18px;background:#F6EFE7;box-shadow:0 8px 20px -14px rgba(36,33,31,.6)}' +
+    '.inst-logo{display:block;height:52px;width:auto}' +
     '.inst-card h3{margin:0 0 8px;font-size:21px;letter-spacing:-.02em}' +
     '.inst-card p{margin:0 0 14px;color:#6E665F;font-size:15px;line-height:1.45}' +
     '.inst-steps{margin:0 0 18px;padding-left:18px;color:#4A4541;font-size:15px;line-height:1.55}' +
@@ -1761,7 +1762,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
     '.inst-ic{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;background:#F4F0EA;font-size:12px}' +
     '.inst-one{width:100%;margin:2px 0 6px;text-decoration:none}.inst-or{font-size:13.5px!important;margin:12px 0 6px!important}.inst-ok2{display:block;margin:4px auto 0;font-size:15px;font-weight:600;color:#24211F;background:none}' +
     '.inst-ok{width:100%}.inst-no{display:block;margin:12px auto 0;font-size:13px;color:#8C847C}' +
-    'html[data-theme="dark"] .inst-card{background:#24211F;color:#F6EDE3}html[data-theme="dark"] .inst-card p,html[data-theme="dark"] .inst-steps{color:#CFC6BC}html[data-theme="dark"] .inst-steps b{color:#fff}html[data-theme="dark"] .inst-ok2{color:#F6EDE3}';
+    'html[data-theme="dark"] .inst-card{background:#24211F;color:#F6EDE3}html[data-theme="dark"] .inst-card p,html[data-theme="dark"] .inst-steps{color:#CFC6BC}html[data-theme="dark"] .inst-steps b{color:#fff}html[data-theme="dark"] .inst-ok2{color:#F6EDE3}html[data-theme="dark"] .inst-ok:not(.inst-ok2){background:#E2672A;color:#fff}';
   document.head.appendChild(css);
   if (!standalone) setTimeout(sheet, 2600);
   window.showInstall = sheet;
