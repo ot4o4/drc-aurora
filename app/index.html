@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611170807">
+<link rel="manifest" href="manifest.json?v=202611170813">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -29,6 +29,7 @@
   --r-card:28px; --shadow:0 10px 30px -18px rgba(60,40,20,.28);
   --stage1:#F7F4EF; --stage2:#F1EADF; --plate:#2B2724; --toast-bg:#24211F; --toast-ink:#fff;
   --green-soft:#E3F2E8; --green-ink:#25794A;
+  --btn:#24211F; --btn-ink:#fff; --btn-line:transparent; --logo-plate:transparent;
   --st:env(safe-area-inset-top,0px); --sb:env(safe-area-inset-bottom,0px);
 }
 html[data-theme="dark"]{
@@ -36,6 +37,7 @@ html[data-theme="dark"]{
   --acc:#FF9A5E; --acc2:#FF8A4C; --acc-soft:#3B2417; --acc-ink:#FFB588; --seg:#2B2521; --nav:#0C0A09;
   --stage1:#1A1715; --stage2:#131110; --plate:#0D0B0A; --toast-bg:#F6EFE7; --toast-ink:#17140F;
   --green-soft:#1E3527; --green-ink:#7AD3A2;
+  --btn:#2C2723; --btn-ink:#F6EFE7; --btn-line:rgba(255,255,255,.14); --logo-plate:#F6EFE7;
   --shadow:0 12px 30px -20px rgba(0,0,0,.85);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -85,10 +87,10 @@ svg{display:block}
 .sec h2{font-size:21px;font-weight:500;margin:0;letter-spacing:-.02em}
 .sec .cnt{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--acc);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
 .sec .more{margin-left:auto;font-size:14px;color:var(--muted)}
-.pill-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:58px;border-radius:999px;background:var(--ink);color:#fff;font-size:16px;font-weight:600;transition:transform .15s,opacity .2s}
+.pill-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:58px;border-radius:999px;background:var(--btn);color:var(--btn-ink);box-shadow:inset 0 0 0 1px var(--btn-line);font-size:16px;font-weight:600;transition:transform .15s,opacity .2s}
 .pill-btn:active{transform:scale(.98)}
 .pill-btn[disabled]{opacity:.45}
-.pill-btn.acc{background:#E2672A}
+.pill-btn.acc{background:#E2672A;color:#fff;box-shadow:none}
 .pill-btn.light{background:var(--seg);color:var(--ink)}
 .pill-btn svg{width:22px;height:22px;fill:currentColor}
 .muted{color:var(--muted)}
@@ -103,7 +105,8 @@ svg{display:block}
 .search input{flex:1;min-width:0;border:0;background:none;font-size:16px}
 .search input::placeholder{color:var(--muted)}
 .brand{display:flex;align-items:center;justify-content:space-between;margin:0 2px 12px}
-.brand img{height:40px;width:auto}
+.brand img{height:40px;width:auto;background:var(--logo-plate);border-radius:9px;padding:0}
+html[data-theme="dark"] .brand img{padding:4px 6px;height:32px}
 .brand .open{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:999px;background:var(--card);font-size:13px;font-weight:600;box-shadow:var(--shadow)}
 .brand .open i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
 .brand .open.off i{background:var(--bad)}
@@ -366,7 +369,8 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .dots{display:flex;justify-content:center;gap:6px;margin-bottom:22px}
 .dots i{width:6px;height:6px;border-radius:50%;background:#D5CEC4;transition:all .3s}
 .dots i.on{background:var(--ink)}
-.onb-logo{height:44px;width:auto;margin:0 auto 12px}
+.onb-logo{height:44px;width:auto;margin:0 auto 12px;background:var(--logo-plate);border-radius:10px}
+html[data-theme="dark"] .onb-logo{padding:5px 7px;height:36px}
 .skip{position:absolute;top:calc(var(--st) + 22px);right:16px;z-index:5;font-size:14px;font-weight:600;color:var(--ink);background:var(--card);padding:8px 14px;border-radius:999px}
 
 /* toast & feuille */
@@ -374,7 +378,8 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .toast.on{transform:translate(-50%,0);opacity:1;visibility:visible}
 .toast svg{width:18px;height:18px;flex:0 0 18px;stroke:var(--acc);stroke-width:3;fill:none}
 .boot{position:fixed;inset:0;z-index:300;background:var(--bg);display:grid;place-items:center;transition:opacity .4s}
-.boot img{width:200px;height:auto}
+.boot img{width:200px;height:auto;background:var(--logo-plate);border-radius:14px}
+html[data-theme="dark"] .boot img{width:180px;padding:8px 10px}
 .boot.out{opacity:0;pointer-events:none}
 .spin{width:22px;height:22px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
@@ -582,11 +587,12 @@ function applyTheme(){
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', t === 'dark' ? '#131110' : '#F4F0EA');
   try { if (NATIVE && NATIVE.setBars) NATIVE.setBars(t === 'dark' ? '#1A1715' : '#F7F4EF', t === 'dark' ? '#0C0A09' : '#2A2726'); } catch(e){}
-  const seg = $('#themeSeg');
+  const seg = document.getElementById('themeSeg');
   if (seg) seg.querySelectorAll('[data-th]').forEach(b => b.classList.toggle('on', b.dataset.th === THEME));
 }
 function setTheme(t){ THEME = t; localStorage.setItem('drc_theme', t); applyTheme(); vib(8); }
 if (mqDark && mqDark.addEventListener) mqDark.addEventListener('change', () => { if (THEME === 'auto') applyTheme(); });
+applyTheme();
 
 /* ── utilitaires ── */
 const $ = s => document.querySelector(s);
@@ -1322,7 +1328,7 @@ function paintAccount(){
     b.querySelectorAll('[data-am]').forEach(x => x.onclick = () => { authMode = x.dataset.am; paintAccount(); });
     $('#aGo').onclick = doAuth;
   }
-  const seg = $('#themeSeg');
+  const seg = document.getElementById('themeSeg');
   if (seg) seg.querySelectorAll('[data-th]').forEach(b => b.onclick = () => setTheme(b.dataset.th));
   applyTheme();
   $('#mWa').onclick = () => openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour Darou Rahmane Chicken 🐔')}`);
