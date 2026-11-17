@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611170844">
+<link rel="manifest" href="manifest.json?v=202611170847">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -246,12 +246,11 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .pm{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:22px;background:var(--card);box-shadow:var(--shadow);border:2px solid transparent;text-align:left;transition:border-color .2s}
 .pm.on{border-color:var(--acc)}
 .pm .lg{width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px;overflow:hidden}
-.pm .lg.w{background:#1DC8FF} .pm .lg.o{background:#FF7900} .pm .lg.c{background:#24211F}
-.pm .lg.o .om{display:flex;flex-direction:column;align-items:center;line-height:1;color:#fff}
-.pm .lg.o .om b{font-size:10.5px;font-weight:800;letter-spacing:-.02em}
-.pm .lg.o .om span{font-size:9px;font-weight:600;letter-spacing:.02em;margin-top:1px;opacity:.95}
-html[data-theme="dark"] .pm .lg.w{background:#1DC8FF}
-html[data-theme="dark"] .pm .lg.o{background:#FF7900}
+.pm .lg.w, .pm .lg.o{background:#0F0D0C;padding:5px}
+.pm .lg img{width:100%;height:100%;object-fit:contain;display:block;border-radius:10px}
+.pm .lg.c{background:#24211F;padding:0}
+.pm .lg.w{padding:0}
+.pm .lg.w img{border-radius:14px}
 .pm .lg svg{width:24px;height:24px;fill:#fff}
 .pm b{display:block;font-size:16px;font-weight:600}
 .pm span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
@@ -969,8 +968,8 @@ function paintCheckout(){
   const slots = (SET.slots && SET.slots.length) ? SET.slots : ['Express 2 h'];
   if (!slots.includes(buyer.slot)) buyer.slot = slots[0];
   const pms0 = [
-    ['wave', 'Wave', 'Paiement dans l’application Wave', '<div class="lg w">' + ICON.wave + '</div>'],
-    ['orange_money', 'Orange Money', 'Transfert ou #144#', '<div class="lg o"><span class="om"><b>orange</b><span>money</span></span></div>'],
+    ['wave', 'Wave', 'Paiement dans l’application Wave', '<div class="lg w"><img src="assets/img/pay-wave.png" alt="Wave"></div>'],
+    ['orange_money', 'Orange Money', 'Transfert ou #144#', '<div class="lg o"><img src="assets/img/pay-om.png" alt="Orange Money"></div>'],
     ['cod', 'Espèces à la livraison', 'Vous payez le livreur', '<div class="lg c">' + ICON.cash + '</div>']
   ];
   const pms = pms0.filter(x => !SET.pay_methods || SET.pay_methods[x[0]] !== false);
