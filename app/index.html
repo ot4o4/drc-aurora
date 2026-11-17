@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611170900">
+<link rel="manifest" href="manifest.json?v=202611170934">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -158,7 +158,7 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .pfoot .price small{font-size:15px;color:var(--muted);font-weight:500;margin-left:2px}
 .pcard .add{position:absolute;right:16px;bottom:74px;width:46px;height:46px;border-radius:16px;background:var(--acc);display:grid;place-items:center;box-shadow:0 10px 20px -8px rgba(255,138,76,.8)}
 .pcard .add svg{width:22px;height:22px;stroke:#fff;stroke-width:2.4;fill:none}
-.pcard.is-soon .add{background:var(--ink)}
+.pcard.is-soon .add{background:var(--btn)}
 .pcard.is-soon .add svg{stroke:none;fill:#fff;width:20px;height:20px}
 
 /* liste façon « repas » */
@@ -237,7 +237,7 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .field.err label{color:var(--bad)}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{height:40px;padding:0 16px;border-radius:999px;background:var(--bg);font-size:14px;font-weight:500;color:var(--ink2)}
-.chip.on{background:var(--ink);color:#fff}
+.chip.on{background:var(--btn);color:var(--btn-ink)}
 .geo{display:flex;align-items:center;gap:10px;margin-top:4px}
 .geo button{height:40px;padding:0 14px;white-space:nowrap;flex:0 0 auto;border-radius:999px;background:var(--acc-soft);color:var(--acc-ink);font-weight:600;font-size:14px;display:flex;align-items:center;gap:8px}
 .geo button svg{width:16px;height:16px;fill:currentColor}
@@ -330,7 +330,7 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .recipe p b{color:var(--ink)}
 .recipe .steps{display:flex;gap:7px;list-style:none;padding:0;margin:12px 0 14px}
 .recipe .steps li{font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:999px;background:var(--bg);color:var(--ink2)}
-.recipe .btn-ghost{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;background:var(--ink);color:#fff;font-size:14px;font-weight:600}
+.recipe .btn-ghost{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:999px;background:var(--btn);color:var(--btn-ink);font-size:14px;font-weight:600}
 .recipe .btn-ghost span{color:var(--acc)}
 
 /* suivi */
@@ -356,7 +356,8 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .chat-log{display:flex;flex-direction:column;gap:8px;max-height:230px;overflow-y:auto;margin-bottom:10px}
 .chat-empty{color:var(--muted);font-size:13px;text-align:center;padding:14px 0}
 .cm{max-width:84%;padding:9px 12px;border-radius:14px;background:var(--bg);font-size:14px;line-height:1.4;overflow-wrap:anywhere}
-.cm.me{align-self:flex-end;background:var(--ink);color:#fff}
+.cm.me{align-self:flex-end;background:var(--btn);color:var(--btn-ink)}
+html[data-theme="dark"] .cm.me{background:var(--acc-soft);color:var(--ink)}
 .cm small{display:block;font-size:10.5px;opacity:.65;margin-bottom:2px}
 .chat-row{display:flex;gap:8px}
 .chat-row input{flex:1;height:46px;border-radius:14px;border:0;background:var(--bg);padding:0 14px;font-size:15px}
@@ -1439,14 +1440,14 @@ function paintTrack(){
     <div class="gauge">${gaugeHTML(progress(o), esc(o.id), fcfa(o.total), statusText(o))}</div>
     <div class="card mapcard"><div id="trackMap"></div>
       <div class="maplegend"><span><i class="d1"></i>Votre adresse</span><span><i class="d2"></i>Dépôt DRC</span>${pos ? '<span><i class="d3"></i>Livreur en direct</span>' : ''}</div>
-      <div class="liveinfo ${pos ? '' : 'wait'}" id="liveInfo">${liveInfoHTML(o)}</div></div>
+      <div class="liveinfo ${pos ? '' : 'wait'}" id="liveInfo"${liveInfoHTML(o) ? '' : ' style="display:none"'}>${liveInfoHTML(o)}</div></div>
     ${drv ? `<div class="card drv"><div class="drv-top"><div class="drv-av">${esc((drv.name || 'L').charAt(0).toUpperCase())}</div>
         <div style="flex:1;min-width:0"><b>${esc(drv.name || 'Livreur DRC')}</b><span>${live ? (o.status === 'shipping' ? 'En route vers vous' : 'Votre livreur') : 'Livraison terminée'}${drv.phone ? ' · ' + esc(drv.phone) : ''}</span></div></div>
       <div class="drv-acts">
         <button data-act="call">${ICON.phone}Appeler</button>
         <button data-act="wa" class="wa">${ICON.wa}WhatsApp</button>
         <button data-act="msg">${ICON.chat || ICON.bell}Message</button></div></div>`
-    : `<div class="card drv"><div class="drv-top"><div class="drv-av" style="background:var(--seg);color:var(--ink)">…</div>
+    : `<div class="card drv"><div class="drv-top"><div class="drv-av" style="background:var(--seg);color:var(--ink)"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="currentColor"><path d="M19 7c0-1.1-.9-2-2-2h-3v2h3v2.65L13.52 14H10V9H6c-2.21 0-4 1.79-4 4v3h2c0 1.66 1.34 3 3 3s3-1.34 3-3h4.48L19 10.35V7zM7 17c-.55 0-1-.45-1-1h2c0 .55-.45 1-1 1z"/><path d="M5 6h5v2H5zM19 13c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg></div>
         <div style="flex:1"><b>Livreur en attente d’attribution</b><span>${live ? 'La boutique prépare votre commande' : 'Commande terminée'}</span></div></div></div>`}
     <div class="sec"><h2>Étapes</h2><span class="cnt">${Math.round(progress(o) * 100)} %</span></div>
     <ul class="card tl">${timelineHTML(o)}</ul>
@@ -1483,6 +1484,7 @@ function km(a, b){
 }
 function liveInfoHTML(o){
   const dp = driverPos(o), dest = mapPoint(o);
+  if (!o.driver && !dp) return '';
   if (!dp) return '<span class="dot"></span><span>En attente de la position du livreur…</span>';
   if (!dest) return '<span class="dot"></span><span>Le livreur est en route vers vous</span>';
   const d = km(dp, dest);
@@ -1494,7 +1496,9 @@ function liveInfoHTML(o){
 function paintLiveInfo(o){
   const box = document.getElementById('liveInfo');
   if (!box) return;
-  box.innerHTML = liveInfoHTML(o);
+  const h = liveInfoHTML(o);
+  box.innerHTML = h;
+  box.style.display = h ? '' : 'none';
   box.classList.toggle('wait', !driverPos(o));
 }
 
