@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611172037">
+<link rel="manifest" href="manifest.json?v=202611172045">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -159,6 +159,22 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .pcard .add{position:absolute;right:16px;bottom:74px;width:46px;height:46px;border-radius:16px;background:var(--acc);display:grid;place-items:center;box-shadow:0 10px 20px -8px rgba(255,138,76,.8)}
 .pcard .add svg{width:22px;height:22px;stroke:#fff;stroke-width:2.4;fill:none}
 .pcard.is-soon .add{background:var(--btn)}
+/* ── confirmation d'ajout au panier ── */
+.pcard .add,.add{transition:transform .2s cubic-bezier(.16,1,.3,1),background-color .25s ease}
+.pcard .add:active{transform:scale(.86)}
+.add.done{background:#24211F!important;animation:addPop .55s cubic-bezier(.16,1,.3,1)}
+.add.done::after{content:"";position:absolute;inset:0;border-radius:inherit;animation:addRing .6s ease-out forwards;pointer-events:none}
+.add .ck{width:24px;height:24px;stroke:#fff;stroke-width:2.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.add .ck path{stroke-dasharray:24;stroke-dashoffset:24;animation:ckDraw .38s .08s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes addPop{0%{transform:scale(.82)}55%{transform:scale(1.14)}100%{transform:scale(1)}}
+@keyframes addRing{0%{box-shadow:0 0 0 0 rgba(255,138,76,.7)}100%{box-shadow:0 0 0 18px rgba(255,138,76,0)}}
+@keyframes ckDraw{to{stroke-dashoffset:0}}
+.fly{position:fixed;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--acc);box-shadow:0 6px 14px -4px rgba(226,103,42,.8);z-index:600;pointer-events:none}
+.nav .scan.bump{animation:cartBump .5s cubic-bezier(.16,1,.3,1)}
+@keyframes cartBump{0%{transform:scale(1)}35%{transform:scale(1.16) rotate(-6deg)}70%{transform:scale(.96) rotate(3deg)}100%{transform:scale(1)}}
+#badge.pop{animation:badgePop .45s cubic-bezier(.16,1,.3,1)}
+@keyframes badgePop{0%{transform:scale(.4)}60%{transform:scale(1.3)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.add.done,.add.done::after,.nav .scan.bump,#badge.pop{animation:none}.add .ck path{animation:none;stroke-dashoffset:0}}
 .pcard.is-soon .add svg{stroke:none;fill:#fff;width:20px;height:20px}
 
 /* liste façon « repas » */
@@ -842,7 +858,7 @@ function renderHome(){
 }
 function bindProductClicks(root){
   root.querySelectorAll('[data-fav]').forEach(b => b.onclick = e => { e.stopPropagation(); toggleFav(+b.dataset.fav); });
-  root.querySelectorAll('[data-add]').forEach(b => b.onclick = e => { e.stopPropagation(); addToCart(+b.dataset.add); });
+  root.querySelectorAll('[data-add]').forEach(b => b.onclick = e => { e.stopPropagation(); addToCart(+b.dataset.add, 1, b); });
   root.querySelectorAll('.pcard[data-id], .mcard[data-id]').forEach(c => c.onclick = () => openProduct(+c.dataset.id));
 }
 $('#q').addEventListener('input', e => { query = e.target.value; renderHome(); });
@@ -867,15 +883,44 @@ const cartCount = () => cart.reduce((s, l) => s + l.qty, 0);
 const subtotal = () => cart.reduce((s, l) => { const p = prod(l.id); return s + l.qty * (p ? p.price : l.price); }, 0);
 const fee = () => subtotal() === 0 ? 0 : (subtotal() >= FREE_FROM ? 0 : FEE);
 
-function addToCart(id, qty = 1){
+function addToCart(id, qty = 1, btn = null){
   const p = prod(id); if (!p) return;
   if (p.soon) { notifySoon(p); return; }
-  vib(14);
+  vib(btn ? 20 : 14);
   const l = cart.find(x => x.id === id);
   if (l) l.qty = Math.min(50, l.qty + qty); else cart.push({id, qty, price:p.price});
-  saveCart(); paintBadge();
+  saveCart();
   toast(`${p.name} ajouté au panier`);
+  if (btn) { addConfirm(btn); setTimeout(() => { if (route.name === 'home') renderHome(); }, 1300); return; }
+  paintBadge();
   if (route.name === 'home') renderHome();
+}
+/* animation « confirmé » : + → ✓, onde braise, pastille qui vole jusqu'au panier */
+function addConfirm(btn){
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const old = btn.innerHTML;
+  btn.classList.remove('done'); void btn.offsetWidth;
+  btn.classList.add('done');
+  btn.innerHTML = '<svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2 8.8-9.2"/></svg>';
+  btn.setAttribute('aria-label', 'Ajouté au panier');
+  clearTimeout(btn._t);
+  btn._t = setTimeout(() => { btn.classList.remove('done'); btn.innerHTML = old; btn.setAttribute('aria-label', 'Ajouter au panier'); }, 1250);
+  const cartBtn = document.querySelector('.nav .scan');
+  const landed = () => {
+    paintBadge();
+    const bd = document.getElementById('badge');
+    if (bd) { bd.classList.remove('pop'); void bd.offsetWidth; bd.classList.add('pop'); }
+    if (cartBtn) { cartBtn.classList.remove('bump'); void cartBtn.offsetWidth; cartBtn.classList.add('bump'); }
+  };
+  if (still || !cartBtn || !btn.animate) { landed(); return; }
+  const a = btn.getBoundingClientRect(), c = cartBtn.getBoundingClientRect();
+  const x0 = a.left + a.width / 2, y0 = a.top + a.height / 2, x1 = c.left + c.width / 2, y1 = c.top + c.height / 2;
+  const mx = (x0 + x1) / 2, my = Math.min(y0, y1) - 90;
+  const dot = document.createElement('div'); dot.className = 'fly'; document.body.appendChild(dot);
+  const pt = t => { const u = 1 - t; return [u*u*x0 + 2*u*t*mx + t*t*x1, u*u*y0 + 2*u*t*my + t*t*y1]; };
+  const frames = [];
+  for (let i = 0; i <= 12; i++) { const t = i / 12, [x, y] = pt(t); frames.push({transform:`translate(${x}px,${y}px) scale(${1 - t * .45})`, opacity: t > .9 ? .6 : 1}); }
+  dot.animate(frames, {duration:620, delay:180, easing:'cubic-bezier(.45,0,.25,1)', fill:'both'}).onfinish = () => { dot.remove(); landed(); };
 }
 function setQty(id, d){
   const l = cart.find(x => x.id === id); if (!l) return;
