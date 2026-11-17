@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611170841">
+<link rel="manifest" href="manifest.json?v=202611170844">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -245,8 +245,13 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .paym{display:flex;flex-direction:column;gap:9px;margin-bottom:10px}
 .pm{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:22px;background:var(--card);box-shadow:var(--shadow);border:2px solid transparent;text-align:left;transition:border-color .2s}
 .pm.on{border-color:var(--acc)}
-.pm .lg{width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px}
-.pm .lg.w{background:var(--wave)} .pm .lg.o{background:var(--om)} .pm .lg.c{background:var(--ink)}
+.pm .lg{width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:15px;overflow:hidden}
+.pm .lg.w{background:#1DC8FF} .pm .lg.o{background:#FF7900} .pm .lg.c{background:#24211F}
+.pm .lg.o .om{display:flex;flex-direction:column;align-items:center;line-height:1;color:#fff}
+.pm .lg.o .om b{font-size:10.5px;font-weight:800;letter-spacing:-.02em}
+.pm .lg.o .om span{font-size:9px;font-weight:600;letter-spacing:.02em;margin-top:1px;opacity:.95}
+html[data-theme="dark"] .pm .lg.w{background:#1DC8FF}
+html[data-theme="dark"] .pm .lg.o{background:#FF7900}
 .pm .lg svg{width:24px;height:24px;fill:#fff}
 .pm b{display:block;font-size:16px;font-weight:600}
 .pm span{display:block;font-size:13px;color:var(--muted);margin-top:2px}
@@ -636,7 +641,7 @@ const ICON = {
   out:'<svg viewBox="0 0 24 24"><path d="M10 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-8v-2h8V5h-8Zm-.3 4.3L11 8.7 8.7 11H16v2H8.7l2.3 2.3-1.4 1.4L4.9 12Z"/></svg>',
   chev:'<svg class="chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   clock:'<svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg>',
-  wave:'<svg viewBox="0 0 24 24"><path d="M2 14c2.2 0 2.8-4 5-4s2.8 4 5 4 2.8-4 5-4 2.8 4 5 4" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>',
+  wave:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 15.2c2 0 2.6-4.6 5-4.6s3 4.6 5.5 4.6 3-4.6 5.5-4.6 3 4.6 5 4.6" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/><path d="M1.5 10c2 0 2.6-3.4 5-3.4s3 3.4 5.5 3.4 3-3.4 5.5-3.4 3 3.4 5 3.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".55"/></svg>',
   chat:'<svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V6a2 2 0 0 1 2-2Z"/></svg>',
   bag:'<svg viewBox="0 0 24 24"><path d="M7 4a1 1 0 0 1 1 1v1h8V5a1 1 0 1 1 2 0v1h1.3a1.7 1.7 0 0 1 1.7 1.9l-1.1 10.4a3 3 0 0 1-3 2.7H7.1a3 3 0 0 1-3-2.7L3 7.9A1.7 1.7 0 0 1 4.7 6H6V5a1 1 0 0 1 1-1Z"/></svg>'
 };
@@ -965,7 +970,7 @@ function paintCheckout(){
   if (!slots.includes(buyer.slot)) buyer.slot = slots[0];
   const pms0 = [
     ['wave', 'Wave', 'Paiement dans l’application Wave', '<div class="lg w">' + ICON.wave + '</div>'],
-    ['orange_money', 'Orange Money', 'Transfert ou #144#', '<div class="lg o">OM</div>'],
+    ['orange_money', 'Orange Money', 'Transfert ou #144#', '<div class="lg o"><span class="om"><b>orange</b><span>money</span></span></div>'],
     ['cod', 'Espèces à la livraison', 'Vous payez le livreur', '<div class="lg c">' + ICON.cash + '</div>']
   ];
   const pms = pms0.filter(x => !SET.pay_methods || SET.pay_methods[x[0]] !== false);
