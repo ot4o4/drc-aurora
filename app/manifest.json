@@ -9,8 +9,8 @@
  "id": "/app/",
  "display": "standalone",
  "orientation": "portrait",
- "background_color": "#F4F0EA",
- "theme_color": "#F4F0EA",
+ "background_color": "#F4F4F3",
+ "theme_color": "#F4F4F3",
  "categories": [
   "food",
   "shopping"
