@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611172018">
+<link rel="manifest" href="manifest.json?v=202611172027">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -190,7 +190,7 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .banner img{width:92px;height:92px;flex:0 0 92px;object-fit:contain;margin:-8px -6px -8px 0}
 
 /* ── jauge (tableau de bord) ── */
-.gauge{position:relative;width:100%;max-width:268px;margin:0 auto}
+.gauge{position:relative;width:100%;max-width:268px;margin:-8px auto 0}
 .gauge svg{width:100%;height:auto;overflow:visible}
 .gauge rect{transition:fill .5s ease}
 .gcenter{position:absolute;left:21%;right:21%;top:33%;text-align:center}
@@ -753,7 +753,7 @@ function gaugeSVG(ratio, n = 11){
     const rot = 90 - (start - i * step);
     s += `<rect x="${(x - w/2).toFixed(1)}" y="${(y - h/2).toFixed(1)}" width="${w}" height="${h}" rx="17" fill="${i < on ? 'var(--acc)' : 'var(--seg)'}" transform="rotate(${rot.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})" style="transition-delay:${i*35}ms"/>`;
   }
-  return `<svg viewBox="0 0 400 262" aria-hidden="true">${s}</svg>`;
+  return `<svg viewBox="0 10 400 262" aria-hidden="true">${s}</svg>`;
 }
 function gaugeHTML(ratio, d, big, goal, icon = ICON.flame){
   return gaugeSVG(ratio) + `<div class="gcenter"><div class="ic">${icon.replace('<svg','<svg class="ic"')}</div><div class="d">${d}</div><div class="big">${big}</div><div class="goal">${goal}</div></div>`;
