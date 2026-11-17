@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611170746">
+<link rel="manifest" href="manifest.json?v=202611170748">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -74,7 +74,7 @@ svg{display:block}
 .app.push{background:var(--bg)}
 
 /* ── éléments communs ── */
-.topbar{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:26px;min-width:0}
 .topbar h1{flex:1;text-align:center;font-size:16px;font-weight:600;margin:0;letter-spacing:-.01em}
 .ibtn{width:56px;height:56px;flex:0 0 56px;border-radius:19px;background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow);position:relative}
 .ibtn svg{width:22px;height:22px;fill:var(--ink)}
@@ -98,7 +98,7 @@ svg{display:block}
 .empty b{display:block;color:var(--ink);font-size:18px;font-weight:600;margin-bottom:4px}
 
 /* ── accueil ── */
-.search{flex:1;height:56px;border-radius:20px;background:var(--card);display:flex;align-items:center;gap:12px;padding:0 18px;box-shadow:var(--shadow)}
+.search{flex:1 1 0;min-width:0;height:56px;border-radius:20px;background:var(--card);display:flex;align-items:center;gap:12px;padding:0 18px;box-shadow:var(--shadow)}
 .search svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2;flex:0 0 22px}
 .search input{flex:1;min-width:0;border:0;background:none;font-size:16px}
 .search input::placeholder{color:var(--muted)}
