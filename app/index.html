@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611170712">
+<link rel="manifest" href="manifest.json?v=202611170729">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -41,7 +41,7 @@ html[data-theme="dark"]{
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :where(a,button,[role=button],input,select,textarea):focus{outline:none}
 html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none;background:var(--nav)}
-body{font-family:PJS,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+body{font-family:PJS,system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;letter-spacing:.008em}
 ::selection{background:var(--acc-soft);color:var(--ink)}
 input,textarea{caret-color:var(--acc2)}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
@@ -82,7 +82,7 @@ svg{display:block}
 .ibtn .dot.on{display:block}
 .card{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow)}
 .sec{display:flex;align-items:center;gap:8px;margin:40px 2px 20px}
-.sec h2{font-size:21px;font-weight:500;margin:0;letter-spacing:-.02em}
+.sec h2{font-size:21px;font-weight:500;margin:0;letter-spacing:.004em}
 .sec .cnt{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--acc);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
 .sec .more{margin-left:auto;font-size:14px;color:var(--muted)}
 .pill-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;height:58px;border-radius:999px;background:var(--ink);color:#fff;font-size:16px;font-weight:600;transition:transform .15s,opacity .2s}
@@ -126,7 +126,7 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .rail{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px;padding:8px 18px 34px;scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
 .pcard{flex:0 0 82%;max-width:330px;scroll-snap-align:center;padding:30px 24px 28px;position:relative;overflow:hidden}
-.pcard h3{margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;padding-right:36px;line-height:1.2}
+.pcard h3{margin:0;font-size:19px;font-weight:600;letter-spacing:.002em;padding-right:36px;line-height:1.2}
 .pcard .fav{position:absolute;top:20px;right:18px;width:36px;height:36px;display:grid;place-items:center}
 .pcard .fav svg,.fav svg{width:26px;height:26px;fill:none;stroke:var(--ink);stroke-width:1.8}
 .fav.on svg{fill:var(--ink)}
@@ -143,7 +143,7 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .bars i{width:11px;height:26px;border-radius:6px;background:var(--seg)}
 .bars i.on{background:var(--acc)}
 .pfoot .sep{width:1px;height:32px;background:var(--line);margin:0 4px}
-.pfoot .price{margin-left:auto;font-size:27px;font-weight:500;letter-spacing:-.03em;white-space:nowrap}
+.pfoot .price{margin-left:auto;font-size:27px;font-weight:500;letter-spacing:-.006em;white-space:nowrap}
 .pfoot .price small{font-size:15px;color:var(--muted);font-weight:500;margin-left:2px}
 .pcard .add{position:absolute;right:16px;bottom:74px;width:46px;height:46px;border-radius:16px;background:var(--acc);display:grid;place-items:center;box-shadow:0 10px 20px -8px rgba(255,138,76,.8)}
 .pcard .add svg{width:22px;height:22px;stroke:#fff;stroke-width:2.4;fill:none}
@@ -156,10 +156,10 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .mthumb{width:60px;height:60px;flex:0 0 60px;border-radius:50%;background:var(--plate);padding:3px}
 .mthumb img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .mname{flex:1;min-width:0;padding-top:6px}
-.mname b{display:block;font-size:17px;font-weight:500;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mname b{display:block;font-size:17px;font-weight:500;letter-spacing:.002em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mname span{display:block;font-size:14px;margin-top:3px;color:var(--ink2)}
 .mright{text-align:right;padding-top:4px}
-.mright b{display:block;font-size:26px;font-weight:500;letter-spacing:-.03em;white-space:nowrap}
+.mright b{display:block;font-size:26px;font-weight:500;letter-spacing:-.006em;white-space:nowrap}
 .mright span{display:block;font-size:13.5px;color:var(--acc-ink);margin-top:4px}
 .macros{display:flex;align-items:flex-end;gap:22px;margin-top:16px;padding-left:8px}
 .macros div{font-size:13.5px;color:var(--muted)}
@@ -173,9 +173,9 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .step b{min-width:22px;text-align:center;font-weight:600;font-size:15px}
 
 .banner{margin-top:16px;padding:22px 20px 22px 24px;border-radius:var(--r-card);background:var(--nav);color:#fff;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
-.banner b{display:block;font-size:18px;font-weight:600;letter-spacing:-.02em}
+.banner b{display:block;font-size:18px;font-weight:600;letter-spacing:.002em}
 .banner span{display:block;font-size:13.5px;color:rgba(255,255,255,.7);margin-top:4px;line-height:1.4}
-.banner .wo{color:var(--acc);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-top:8px}
+.banner .wo{color:var(--acc);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;margin-top:8px}
 .banner img{width:92px;height:92px;flex:0 0 92px;object-fit:contain;margin:-8px -6px -8px 0}
 
 /* ── jauge (tableau de bord) ── */
@@ -185,7 +185,7 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .gcenter{position:absolute;left:21%;right:21%;top:33%;text-align:center}
 .gcenter .ic{width:22px;height:22px;margin:0 auto 4px;fill:var(--acc)}
 .gcenter .d{font-size:14.5px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gcenter .big{font-size:clamp(28px,8.4vw,34px);font-weight:500;letter-spacing:-.03em;margin-top:4px;white-space:nowrap}
+.gcenter .big{font-size:clamp(28px,8.4vw,34px);font-weight:500;letter-spacing:-.006em;margin-top:4px;white-space:nowrap}
 .gcenter .goal{font-size:13.5px;line-height:1.3;color:var(--acc-ink);margin-top:5px}
 .plus{width:100%;height:50px;border-radius:18px;background:var(--seg);display:grid;place-items:center;margin:12px 0 14px;transition:transform .15s}
 .plus:active{transform:scale(.98)}
@@ -200,20 +200,20 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .back{width:52px;height:52px;flex:0 0 52px;border-radius:18px;background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow)}
 .back svg{width:22px;height:22px;stroke:var(--ink);stroke-width:2.2;fill:none}
 .hero-plate{width:min(300px,76vw);margin:6px auto 4px}
-.dname{font-size:30px;font-weight:600;letter-spacing:-.035em;line-height:1.08;margin:20px 0 8px}
+.dname{font-size:30px;font-weight:600;letter-spacing:-.008em;line-height:1.08;margin:20px 0 8px}
 .dunit{color:var(--muted);font-size:15px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
 .tag{font-size:12.5px;font-weight:600;padding:7px 12px;border-radius:999px;background:var(--acc-soft);color:var(--acc-ink)}
 .tag.g{background:var(--green-soft);color:var(--green-ink)}
 .note{padding:20px 22px;margin:18px 0}
 .note p{margin:0;font-size:15.5px;line-height:1.55;color:var(--ink2)}
-.note .wo{margin-top:10px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--acc-ink)}
+.note .wo{margin-top:10px;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:var(--acc-ink)}
 .buyrow{display:flex;align-items:center;gap:12px;margin-top:8px}
 .buyrow .step{background:var(--card);box-shadow:var(--shadow);padding:6px}
 .buyrow .step button{width:40px;height:40px;background:var(--bg)}
 .buyrow .pill-btn{flex:1}
 .dprice{display:flex;align-items:baseline;justify-content:space-between;margin:24px 2px 16px}
-.dprice b{font-size:34px;font-weight:500;letter-spacing:-.035em}
+.dprice b{font-size:34px;font-weight:500;letter-spacing:-.008em}
 .dprice span{color:var(--muted);font-size:14px}
 
 /* formulaires */
@@ -245,8 +245,8 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 
 /* paiement */
 .payhead{text-align:center;margin:4px 0 16px}
-.payhead .ref{font-size:13px;color:var(--muted);letter-spacing:.04em}
-.payhead .amt{font-size:42px;font-weight:600;letter-spacing:-.04em;margin:4px 0}
+.payhead .ref{font-size:13px;color:var(--muted);letter-spacing:.08em}
+.payhead .amt{font-size:42px;font-weight:600;letter-spacing:-.012em;margin:4px 0}
 .status-pill{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:999px;background:var(--acc-soft);color:var(--acc-ink);font-size:13.5px;font-weight:600}
 .status-pill i{width:8px;height:8px;border-radius:50%;background:currentColor;animation:blink 1.2s infinite}
 .status-pill.ok{background:var(--green-soft);color:var(--green-ink)}.status-pill.ok i{animation:none}
@@ -266,7 +266,7 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .success .ok{width:86px;height:86px;border-radius:50%;background:var(--acc);margin:6px auto 14px;display:grid;place-items:center;box-shadow:0 18px 34px -14px rgba(255,138,76,.9);animation:pop .5s cubic-bezier(.3,1.6,.5,1)}
 .success .ok svg{width:40px;height:40px;stroke:#fff;stroke-width:3;fill:none}
 @keyframes pop{from{transform:scale(.4);opacity:0}}
-.success h2{margin:0;font-size:26px;letter-spacing:-.03em}
+.success h2{margin:0;font-size:26px;letter-spacing:-.006em}
 .success p{color:var(--muted);margin:8px 10px 0;line-height:1.5}
 
 /* timeline commande */
@@ -310,7 +310,7 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .recipe .sound svg path:first-child{fill:var(--ink);stroke:none}
 .recipe .txt{padding:18px 20px 0}
 .recipe .kicker{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--acc-ink);margin:0 0 8px}
-.recipe h3{margin:0;font-size:23px;line-height:1.14;letter-spacing:-.03em;font-weight:600}
+.recipe h3{margin:0;font-size:23px;line-height:1.14;letter-spacing:-.008em;font-weight:600}
 .recipe p{color:var(--ink2);font-size:14.5px;line-height:1.5;margin:10px 0 0}
 .recipe p b{color:var(--ink)}
 .recipe .steps{display:flex;gap:7px;list-style:none;padding:0;margin:12px 0 14px}
@@ -355,7 +355,7 @@ html[data-theme="dark"] .banner.closed{background:#4A2119}
 .slide .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
 .slide .ph::after{content:'';position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(180deg,transparent,var(--bg) 92%)}
 .slide .txt{padding:0 26px;text-align:center;margin-top:-70px;position:relative;z-index:2}
-.slide h2{font-size:clamp(34px,10.5vw,46px);line-height:1.02;letter-spacing:-.045em;font-weight:600;margin:0}
+.slide h2{font-size:clamp(34px,10.5vw,46px);line-height:1.02;letter-spacing:-.018em;font-weight:600;margin:0}
 .slide p{font-size:16.5px;color:var(--muted);line-height:1.45;margin:14px auto 0;max-width:330px}
 .tagp{position:absolute;z-index:3;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center}
 .tagp b{background:var(--card);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:9px 15px;border-radius:999px;font-size:16px;font-weight:500;white-space:nowrap;box-shadow:0 6px 18px -8px rgba(0,0,0,.35);letter-spacing:-.02em}
@@ -1236,7 +1236,8 @@ function openOrder(id, refresh){
         k === 2 ? 'Préparation et conditionnement de votre commande' :
         k === 3 ? (o.driver ? 'Livreur : ' + esc(o.driver.name) : 'Un livreur vous appelle avant de passer') :
         (o.customer && o.customer.address ? esc(o.customer.address) : 'À votre porte')}</span></div></li>`).join('')}</ul>
-    ${o.driver && o.driver.phone ? `<button class="pill-btn light" id="oCall" style="margin-bottom:12px">${ICON.phone} Appeler le livreur</button>` : ''}
+    ${o.driver && o.driver.phone ? `<button class="pill-btn light" id="oCall" style="margin-bottom:10px">${ICON.phone} Appeler le livreur</button>` : ''}
+    ${!['delivered','cancelled'].includes(o.status) ? `<button class="pill-btn light" id="oChat" style="margin-bottom:12px">${ICON.chat} ${o.driver ? 'Écrire au livreur' : 'Écrire à l’équipe'}</button>` : ''}
     <div class="sec"><h2>Articles</h2><span class="cnt">${(o.items || []).length}</span></div>
     ${items}
     <div class="card totals"><div><span>Sous-total</span><span>${fcfa(o.subtotal)}</span></div>${o.discount ? `<div><span>Remise</span><span>−${fcfa(o.discount)}</span></div>` : ''}<div><span>Livraison</span><span>${o.delivery_fee ? fcfa(o.delivery_fee) : 'Offerte'}</span></div><div class="g"><span>Total</span><span>${fcfa(o.total)}</span></div></div>
@@ -1245,6 +1246,7 @@ function openOrder(id, refresh){
   $('#oWa').onclick = () => openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour, à propos de ma commande ' + o.id + '.')}`);
   if ($('#oPay')) $('#oPay').onclick = () => openPay(o.id);
   if ($('#oCall')) $('#oCall').onclick = () => dial(o.driver.phone);
+  if ($('#oChat')) $('#oChat').onclick = () => { stack.length = 0; route = {name:'track'}; go('track'); setTimeout(() => { const i = $('#chatInput'); if (i) { i.focus({preventScroll:true}); i.scrollIntoView({block:'center', behavior:'smooth'}); } }, 420); };
   $('#oAgain').onclick = () => { (o.items || []).forEach(i => { const p = prod(i.id); if (p && !p.soon) { const l = cart.find(x => x.id === p.id); l ? l.qty += i.qty : cart.push({id:p.id, qty:i.qty, price:p.price}); } }); saveCart(); paintBadge(); toast('Articles ajoutés au panier'); go('cart'); };
   stopPoll();
   if (!['delivered', 'cancelled'].includes(o.status)) {
@@ -1425,7 +1427,7 @@ function paintTrack(){
         <div style="flex:1"><b>Livreur en attente d’attribution</b><span>${live ? 'La boutique prépare votre commande' : 'Commande terminée'}</span></div></div></div>`}
     <div class="sec"><h2>Étapes</h2><span class="cnt">${Math.round(progress(o) * 100)} %</span></div>
     <ul class="card tl">${timelineHTML(o)}</ul>
-    ${drv && live ? `<div class="card chat"><div class="sec" style="margin:0 0 10px"><h2 style="font-size:16px">Message au livreur</h2></div>
+    ${live ? `<div class="card chat"><div class="sec" style="margin:0 0 10px"><h2 style="font-size:16px">${drv ? 'Message au livreur' : 'Message à l’équipe'}</h2></div>
       <div class="chat-log" id="chatLog"><div class="chat-empty">Chargement…</div></div>
       <div class="chat-row"><input id="chatInput" placeholder="Ex. portail bleu, 2e étage" maxlength="300"><button id="chatSend" aria-label="Envoyer"><svg viewBox="0 0 24 24"><path d="M3 20.5 21 12 3 3.5 3 10l12 2-12 2z"/></svg></button></div></div>` : ''}
     <button class="pill-btn light" id="tkDetail">Voir le détail de la commande</button>`;
