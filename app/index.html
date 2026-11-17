@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F0EA">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611170643">
+<link rel="manifest" href="manifest.json?v=202611170648">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -65,14 +65,14 @@ svg{display:block}
 .app.push{background:var(--bg)}
 
 /* ── éléments communs ── */
-.topbar{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:26px}
 .topbar h1{flex:1;text-align:center;font-size:16px;font-weight:600;margin:0;letter-spacing:-.01em}
 .ibtn{width:56px;height:56px;flex:0 0 56px;border-radius:19px;background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow);position:relative}
 .ibtn svg{width:22px;height:22px;fill:var(--ink)}
 .ibtn .dot{position:absolute;top:15px;right:16px;width:8px;height:8px;border-radius:50%;background:var(--acc);border:2px solid #fff;display:none}
 .ibtn .dot.on{display:block}
 .card{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow)}
-.sec{display:flex;align-items:center;gap:8px;margin:34px 2px 18px}
+.sec{display:flex;align-items:center;gap:8px;margin:40px 2px 20px}
 .sec h2{font-size:21px;font-weight:500;margin:0;letter-spacing:-.02em}
 .sec .cnt{min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--acc);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
 .sec .more{margin-left:auto;font-size:14px;color:var(--muted)}
@@ -93,7 +93,7 @@ svg{display:block}
 .search svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2;flex:0 0 22px}
 .search input{flex:1;min-width:0;border:0;background:none;font-size:16px}
 .search input::placeholder{color:#6E665F}
-.brand{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 20px}
+.brand{display:flex;align-items:center;justify-content:space-between;margin:4px 2px 26px}
 .brand img{height:40px;width:auto}
 .brand .open{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:999px;background:var(--card);font-size:13px;font-weight:600;box-shadow:var(--shadow)}
 .brand .open i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
@@ -103,27 +103,27 @@ svg{display:block}
 .hello img{height:46px;width:auto}
 .hello div{font-size:13px;color:var(--muted);line-height:1.3}
 .hello b{display:block;color:var(--ink);font-size:17px;font-weight:600}
-.cats{display:flex;gap:12px;overflow-x:auto;margin:0 -18px;padding:2px 18px 10px;scrollbar-width:none}
+.cats{display:flex;gap:14px;overflow-x:auto;margin:0 -18px;padding:2px 18px 14px;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
 .cat{flex:0 0 auto;width:80px;text-align:center}
 .cat .tile{width:80px;height:80px;border-radius:22px;background:var(--card);display:grid;place-items:center;box-shadow:var(--shadow);transition:transform .15s,box-shadow .2s;border:2px solid transparent}
 .cat .tile img{width:62px;height:62px;object-fit:contain}
-.cat span{display:block;margin-top:11px;font-size:13.5px;color:var(--ink2);white-space:nowrap}
+.cat span{display:block;margin-top:13px;font-size:13.5px;color:var(--ink2);white-space:nowrap}
 .cat.on .tile{border-color:var(--acc);box-shadow:0 10px 24px -14px rgba(255,138,76,.9)}
 .cat.on span{color:var(--ink);font-weight:600}
 .cat:active .tile{transform:scale(.94)}
 
-.rail{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px;padding:6px 18px 28px;scrollbar-width:none}
+.rail{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px;padding:8px 18px 34px;scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
-.pcard{flex:0 0 82%;max-width:330px;scroll-snap-align:center;padding:28px 24px 26px;position:relative;overflow:hidden}
+.pcard{flex:0 0 82%;max-width:330px;scroll-snap-align:center;padding:30px 24px 28px;position:relative;overflow:hidden}
 .pcard h3{margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em;padding-right:36px;line-height:1.2}
 .pcard .fav{position:absolute;top:20px;right:18px;width:36px;height:36px;display:grid;place-items:center}
 .pcard .fav svg,.fav svg{width:26px;height:26px;fill:none;stroke:var(--ink);stroke-width:1.8}
 .fav.on svg{fill:var(--ink)}
-.meta{display:flex;align-items:center;gap:7px;margin-top:6px;font-size:13.5px;color:var(--muted)}
+.meta{display:flex;align-items:center;gap:7px;margin-top:9px;font-size:13.5px;color:var(--muted)}
 .meta i{width:18px;height:18px;border-radius:50%;background:var(--acc);display:grid;place-items:center}
 .meta i svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:3}
-.plate{position:relative;width:min(250px,64vw);aspect-ratio:1;margin:20px auto 22px;border-radius:50%;background:#2B2724;padding:9px;box-shadow:0 22px 40px -22px rgba(0,0,0,.65),inset 0 0 0 2px rgba(255,255,255,.06)}
+.plate{position:relative;width:min(250px,64vw);aspect-ratio:1;margin:24px auto 26px;border-radius:50%;background:#2B2724;padding:9px;box-shadow:0 22px 40px -22px rgba(0,0,0,.65),inset 0 0 0 2px rgba(255,255,255,.06)}
 .plate img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .plate .soon{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);background:var(--card);color:var(--ink);font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px;box-shadow:var(--shadow);white-space:nowrap}
 .pcard.is-soon .plate img{filter:saturate(.6) blur(1px)}
@@ -162,7 +162,7 @@ svg{display:block}
 .step button svg{width:14px;height:14px;stroke:var(--ink);stroke-width:2.4;fill:none}
 .step b{min-width:22px;text-align:center;font-weight:600;font-size:15px}
 
-.banner{margin-top:10px;padding:22px 20px 22px 24px;border-radius:var(--r-card);background:var(--nav);color:#fff;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
+.banner{margin-top:16px;padding:22px 20px 22px 24px;border-radius:var(--r-card);background:var(--nav);color:#fff;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden}
 .banner b{display:block;font-size:18px;font-weight:600;letter-spacing:-.02em}
 .banner span{display:block;font-size:13.5px;color:rgba(255,255,255,.7);margin-top:4px;line-height:1.4}
 .banner .wo{color:var(--acc);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-top:8px}
