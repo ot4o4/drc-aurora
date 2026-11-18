@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611180427">
+<link rel="manifest" href="manifest.json?v=202611182138">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -591,11 +591,11 @@ let PRODUCTS = [
   {id:9,name:'Cuisses de Poulet',cat:'cuisses',img:'p9',price:2750,unit:'le kilo',rating:4.8,sold:640,tags:[['green','Frais du jour'],['yellow','Petit prix']],short:'Cuisses charnues, préparées à la commande.'},
   {id:4,name:'Ailes de Poulet',cat:'cuisses',img:'p4',price:3900,unit:'le kilo',rating:4.7,sold:734,tags:[['yellow','Anti-gaspi']],short:'À griller, mariner ou frire.'},
   {id:5,name:'Foie & Gésiers',cat:'abats',img:'p5',price:3200,unit:'le kilo',rating:4.6,sold:412,tags:[['green','Riche en fer']],short:'Pour un yassa de foie mémorable.'},
-  {id:8,name:'Œufs Fermiers',cat:'oeufs',img:'p8',price:3000,unit:'le plateau de 30',rating:4.9,sold:3210,tags:[['yellow','Top vente'],['green','Fermier']],short:'Jaune dense, goût franc.'}
+  {id:8,name:'Œufs Frais',cat:'oeufs',img:'p8',price:3000,unit:'le plateau de 30',rating:4.9,sold:3210,tags:[['yellow','Top vente'],['green','Frais']],short:'Jaune dense, goût franc.'}
 ];
 const HIDDEN_IDS = new Set([6, 7]);
 const SOON_IDS = new Set([4, 5]);
-const NAMES = {2:'Blanc de Poulet', 8:'Œufs Fermiers'};
+const NAMES = {2:'Blanc de Poulet', 8:'Œufs Frais'};
 const UNITS = {1:'la pièce · ~1,7 kg', 2:'le kilo', 3:'le kilo', 4:'le kilo', 5:'le kilo', 8:'le plateau de 30', 9:'le kilo'};
 const RECIPES = {
   1:{txt:'Avec ce poulet entier, un yassa qui parfume toute la maison — 45 minutes, et la Teranga passe à table.', w:'Lii nékhul !'},
@@ -725,7 +725,7 @@ function normalize(list){
         rating: Number(p.rating) || local.rating || 4.8,
         sold: Number(p.sold) || local.sold || 0,
         stock: p.stock,
-        tags: (p.tags || local.tags || []).filter(t => !/%/.test(t[1] || '')),
+        tags: (p.tags || local.tags || []).filter(t => !/%/.test(t[1] || '')).map(t => /^fermi/i.test(t[1] || '') ? [t[0], 'Frais'] : t),
         soon: p.soon !== undefined ? p.soon === true : SOON_IDS.has(id),
         recipe: RECIPES[id] || null
       };
@@ -1768,12 +1768,16 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
     if (from === to || to < 10) return;
     var pre = txt.slice(0, m.index), post = txt.slice(m.index + m[0].length), t0 = performance.now(), dur = 700;
     function fmt(v){ return Math.round(v).toLocaleString('fr-FR').replace(/\u202f/g, '\u202f'); }
-    el.__busy = true;
-    (function step(t){
-      var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = pre + fmt(from + (to - from) * e) + post;
-      if (p < 1) requestAnimationFrame(step); else { el.textContent = txt; el.__busy = false; }
-    })(t0);
+    el.__busy = true; el.__last = txt;
+    (function step(){
+      var t = performance.now();
+      /* l'app a réécrit le montant entre-temps : on s'efface, sa valeur fait foi */
+      if (el.textContent !== el.__last) { el.__busy = false; el.dataset.mv = ''; return; }
+      var p = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - Math.pow(1 - p, 3);
+      el.__last = p < 1 ? pre + fmt(from + (to - from) * e) + post : txt;
+      el.textContent = el.__last;
+      if (p < 1) requestAnimationFrame(step); else el.__busy = false;
+    })();
   }
   var gseen = new Set();
   function scan(root){
