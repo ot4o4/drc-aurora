@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611180251">
+<link rel="manifest" href="manifest.json?v=202611180324">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1716,6 +1716,98 @@ if (myOrders.length) paintOrders(true);
 setInterval(() => { if (document.visibilityState === 'visible') { loadCatalog(); loadSettings(); } }, 5 * 60e3);
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') window.appResume(); });
 </script>
+<!--MOTION-->
+<!-- DRC motion : animations d'entrée, pression, compteurs et jauges (commun aux 3 apps) -->
+<style id="drcMotionCss">
+@media (prefers-reduced-motion:no-preference){
+  .m-in{animation:mRise .52s cubic-bezier(.16,1,.3,1) both}
+  @keyframes mRise{from{opacity:0;transform:translateY(16px) scale(.985)}}
+  .m-pop{animation:mPop .5s cubic-bezier(.16,1,.3,1) both}
+  @keyframes mPop{0%{opacity:0;transform:scale(.86)}100%{opacity:1;transform:scale(1)}}
+  .m-seg rect{animation:mSeg .5s cubic-bezier(.16,1,.3,1) both}
+  @keyframes mSeg{from{opacity:0}}
+  .m-seg rect:nth-child(1){animation-delay:.02s}.m-seg rect:nth-child(2){animation-delay:.06s}.m-seg rect:nth-child(3){animation-delay:.10s}
+  .m-seg rect:nth-child(4){animation-delay:.14s}.m-seg rect:nth-child(5){animation-delay:.18s}.m-seg rect:nth-child(6){animation-delay:.22s}
+  .m-seg rect:nth-child(7){animation-delay:.26s}.m-seg rect:nth-child(8){animation-delay:.30s}.m-seg rect:nth-child(9){animation-delay:.34s}
+  .m-seg rect:nth-child(10){animation-delay:.38s}.m-seg rect:nth-child(11){animation-delay:.42s}
+  button,.btn,.pill,.pill-btn,[data-go],[data-add],[data-id]{transition:transform .16s cubic-bezier(.16,1,.3,1),filter .16s ease}
+  button:active:not(:disabled),.btn:active,.pill:active,.pill-btn:active,[data-id]:active{transform:scale(.965)}
+  .m-flash{animation:mFlash .9s ease}
+  @keyframes mFlash{0%{box-shadow:0 0 0 0 rgba(200,22,29,.45)}100%{box-shadow:0 0 0 14px rgba(200,22,29,0)}}
+}
+</style>
+<script>
+(function(){
+  if (window.__drcMotion) return; window.__drcMotion = 1;
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (still) return;
+  var CARD = '.pcard,.card,.cat,.ord,.mission,.stat,.adm-stat,.cash-stat,.mi,.drv,.empty,.prod,.cline,.tracking-hero,.map-wrap,.progress-card,.details-card,.contact-driver,.driver-chat,.sec,.chip,.pm,.banner,.recipe,.tour-hero,.login-card,.detail-cell,.tracking-step,.liveinfo';
+  var seen = new Set();
+  function sig(el){
+    return (el.className || '') + '|' + (el.dataset && (el.dataset.id || el.dataset.add || el.dataset.fav) || (el.textContent || '').replace(/\s+/g, ' ').slice(0, 48));
+  }
+  function visible(el){ var r = el.getBoundingClientRect(); return r.bottom > -40 && r.top < innerHeight + 40 && r.width > 0; }
+  function animate(list){
+    var n = 0;
+    list.forEach(function(el){
+      var k = sig(el); if (seen.has(k)) return; seen.add(k);
+      if (!visible(el)) return;
+      el.classList.remove('m-in'); void el.offsetWidth;
+      el.style.animationDelay = Math.min(n * 45, 420) + 'ms'; n++;
+      el.classList.add('m-in');
+      el.addEventListener('animationend', function f(){ el.classList.remove('m-in'); el.style.animationDelay = ''; el.removeEventListener('animationend', f); });
+    });
+  }
+  /* compteurs : 0 → montant, ou ancien → nouveau */
+  function countUp(el){
+    if (el.children.length) return;
+    var txt = el.textContent, m = txt.match(/\d[\d\s\u202f\u00a0.]*\d|\d/);
+    if (!m) return;
+    var to = parseInt(m[0].replace(/[^\d]/g, ''), 10); if (!isFinite(to)) return;
+    var from = +(el.dataset.mv || 0); el.dataset.mv = to;
+    if (from === to || to < 10) return;
+    var pre = txt.slice(0, m.index), post = txt.slice(m.index + m[0].length), t0 = performance.now(), dur = 700;
+    function fmt(v){ return Math.round(v).toLocaleString('fr-FR').replace(/\u202f/g, '\u202f'); }
+    el.__busy = true;
+    (function step(t){
+      var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = pre + fmt(from + (to - from) * e) + post;
+      if (p < 1) requestAnimationFrame(step); else { el.textContent = txt; el.__busy = false; }
+    })(t0);
+  }
+  var gseen = new Set();
+  function scan(root){
+    if (!root.querySelectorAll) return;
+    var cards = [];
+    if (root.matches && root.matches(CARD)) cards.push(root);
+    root.querySelectorAll(CARD).forEach(function(c){ cards.push(c); });
+    if (cards.length) animate(cards);
+    var svgs = root.querySelectorAll('.gauge svg'); if (root.matches && root.matches('.gauge svg')) svgs = [root];
+    Array.prototype.forEach.call(svgs, function(s){
+      var k = (s.closest('[id]') || {}).id + '|' + Array.prototype.map.call(s.querySelectorAll('rect'), function(r){ return r.getAttribute('fill'); }).join(',');
+      if (gseen.has(k)) return; gseen.add(k); s.classList.add('m-seg');
+    });
+    root.querySelectorAll('.gcenter .big, .stat b, .adm-stat b, .tot b, .grand b').forEach(function(b){ if (!b.__busy) countUp(b); });
+  }
+  var mo = new MutationObserver(function(muts){
+    var roots = new Set();
+    muts.forEach(function(m){ m.addedNodes.forEach(function(n){ if (n.nodeType === 1 && !n.classList.contains('fly') && n.id !== 'toast') roots.add(n); }); });
+    if (roots.size) requestAnimationFrame(function(){ roots.forEach(scan); });
+  });
+  function start(){ mo.observe(document.body, {childList:true, subtree:true}); setTimeout(function(){ scan(document.body); }, 60); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+  /* l'écran qui apparaît rejoue ses entrées */
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-go],.nav button,.tabs button,[data-tab]'); if (!b) return;
+    setTimeout(function(){
+      var v = document.querySelector('.view.on, .view.active, main:not(.hidden)'); if (!v) return;
+      var list = []; v.querySelectorAll(CARD).forEach(function(c){ list.push(c); });
+      list.forEach(function(c){ seen.delete(sig(c)); }); animate(list);
+    }, 40);
+  }, true);
+})();
+</script>
+<!--/MOTION-->
 
 <script>
 /* ── version web installable : écran d'accueil iPhone / Android ── */
