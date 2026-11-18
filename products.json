@@ -73,7 +73,7 @@
    "Cuisses seules",
    "Pilons seuls"
   ],
-  "short": "Le morceau préféré des familles sénégalaises, tendre et savoureux. Élevage local sélectionné avec nos partenaires fermiers Découpe du jour pour une fr"
+  "short": "Le morceau préféré des familles sénégalaises, tendre et savoureux. Élevage local sélectionné avec nos partenaires éleveurs Découpe du jour pour une fr"
  },
  {
   "id": 4,
@@ -148,7 +148,7 @@
    "Marinade Kebab",
    "Marinade Piment doux"
   ],
-  "short": "Notre spécialité : un poulet fermier mariné par nos chefs, prêt à griller pour vos braisés de quartier. Élevage local, poulet fermier de qualité Marin"
+  "short": "Notre spécialité : un poulet frais mariné par nos chefs, prêt à griller pour vos braisés de quartier. Élevage local, poulet frais de qualité Marin"
  },
  {
   "id": 7,
@@ -175,7 +175,7 @@
  },
  {
   "id": 8,
-  "name": "Œufs Fermiers — Plateau de 30",
+  "name": "Œufs Frais — Plateau de 30",
   "cat": "oeufs",
   "img": "p8.jpg",
   "price": 5500,
@@ -191,13 +191,13 @@
    ],
    [
     "green",
-    "Fermier"
+    "Frais"
    ]
   ],
   "variants": [
    "Plateau de 30",
    "Plateau de 15"
   ],
-  "short": "Des œufs fermiers frais, pondus par nos poulettes élevées en plein air. Élevage local et responsable Collecte et conditionnement du jour Chaîne du fro"
+  "short": "Des œufs frais, pondus par nos poulettes élevées en plein air. Élevage local et responsable Collecte et conditionnement du jour Chaîne du fro"
  }
 ]

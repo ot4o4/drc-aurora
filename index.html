@@ -7,7 +7,7 @@
 <meta name="description" content="Poulet frais Saf Sap, livré en 2 h dans tout Dakar. Commande en 30 secondes, paiement Wave, Orange Money ou espèces.">
 <meta name="theme-color" content="#0A0708">
 <meta property="og:title" content="Darou Rahmane Chicken — Le poulet frais, livré avec la Teranga">
-<meta property="og:description" content="Poulet fermier du jour, livré en 2 h à Dakar. Wave · Orange Money · Espèces.">
+<meta property="og:description" content="Poulet frais du jour, livré en 2 h à Dakar. Wave · Orange Money · Espèces.">
 <meta property="og:image" content="assets/banner.webp">
 <link rel="icon" href="assets/logo.png">
 <link rel="apple-touch-icon" href="assets/logo.png">
@@ -718,7 +718,7 @@ let PRODUCTS = [
   {id:3,name:'Pilons',cat:'cuisses',img:'p3.jpg',price:4900,unit:'le kilo',rating:4.8,sold:2150,tags:[['green','Frais du jour']],short:'Le morceau préféré des familles : tendre, juteux, parfait au four ou braisé.'},
   {id:4,name:'Ailes de Poulet',cat:'cuisses',img:'p4.jpg',price:3900,unit:'le kilo',rating:4.7,sold:734,tags:[['yellow','Anti-gaspi']],short:'À griller, mariner ou frire. Le meilleur rapport plaisir / prix du marché.'},
   {id:5,name:'Foie & Gésiers',cat:'abats',img:'p5.jpg',price:3200,unit:'le kilo',rating:4.6,sold:412,tags:[['green','Riche en fer']],short:'Nettoyés et parés le matin même. Pour un yassa de foie mémorable.'},
-  {id:8,name:'Œufs Fermiers',cat:'oeufs',img:'p8.jpg',price:3000,unit:'le plateau de 30',rating:4.9,sold:3210,tags:[['yellow','Top vente'],['green','Fermier']],short:'Poules élevées au sol, ramassés du jour. Jaune dense, goût franc.'}
+  {id:8,name:'Œufs Frais',cat:'oeufs',img:'p8.jpg',price:3000,unit:'le plateau de 30',rating:4.9,sold:3210,tags:[['yellow','Top vente'],['green','Frais']],short:'Poules élevées au sol, ramassés du jour. Jaune dense, goût franc.'}
 ];
 
 /* produits retirés de la vitrine (même s'ils existent encore dans l'API) */
@@ -764,7 +764,7 @@ const withOverrides = list => list.map(p => Object.assign({},
 
 const CATS = [
   ['tout','Tout le marché'],['entier','Poulet entier'],['blancs','Blancs & filets'],
-  ['cuisses','Cuisses & pilons'],['abats','Foie & gésiers'],['oeufs','Œufs fermiers']
+  ['cuisses','Cuisses & pilons'],['abats','Foie & gésiers'],['oeufs','Œufs frais']
 ];
 
 const img = f => 'assets/' + f.replace(/\.jpg$/,'.jpg');
