@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '3.3';
+window.DRC_WEB = '3.6';
 </script>
 
 <meta charset="utf-8">
@@ -322,6 +322,21 @@ body{font-family:PJS,system-ui,sans-serif}
 
 
 
+
+<style id="nav-frame-style">
+/* Cadre rouge mobile dans la barre du bas : suit et encadre l'icône touchée */
+.nav{position:relative!important;padding:34px 12px var(--sb)!important}
+.nav .nav-frame{position:absolute;left:0;top:0;width:54px;height:54px;border-radius:18px;
+  background:var(--acc);box-shadow:0 6px 14px -6px rgba(0,0,0,.45), 0 8px 20px -8px rgba(200,22,29,.55);
+  pointer-events:none;z-index:0;
+  transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .2s}
+.nav button,.nav .scan{width:52px!important;height:52px!important;border-radius:18px!important;
+  background:transparent!important;box-shadow:none!important;color:rgba(255,255,255,.78)!important;
+  position:relative!important;z-index:1!important;transition:color .2s,transform .18s cubic-bezier(.22,1,.36,1)!important}
+.nav button.on,.nav .scan.on{color:#fff!important}
+.nav button svg,.nav .scan svg{width:27px!important;height:27px!important;fill:currentColor!important}
+.nav .badge{z-index:2;top:-3px!important;right:-3px!important}
+</style>
 </head>
 <body>
 
@@ -401,7 +416,7 @@ body{font-family:PJS,system-ui,sans-serif}
     <button data-go="home" class="on" aria-label="Tableau de bord"><svg viewBox="0 0 24 24"><path d="M10.3 3.1a2.6 2.6 0 0 1 3.4 0l6.4 5.5c.6.5.9 1.2.9 2V19a2.5 2.5 0 0 1-2.5 2.5H15a1 1 0 0 1-1-1v-4.2a2 2 0 0 0-4 0v4.2a1 1 0 0 1-1 1H5.5A2.5 2.5 0 0 1 3 19v-8.4c0-.8.3-1.5.9-2Z"/></svg></button>
     <button data-go="orders" aria-label="Commandes"><svg viewBox="0 0 24 24"><path d="M6 2h12a2 2 0 0 1 2 2v17.2a1 1 0 0 1-1.5.9L12 19.6l-6.5 2.5A1 1 0 0 1 4 21.2V4a2 2 0 0 1 2-2Zm2.5 5.5h7V6h-7Zm0 4h7V10h-7Zm0 4h4.5V14H8.5Z"/></svg></button>
     <button data-go="pay" class="scan" aria-label="Encaissements"><svg viewBox="0 0 24 24"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM5 9v2a2 2 0 0 0 2-2Zm12 0a2 2 0 0 0 2 2V9ZM5 13v2h2a2 2 0 0 0-2-2Zm14 0a2 2 0 0 0-2 2h2Z"/></svg><span class="badge" id="payBadge">0</span></button>
-    <button data-go="compta" aria-label="Registre de compte"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm3 5h8M8 12h8M8 16h5"/></svg></button>
+    <button data-go="compta" aria-label="Registre de compte"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2h9.6L20 6.4V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm2 6.2h8v1.7H8V8.2Zm0 3.9h8v1.7H8v-1.7Zm0 3.9h5.2v1.7H8V16Z"/></svg></button>
     <button data-go="products" aria-label="Produits"><svg viewBox="0 0 24 24"><path d="M7 4a1 1 0 0 1 1 1v1h8V5a1 1 0 1 1 2 0v1h1.3a1.7 1.7 0 0 1 1.7 1.9l-1.1 10.4a3 3 0 0 1-3 2.7H7.1a3 3 0 0 1-3-2.7L3 7.9A1.7 1.7 0 0 1 4.7 6H6V5a1 1 0 0 1 1-1Z"/></svg></button>
     <button data-go="settings" aria-label="Réglages"><svg viewBox="0 0 24 24"><path d="M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2Zm8.9 4.6-.1-1 2-1.6-2-3.4-2.3.9a8 8 0 0 0-1.7-1l-.3-2.4h-4l-.3 2.4c-.6.3-1.2.6-1.7 1l-2.3-.9-2 3.4 2 1.6a8 8 0 0 0 0 2l-2 1.6 2 3.4 2.3-.9c.5.4 1.1.7 1.7 1l.3 2.4h4l.3-2.4c.6-.3 1.2-.6 1.7-1l2.3.9 2-3.4-2-1.6Z"/></svg></button>
   </nav>
@@ -413,7 +428,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.3').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.6').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -1319,5 +1334,33 @@ async function migrateToken(){
 
 
 
+
+<script id="nav-frame-script">
+(function(){
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+  let frame = nav.querySelector('.nav-frame');
+  if (!frame) {
+    frame = document.createElement('span');
+    frame.className = 'nav-frame';
+    frame.setAttribute('aria-hidden', 'true');
+    nav.insertBefore(frame, nav.firstChild);
+  }
+  function moveFrame(animate) {
+    const on = nav.querySelector('button.on') || nav.querySelector('button');
+    if (!on || !on.offsetWidth) return;
+    if (animate === false) frame.style.transition = 'none';
+    const x = on.offsetLeft + (on.offsetWidth - frame.offsetWidth) / 2;
+    const y = on.offsetTop + (on.offsetHeight - frame.offsetHeight) / 2;
+    frame.style.transform = 'translate3d(' + Math.round(x) + 'px,' + Math.round(y) + 'px,0)';
+    if (animate === false) requestAnimationFrame(() => { frame.style.transition = ''; });
+  }
+  nav.querySelectorAll('button').forEach(b => b.addEventListener('click', () => moveFrame(true)));
+  new MutationObserver(() => moveFrame(true)).observe(nav, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  if (window.ResizeObserver) new ResizeObserver(() => moveFrame(false)).observe(nav);
+  window.addEventListener('resize', () => moveFrame(false));
+  setTimeout(() => moveFrame(false), 40);
+})();
+</script>
 </body>
 </html>
