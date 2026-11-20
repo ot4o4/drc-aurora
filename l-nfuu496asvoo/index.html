@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.16';
+window.DRC_WEB = '4.17';
 </script>
 
 <meta charset="utf-8">
@@ -308,7 +308,7 @@ body.logged-out header,body.logged-out #drcNav{display:none!important} /* connex
 #view-login .btn,#view-login #lg-btn{margin-top:10px!important;height:58px!important;border-radius:999px!important;
   background:var(--btn)!important;color:#fff!important;font-size:16px!important;font-weight:600!important;width:100%;box-shadow:none!important}
 #view-login .sec-note,#view-login .sec-note *{color:var(--muted)!important}
-#view-login .sec-note{margin-top:16px!important;font-size:12px!important;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+#view-login .sec-note{margin-top:26px!important;font-size:12px!important;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
 #view-login .server-note{margin-top:14px!important;font-size:11.5px!important;color:var(--muted)!important}
 #view-login .client-link{margin-top:18px;padding:0;background:none;border:0;font-size:12.5px;font-weight:700;color:var(--acc-ink);letter-spacing:0;text-align:left;line-height:1.4}
 </style>
@@ -569,7 +569,7 @@ body.drc2 #view-login .field input{width:100%;height:56px!important;border-radiu
 body.drc2 #view-login .field input:focus{border-color:var(--acc)!important;background:#fff!important;box-shadow:0 0 0 4px var(--acc-soft)!important;outline:0}
 body.drc2 #view-login #lg-btn{height:58px!important;border-radius:999px!important;background:var(--ink)!important;color:#fff!important;
   font-size:16px!important;font-weight:600!important;width:100%;margin-top:12px;border:0}
-body.drc2 #view-login .sec-note{margin-top:16px!important;font-size:12px!important;color:var(--muted)!important;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+body.drc2 #view-login .sec-note{margin-top:26px!important;font-size:12px!important;color:var(--muted)!important;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
 body.drc2 #view-login .sec-note svg{width:16px;height:16px;fill:#2E9E5B;flex:none;margin-top:1px}
 body.drc2 #view-login .server-note{font-size:11.5px!important;color:var(--muted)!important;margin-top:12px!important}
 body.drc2 #view-login .client-link{margin-top:18px;padding:0;background:none;border:0;font-size:12.5px;font-weight:700;
@@ -678,7 +678,7 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.16').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.17').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
