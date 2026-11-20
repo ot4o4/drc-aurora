@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.8';
+window.DRC_WEB = '4.9';
 </script>
 
 <meta charset="utf-8">
@@ -446,7 +446,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.81').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.9.1').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -697,6 +697,7 @@ function openDetail(id){
       <div class="row"><span class="k">Adresse</span><span class="v">${esc(c.address || (maps ? 'Position GPS' : '—'))}${maps ? ' · <a href="' + maps + '" data-ext style="color:var(--acc-ink);font-weight:600">Carte</a>' : ''}</span></div>
       ${c.slot ? `<div class="row"><span class="k">Créneau</span><span class="v">${esc(c.slot)}</span></div>` : ''}
       <div class="row"><span class="k">Paiement</span><span class="v">${PAY[o.payment_method] || '—'} · ${ps === 'paid' ? 'encaissé' : ps === 'refused' ? 'refusé' : o.payment_method === 'cod' ? 'à la livraison' : 'à vérifier'}</span></div>
+      ${o.delivery_code ? `<div class="row"><span class="k">Code livraison</span><span class="v" style="font-family:ui-monospace,monospace;letter-spacing:.2em;font-weight:700">${esc(o.delivery_code)}</span></div>` : ''}
       ${c.pay_phone ? `<div class="row"><span class="k">N° payeur</span><span class="v">${esc(c.pay_phone)}</span></div>` : ''}
       ${claim ? `<div class="row"><span class="k">Déclaré</span><span class="v">${esc(frDate(claim.at))} ${esc(frTime(claim.at))}${claim.pay_phone ? ' · depuis ' + esc(claim.pay_phone) : ''}${claim.to ? ' · vers ' + esc(claim.to) : ''}${claim.txn ? ' · réf ' + esc(claim.txn) : ''}</span></div>` : ''}
       <div class="acts">

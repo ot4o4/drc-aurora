@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201734">
+<link rel="manifest" href="manifest.json?v=202611201825">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -521,6 +521,18 @@ html[data-theme="dark"] .sticky-cta{background:linear-gradient(180deg,rgba(18,18
 .inv-note{margin-top:10px;padding:12px 13px;border-radius:13px;background:#FBF4E9;border:1px solid #F0E2CC}
 .inv-note p{font-size:12px;line-height:1.55;color:#4A433D}
 .inv-foot{margin-top:14px;text-align:center;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#A39A91}
+
+/* ── code de livraison 1.8.0 ── */
+.code-card{display:flex;align-items:center;gap:14px;padding:16px 17px;margin:10px 0 6px;border-radius:22px;
+  background:linear-gradient(150deg,#241F1D,#191314);color:#fff;box-shadow:0 18px 34px -22px rgba(40,10,10,.75);
+  border:1px solid rgba(255,255,255,.06)}
+.code-txt{flex:1;min-width:0}
+.code-txt small{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#D0A8A4;font-weight:800}
+.code-txt b{display:block;font-size:31px;line-height:1.15;letter-spacing:.26em;font-variant-numeric:tabular-nums;margin:3px 0 2px}
+.code-txt span{display:block;font-size:11px;line-height:1.45;color:#C9BDB7}
+.code-copy{flex:none;height:38px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;
+  font-size:11px;font-weight:700;border:1px solid rgba(255,255,255,.14)}
+.code-copy:active{background:rgba(255,255,255,.22)}
 </style>
 </head>
 <body>
@@ -573,7 +585,7 @@ html[data-theme="dark"] .sticky-cta{background:linear-gradient(180deg,rgba(18,18
       </div>
       <div class="cats" id="cats"></div>
       <div class="banner" id="promoBanner">
-        <div><b id="bnT">Livraison offerte dès&nbsp;15&nbsp;000&nbsp;F</b><span id="bnS">Commande avant 18 h, livrée en 2 h partout à Dakar.</span><div class="wo">Ci sa keur</div></div>
+        <div><b id="bnT">Livraison offerte dès&nbsp;25&nbsp;000&nbsp;F</b><span id="bnS">Commande avant 18 h, livrée en 2 h partout à Dakar.</span><div class="wo">Ci sa keur</div></div>
         <img src="assets/img/cat-tout.webp" alt="">
       </div>
       <div class="benefits">
@@ -677,8 +689,8 @@ const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '')
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
 /* réglages pilotés depuis l'application gérant (GET /api/settings), valeurs de secours ci-dessous */
-let SET = Object.assign({shop_open:true, closed_message:'', banner_title:'Livraison offerte dès 15 000 F', banner_text:'Commande avant 18 h, livrée en 2 h partout à Dakar.',
-  delivery_fee:2000, free_from:15000, payment_numbers:['70 917 09 20','78 924 95 55','78 471 17 67'], slots:['Express 2 h','Ce soir 18h–20h','Demain 9h–12h'],
+let SET = Object.assign({shop_open:true, closed_message:'', banner_title:'Livraison offerte dès 25 000 F', banner_text:'Commande avant 18 h, livrée en 2 h partout à Dakar.',
+  delivery_fee:2000, free_from:25000, payment_numbers:['70 917 09 20','78 924 95 55','78 471 17 67'], slots:['Express 2 h','Ce soir 18h–20h','Demain 9h–12h'],
   pay_methods:{wave:true, orange_money:true, cod:true}}, JSON.parse(localStorage.getItem('drc_app_settings') || '{}'));
 let FREE_FROM = SET.free_from, FEE = SET.delivery_fee;
 const SITE_URL = 'https://drc.sn';
@@ -1406,6 +1418,7 @@ function openOrder(id, refresh){
     <div class="topbar"><button class="back" data-back aria-label="Retour">${ICON.back}</button><h1>${esc(o.id)}</h1>
       <button class="ibtn" id="oWa" style="width:52px;height:52px;flex-basis:52px" aria-label="WhatsApp">${ICON.wa}</button></div>
     <div class="gauge">${gaugeHTML(progress(o), frDate(o.created_at) + ' · ' + frTime(o.created_at), fcfa(o.total), statusText(o))}</div>
+    ${o.delivery_code && !['delivered','cancelled'].includes(o.status) ? `<div class="code-card"><div class="code-txt"><small>CODE DE LIVRAISON</small><b>${esc(o.delivery_code)}</b><span>À donner au livreur pour confirmer la réception.</span></div><button class="code-copy" id="oCopyCode" type="button">Copier</button></div>` : ''}
     ${o.invoice ? `<button class="inv-link" id="oInv" type="button"><span class="inv-link-ico">${ICON.doc}</span><span class="inv-link-txt"><b>Facture ${esc(o.invoice.number)}</b><small>${o.invoice.seen_at ? 'Disponible' : 'Nouvelle facture'} · ${fcfa(o.invoice.total)}</small></span><span class="inv-chev">${ICON.chev}</span></button>` : ''}
     ${needPay ? `<button class="pill-btn acc" id="oPay" style="margin:6px 0 4px">Payer ${fcfa(o.total)} · ${PAY_LABEL[o.payment_method]}</button>` : ''}
     <div class="sec"><h2>Suivi</h2></div>
@@ -1427,6 +1440,15 @@ function openOrder(id, refresh){
   if ($('#oPay')) $('#oPay').onclick = () => openPay(o.id);
   if ($('#oCall')) $('#oCall').onclick = () => dial(o.driver.phone);
   if ($('#oChat')) $('#oChat').onclick = () => { stack.length = 0; route = {name:'track'}; go('track'); setTimeout(() => { const i = $('#chatInput'); if (i) { i.focus({preventScroll:true}); i.scrollIntoView({block:'center', behavior:'smooth'}); } }, 420); };
+  if ($('#oCopyCode')) $('#oCopyCode').onclick = () => {
+    const code = String(o.delivery_code || '');
+    try {
+      if (window.Android && window.Android.copy) window.Android.copy(code);
+      else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code);
+      else { const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+      toast('Code copié');
+    } catch(e) { toast('Code : ' + code); }
+  };
   if ($('#oInv')) $('#oInv').onclick = () => openInvoice(o.id);
   $('#oAgain').onclick = () => { (o.items || []).forEach(i => { const p = prod(i.id); if (p && !p.soon) { const l = cart.find(x => x.id === p.id); l ? l.qty += i.qty : cart.push({id:p.id, qty:i.qty, price:p.price}); } }); saveCart(); paintBadge(); toast('Articles ajoutés au panier'); go('cart'); };
   stopPoll();
@@ -1524,7 +1546,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.7.9 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.0 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `

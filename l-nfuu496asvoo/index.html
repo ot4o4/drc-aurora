@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.22';
+window.DRC_WEB = '4.23';
 </script>
 
 <meta charset="utf-8">
@@ -98,6 +98,21 @@ body.drc2 .mstatus.done{background:rgba(31,138,76,.12);color:#086B45}
 body.drc2 .live-strip{padding:12px 16px!important;margin-top:14px!important;color:var(--ink2)!important}
 body.drc2 .live-strip b{color:var(--ink)!important;font-weight:700!important}
 body.drc2 #liveText{color:var(--ink2)}
+
+/* ── code de livraison 4.23 ── */
+.dlv-modal{position:fixed;inset:0;z-index:160;background:rgba(12,9,9,.58);backdrop-filter:blur(5px);display:flex;align-items:flex-end;justify-content:center;padding:14px}
+.dlv-modal.hidden{display:none!important}
+.dlv-sheet{position:relative;width:100%;max-width:440px;background:var(--card);border-radius:28px;padding:24px 20px 20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.55)}
+.dlv-x{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;background:var(--seg);color:var(--muted);font-size:22px;line-height:1;display:grid;place-items:center}
+.dlv-kicker{display:block;font-size:9px;letter-spacing:.16em;font-weight:800;color:var(--acc);margin-bottom:5px}
+.dlv-sheet h3{font-size:24px;letter-spacing:-.02em;margin:0 0 6px}
+.dlv-sheet p{font-size:12.5px;line-height:1.5;color:var(--muted);margin-bottom:14px}
+.dlv-input{width:100%;height:66px;border-radius:16px;border:2px solid var(--line);background:var(--bg);text-align:center;
+  font-size:32px;font-weight:700;letter-spacing:.34em;font-variant-numeric:tabular-nums;color:var(--ink);outline:0}
+.dlv-input:focus{border-color:var(--acc);box-shadow:0 0 0 4px var(--acc-soft)}
+.dlv-err{min-height:20px;color:var(--bad);font-size:11.5px;font-weight:600;margin:5px 2px 8px}
+.dlv-sheet .pill-btn{display:flex;align-items:center;justify-content:center;width:100%;height:54px;border:0;border-radius:999px;font-size:15px;font-weight:600;color:#fff;background:linear-gradient(160deg,#D91F27,#A90F16)}
+.dlv-sheet .pill-btn.light{background:var(--seg);color:var(--ink);margin-top:8px}
 </style>
 <style>
 /* ── identité Darou Rahmane Chicken (même monde visuel que les applications) ── */
@@ -709,7 +724,7 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.22').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.23.1').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -800,7 +815,6 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
     <div class="driver-chat" id="driver-chat"><h3>Conversation avec le client</h3><div class="driver-chat-messages" id="driver-chat-messages" role="log" aria-live="polite"><div class="chat-empty">Chargement…</div></div><div class="driver-chat-compose"><textarea id="driver-chat-input" maxlength="1000" rows="1" aria-label="Réponse au client" placeholder="Écrivez au client…"></textarea><button class="btn primary" onclick="sendDriverMessage()">Envoyer</button></div></div>
     <div class="details-card"><h3>Détails de la livraison</h3><div class="details-grid" id="tracking-details"></div></div>
     <div class="cash-card hidden" id="cashCard"></div>
-    <div class="proof-card hidden" id="proofCard"></div>
     <div class="tracking-action" id="tracking-action"></div>
     <div class="tracking-action map-open-btn"><button class="btn secondary" data-track-action="maps"><svg class="svg"><use href="#map"/></svg>Ouvrir dans Maps</button></div>
   </div>
@@ -830,6 +844,18 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
   </div>
 </section>
 
+<div id="dlvModal" class="dlv-modal hidden" role="dialog" aria-modal="true" aria-label="Code de livraison">
+  <div class="dlv-sheet">
+    <button class="dlv-x" id="dlvClose" aria-label="Fermer">×</button>
+    <span class="dlv-kicker">CONFIRMATION CLIENT</span>
+    <h3>Code de livraison</h3>
+    <p>Demandez au client son code à 4 chiffres.<br>Il est dans son app, sur la commande.</p>
+    <input id="dlvCode" class="dlv-input" type="tel" inputmode="numeric" maxlength="4" pattern="[0-9]*" placeholder="••••" autocomplete="one-time-code" aria-label="Code à 4 chiffres">
+    <div id="dlvErr" class="dlv-err" role="alert"></div>
+    <button class="pill-btn acc" id="dlvGo">Confirmer la livraison</button>
+    <button class="pill-btn light" id="dlvCancel" style="margin-top:8px">Annuler</button>
+  </div>
+</div>
 <div id="toast" role="status"></div>
 <script src="leaflet/leaflet.js"></script>
 <script>
@@ -1100,11 +1126,64 @@ function smsCustomer(id){const o=orders.find(x=>String(x.id)===String(id));if(!o
 function callCustomer(id){const o=orders.find(x=>String(x.id)===String(id));if(!o)return;const phone=customerPhone(o);if(!phone){toast('Téléphone non renseigné');return}location.href='tel:'+phone}
 function openTrackedMaps(){const o=trackedOrder();if(!o)return;const url=mapsUrl(o);if(!url){toast('Adresse non renseignée');return}window.open(url,'_blank','noopener')}
 document.querySelector('.contact-buttons').addEventListener('click',e=>{const b=e.target.closest('button[data-track-action]');if(!b||b.disabled||!trackingId)return;if(b.dataset.trackAction==='message')messageCustomer(trackingId);if(b.dataset.trackAction==='sms')smsCustomer(trackingId);if(b.dataset.trackAction==='call')callCustomer(trackingId)});
-document.getElementById('tracking-action').addEventListener('click',e=>{const b=e.target.closest('button[data-status]');if(b&&trackingId)setStatus(trackingId,b.dataset.status)});
+document.getElementById('tracking-action').addEventListener('click',e=>{const b=e.target.closest('button[data-status]');if(!b||!trackingId)return;if(b.dataset.status==='delivered')askDeliveryCode(trackingId);else setStatus(trackingId,b.dataset.status)});
 document.querySelectorAll('[data-track-action="maps"]').forEach(b=>b.addEventListener('click',openTrackedMaps));
-async function setStatus(id,status){id=String(id);if(pendingStatus.has(id))return;statusSequence++;pendingStatus.add(id);renderOrders();try{const r=await api('/api/driver/orders/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status})});if(!r.ok){toast('Échec de la mise à jour — réessayez');return}const o=orders.find(x=>String(x.id)===id);if(o)o.status=status;buzz([12,40,12]);toast(status==='shipping'?'Colis récupéré · bonne route':'Livraison confirmée');renderStats()}catch(e){toast('Serveur injoignable · statut inchangé')}finally{pendingStatus.delete(id);renderOrders();if(trackingId===id)openTracking(id)}}
+let lastDeliveryError=null;
+async function setStatus(id,status,code){
+  id=String(id);
+  if(pendingStatus.has(id))return false;
+  if(status==='delivered'&&!code){askDeliveryCode(id);return false}
+  pendingStatus.add(id);statusSequence++;renderOrders();
+  try{
+    const payload={status}; if(code) payload.delivery_code=String(code);
+    const r=await api('/api/driver/orders/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify(payload)});
+    if(!r.ok){
+      lastDeliveryError=(r.data&&r.data.error)||('http_'+r.status);
+      if(lastDeliveryError==='invalid_delivery_code'){
+        const left=r.data&&r.data.attempts_left;
+        toast('Code incorrect'+(left?' · '+left+' essai'+(left>1?'s':'')+' restant'+(left>1?'s':''):''));
+      } else if(lastDeliveryError==='delivery_code_locked') toast('Trop d’essais — contactez le gérant');
+      else if(lastDeliveryError==='delivery_code_required') toast('Code de livraison requis');
+      else toast('Échec de la mise à jour — réessayez');
+      return false;
+    }
+    const o=orders.find(x=>String(x.id)===id);if(o)o.status=status;
+    buzz([12,40,12]);toast(status==='shipping'?'Colis récupéré · bonne route':'Livraison confirmée');
+    renderStats();return true;
+  }catch(e){toast('Serveur injoignable · statut inchangé');return false}
+  finally{pendingStatus.delete(id);renderOrders();if(trackingId===id)openTracking(id)}
+}
+let dlvPendingId=null;
+function askDeliveryCode(id){
+  dlvPendingId=String(id);lastDeliveryError=null;
+  const m=document.getElementById('dlvModal'); if(!m)return;
+  document.getElementById('dlvErr').textContent='';
+  const inp=document.getElementById('dlvCode'); inp.value=''; inp.disabled=false;
+  document.getElementById('dlvGo').disabled=false;
+  m.classList.remove('hidden');
+  setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},80);
+}
+function closeDeliveryCode(){
+  const m=document.getElementById('dlvModal'); if(m)m.classList.add('hidden');
+  dlvPendingId=null;lastDeliveryError=null;
+  const inp=document.getElementById('dlvCode'); if(inp)inp.value='';
+  const err=document.getElementById('dlvErr'); if(err)err.textContent='';
+}
+async function confirmDeliveryCode(){
+  if(!dlvPendingId)return;
+  const inp=document.getElementById('dlvCode'), err=document.getElementById('dlvErr'), btn=document.getElementById('dlvGo');
+  const code=String(inp.value||'').replace(/\D/g,'');
+  if(code.length!==4){err.textContent='Entrez les 4 chiffres du code client.';inp.focus();return}
+  btn.disabled=true;inp.disabled=true;err.textContent='';
+  const ok=await setStatus(dlvPendingId,'delivered',code);
+  btn.disabled=false;inp.disabled=false;
+  if(ok){closeDeliveryCode();return}
+  err.textContent=lastDeliveryError==='delivery_code_locked'?'Trop d’essais. Demandez au gérant de vérifier.':'Code refusé. Vérifiez avec le client.';
+  inp.value='';inp.focus();
+}
 function switchTab(t){tabTouched=true;tab=t;['depot','shipping','done'].forEach(x=>{const b=document.getElementById('t-'+x);b.classList.toggle('on',x===t);b.setAttribute('aria-selected',x===t?'true':'false')});renderOrders()}
-document.getElementById('orders').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b||b.disabled)return;if(b.dataset.action==='status')setStatus(b.dataset.id,b.dataset.status);else if(b.dataset.action==='track')openTracking(b.dataset.id);else if(b.dataset.action==='message')messageCustomer(b.dataset.id);else if(b.dataset.action==='call')callCustomer(b.dataset.id);else if(b.dataset.url)location.href=b.dataset.url});
+document.getElementById('dlvClose').onclick=closeDeliveryCode;document.getElementById('dlvCancel').onclick=closeDeliveryCode;document.getElementById('dlvGo').onclick=confirmDeliveryCode;document.getElementById('dlvModal').addEventListener('click',e=>{if(e.target.id==='dlvModal')closeDeliveryCode()});document.getElementById('dlvCode').addEventListener('keydown',e=>{if(e.key==='Enter')confirmDeliveryCode()});
+document.getElementById('orders').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b||b.disabled)return;if(b.dataset.action==='status'){if(b.dataset.status==='delivered')askDeliveryCode(b.dataset.id);else setStatus(b.dataset.id,b.dataset.status)}else if(b.dataset.action==='track')openTracking(b.dataset.id);else if(b.dataset.action==='message')messageCustomer(b.dataset.id);else if(b.dataset.action==='call')callCustomer(b.dataset.id);else if(b.dataset.url)location.href=b.dataset.url});
 migrateToken().then(()=>{if(token){enter()}else{showLogin()}});
 </script>
 <!--MOTION-->
@@ -1278,8 +1357,7 @@ document.addEventListener('click', e => {
   /* ── 2 & 3. preuve + encaissement, remplis par openTracking ── */
   function paintTrackingExtras(o){
     const cashBox = document.getElementById('cashCard');
-    const proofBox = document.getElementById('proofCard');
-    if (!cashBox || !proofBox || !o) return;
+    if (!cashBox || !o) return;
     const delivered = (o.status||'') === 'delivered';
     const cod = (o.payment_method || 'cod') === 'cod';
 
@@ -1308,36 +1386,6 @@ document.addEventListener('click', e => {
       cashBox.innerHTML = '';
     }
 
-    /* preuve de livraison */
-    if (!delivered) {
-      proofBox.classList.remove('hidden');
-      proofBox.innerHTML =
-        '<h3>Preuve de livraison</h3>' +
-        '<p>Demandez le code à 4 chiffres au client, ou prenez une photo du colis remis.</p>' +
-        '<div class="proof-row">' +
-          '<input id="proofCode" type="text" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">' +
-          '<label class="proof-photo" id="proofPhotoWrap"><input id="proofPhoto" type="file" accept="image/*" capture="environment"><span>📷</span></label>' +
-        '</div>' +
-        '<div class="proof-ok hidden" id="proofOk">Preuve enregistrée — vous pouvez confirmer</div>';
-      const code = document.getElementById('proofCode');
-      const ok = document.getElementById('proofOk');
-      const mark = () => {
-        const hasCode = String(code.value||'').replace(/\D/g,'').length === 4;
-        const hasPhoto = !!(document.getElementById('proofPhoto').files||[]).length;
-        ok.classList.toggle('hidden', !(hasCode || hasPhoto));
-        window.__drcProof = { code: String(code.value||'').replace(/\D/g,''), photo: hasPhoto };
-      };
-      code.addEventListener('input', () => { code.value = String(code.value||'').replace(/\D/g,''); mark(); });
-      document.getElementById('proofPhoto').addEventListener('change', e => {
-        const f = e.target.files && e.target.files[0];
-        document.getElementById('proofPhotoWrap').classList.toggle('done', !!f);
-        mark();
-      });
-      window.__drcProof = { code: '', photo: false };
-    } else {
-      proofBox.classList.add('hidden');
-      proofBox.innerHTML = '';
-    }
   }
 
   /* hook : à chaque rendu du suivi, on rafraîchit les deux cartes */
@@ -1354,33 +1402,6 @@ document.addEventListener('click', e => {
       wrapped.__hooked = true;
       window.openTracking = wrapped;
     }
-  }
-
-  /* garde avant confirmation : preuve + espèces encaissées */
-  const setStatus0 = window.setStatus;
-  if (setStatus0 && !setStatus0.__guarded) {
-    const guarded = function(id, status){
-      if (status === 'delivered') {
-        const o = (typeof orders !== 'undefined' ? orders : []).find(x => String(x.id) === String(id));
-        const proof = window.__drcProof || { code: '', photo: false };
-        if (!proof.code && !proof.photo) {
-          toast('Ajoutez la preuve : code du client ou photo');
-          return Promise.resolve();
-        }
-        if (o && (o.payment_method || 'cod') === 'cod') {
-          const inp = document.getElementById('cashRecu');
-          const recu = Number(String((inp && inp.value)||'').replace(/\D/g,''))||0;
-          if (recu < Number(o.total||0)) {
-            toast('Encaissez ' + money(o.total) + ' avant de confirmer');
-            return Promise.resolve();
-          }
-          toast('Rendu ' + money(recu - Number(o.total||0)));
-        }
-      }
-      return setStatus0.apply(this, arguments);
-    };
-    guarded.__guarded = true;
-    window.setStatus = guarded;
   }
 
   /* branchements */
