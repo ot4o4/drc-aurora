@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.19';
+window.DRC_WEB = '4.20';
 </script>
 
 <meta charset="utf-8">
@@ -67,6 +67,25 @@ header{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;paddin
 .contact-buttons .btn{border:1px solid var(--line)}
 .contact-buttons .whatsapp{border-color:#CFE7D8}
 .step-dot{background:#EDEDEC;color:#707070}
+
+/* ── passe beauté 4.20 ── */
+body.drc2{background-image:radial-gradient(72% 32% at 50% 0%,#FBEDEA 0%,rgba(251,237,234,0) 68%)}
+body.drc2 .sec h2{display:flex;align-items:center;gap:9px}
+body.drc2 .sec h2::before{content:"";width:7px;height:18px;border-radius:5px;flex:none;
+  background:linear-gradient(180deg,#E42A32,#A80E15);box-shadow:0 3px 8px -3px rgba(200,22,29,.55)}
+body.drc2 #journee .jn:nth-child(1){background:linear-gradient(165deg,#FFF7F6,#FFFFFF)}
+body.drc2 #journee .jn:nth-child(2){background:linear-gradient(165deg,#FFFBF1,#FFFFFF)}
+body.drc2 #journee .jn:nth-child(3){background:linear-gradient(165deg,#F5FBF7,#FFFFFF)}
+body.drc2 #journee .jn{box-shadow:0 14px 30px -26px rgba(80,30,20,.55),inset 0 1px 0 rgba(255,255,255,.9)}
+body.drc2 .mcard::before{content:"";position:absolute;left:0;top:22px;bottom:22px;width:4px;
+  border-radius:0 4px 4px 0;background:#D9A400}
+body.drc2 .mcard.st-shipping::before{background:#C8161D}
+body.drc2 .mcard.st-delivered::before{background:#1F8A4C}
+body.drc2 .mcard{box-shadow:0 16px 36px -26px rgba(80,30,20,.42)}
+body.drc2 .pill-btn.acc{background:linear-gradient(160deg,#D91F27,#A90F16);
+  box-shadow:0 14px 26px -14px rgba(200,22,29,.55)}
+body.drc2 .mstatus.shipping{background:rgba(200,22,29,.12);color:#A00E14}
+body.drc2 .mstatus.done{background:rgba(31,138,76,.12);color:#086B45}
 </style>
 <style>
 /* ── identité Darou Rahmane Chicken (même monde visuel que les applications) ── */
@@ -678,7 +697,7 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.19').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.20').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -897,7 +916,7 @@ function renderOrders(){
     const bars=[0,1,2,3].map(i=>`<i class="${i<step?'on':''}"></i>`).join('');
     const slot=c.slot?esc(c.slot):'Créneau à confirmer';
     const cod=isCod(o);
-    return `<article class="mcard" data-order="${esc(id)}">
+    return `<article class="mcard st-${esc(st)}" data-order="${esc(id)}">
       <div class="mtop"><div class="mzone">${esc(zone)}</div><span class="mstatus ${st==='shipping'?'shipping':done?'done':''}">${statusLabel(st)}</span></div>
       <div class="mrow"><div class="mphoto"><img src="assets/img/${orderImg(o)}" alt=""></div>
         <div class="minfo"><b>${esc(c.name||'Destinataire')}</b><span>${slot} · ${esc(id)}</span><div class="mbars">${bars}</div></div>

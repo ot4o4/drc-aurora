@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.5';
+window.DRC_WEB = '4.6';
 </script>
 
 <meta charset="utf-8">
@@ -193,6 +193,28 @@ details.adv .fld{margin-top:12px}
 @keyframes sp{to{transform:rotate(360deg)}}
 .hint{font-size:12.5px;color:var(--muted);text-align:center;margin:10px 6px 0;line-height:1.45}
 @media (min-width:561px){body{background:#d6d6d5}}
+
+/* ── passe beauté 4.6 ── */
+#vHome{background:radial-gradient(72% 34% at 50% 0%,#FBEDEA,rgba(251,237,234,0) 68%)}
+.sec h2{display:flex;align-items:center;gap:9px}
+.sec h2::before{content:"";width:7px;height:18px;border-radius:5px;flex:none;
+  background:linear-gradient(180deg,#E42A32,#A80E15);box-shadow:0 3px 8px -3px rgba(200,22,29,.55)}
+.stat{position:relative;padding:15px 16px;overflow:hidden}
+.stat .sico{position:absolute;right:13px;top:13px;width:28px;height:28px;border-radius:9px;
+  display:grid;place-items:center;background:#F1EFEA;color:#6B625C}
+.stat .sico svg{width:15px;height:15px;fill:currentColor}
+.stat.st-pending .sico{background:#F1EFEA;color:#5A514B}
+.stat.st-pay .sico{background:var(--warn-soft);color:var(--warn)}
+.stat.st-assign .sico{background:var(--acc-soft);color:var(--acc-ink)}
+.stat.st-stock .sico{background:var(--seg);color:var(--muted)}
+.stat.bad .sico{background:var(--bad-soft);color:var(--bad)}
+.switch .swico{width:40px;height:40px;border-radius:13px;background:var(--ok-soft);color:var(--ok);
+  display:grid;place-items:center;flex:none}
+.switch .swico svg{width:21px;height:21px;fill:currentColor}
+.card,.stat{box-shadow:0 16px 36px -26px rgba(80,30,20,.40)}
+.btn,.pill-btn{background:linear-gradient(160deg,#2A2A2A,#111111)}
+.pill-btn.acc,.btn.primary{background:linear-gradient(160deg,#D91F27,#A90F16);
+  box-shadow:0 14px 26px -14px rgba(200,22,29,.55)}
 </style>
 
 <style id="compta">
@@ -398,7 +420,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.5').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.6').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -444,7 +466,7 @@ body{font-family:PJS,system-ui,sans-serif}
       <div class="topbar"><div class="logoTile"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div><h1>Tableau de bord<span class="liveDot" id="liveDot" title="En direct avec le serveur"></span></h1><button class="ibtn" id="bRefresh" aria-label="Actualiser"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
       <div class="gauge" id="dashGauge"></div>
       <div class="stats" id="dashStats"></div>
-      <div class="card switch"><div><b>Boutique ouverte</b><span id="shopSub">Les clients peuvent commander</span></div><button class="tg on" id="shopTg" aria-label="Ouvrir ou fermer la boutique"><i></i></button></div>
+      <div class="card switch"><span class="swico"><svg viewBox="0 0 24 24"><path d="M4 4h16l1.5 5.5a3.5 3.5 0 0 1-2.4 4.2V20h-2v-5H11v5H9v-6.3a3.5 3.5 0 0 1-2.4-4.2L8 4H4Zm2.4 2-1 3.7a1.5 1.5 0 0 0 2.9.5L8.9 6H6.4Zm5.6 0v5a1.5 1.5 0 0 0 3 0V6h-3Zm5.3 0-.4 4.2a1.5 1.5 0 0 0 2.9-.5L18.3 6h-1Z"/></svg></span><div><b>Boutique ouverte</b><span id="shopSub">Les clients peuvent commander</span></div><button class="tg on" id="shopTg" aria-label="Ouvrir ou fermer la boutique"><i></i></button></div>
       <div class="sec"><h2>Dernières commandes</h2><button class="more" id="allOrders">Tout voir</button></div>
       <div id="lastOrders"></div>
     </section>
@@ -757,10 +779,10 @@ async function refreshStats(){
     const rev = STATS.today_revenue || 0;
     $('#dashGauge').innerHTML = gaugeSVG(rev / goal) + `<div class="gcenter"><div class="d">Aujourd’hui · ${frDate(new Date())}</div><div class="big">${fcfa(rev)}</div><div class="goal">${(STATS.today_orders || 0)} commande${(STATS.today_orders || 0) > 1 ? 's' : ''}<br>objectif ${fcfa(goal)}</div></div>`;
     $('#dashStats').innerHTML = `
-      <div class="stat"><b>${STATS.pending || 0}</b><span>à traiter</span></div>
-      <div class="stat ${STATS.payments_to_review ? 'warn' : ''}"><b>${STATS.payments_to_review || 0}</b><span>paiements à vérifier</span></div>
-      <div class="stat ${STATS.to_assign ? 'warn' : ''}"><b>${STATS.to_assign || 0}</b><span>à attribuer</span></div>
-      <div class="stat ${STATS.low_stock ? 'bad' : ''}"><b>${STATS.low_stock || 0}</b><span>stocks bas</span></div>`;
+      <div class="stat st-pending"><i class="sico"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm.9 5.2v4.9l3.5 2.1-1 1.7-4.5-2.7V7.2h2Z"/></svg></i><b>${STATS.pending || 0}</b><span>à traiter</span></div>
+      <div class="stat st-pay ${STATS.payments_to_review ? 'warn' : ''}"><i class="sico"><svg viewBox="0 0 24 24"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v1H3V6Zm0 3h18v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V9Zm3 6a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg></i><b>${STATS.payments_to_review || 0}</b><span>paiements à vérifier</span></div>
+      <div class="stat st-assign ${STATS.to_assign ? 'warn' : ''}"><i class="sico"><svg viewBox="0 0 24 24"><path d="M12 12.4a4.7 4.7 0 1 0 0-9.4 4.7 4.7 0 0 0 0 9.4Zm0 1.9c-4.2 0-7.6 2.1-7.6 4.8V20a1.6 1.6 0 0 0 1.6 1.6h12A1.6 1.6 0 0 0 18.2 20v-.9c0-2.7-3.4-4.8-7.6-4.8Z"/></svg></i><b>${STATS.to_assign || 0}</b><span>à attribuer</span></div>
+      <div class="stat st-stock ${STATS.low_stock ? 'bad' : ''}"><i class="sico"><svg viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v2h2v-2Zm0-7h-2v5h2v-5Z"/></svg></i><b>${STATS.low_stock || 0}</b><span>stocks bas</span></div>`;
   } catch(e) {}
 }
 async function refreshSettings(){
