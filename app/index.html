@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201216">
+<link rel="manifest" href="manifest.json?v=202611201238">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -37,7 +37,7 @@ html[data-theme="dark"]{
   --acc:#FF3B43; --acc2:#E51D26; --acc-soft:#45161A; --acc-ink:#FF8A8E; --seg:#2A2A2A; --nav:#0A0A0A;
   --stage1:#191919; --stage2:#121212; --plate:#0C0C0C; --toast-bg:#F7F7F6; --toast-ink:#141414;
   --green-soft:#1E3527; --green-ink:#7AD3A2;
-  --btn:#1A1A1A; --btn-ink:#fff; --btn-line:rgba(255,255,255,.18); --logo-plate:#F7F7F6;
+  --btn:#E51D26; --btn-ink:#fff; --btn-line:rgba(255,255,255,.18); --logo-plate:#F7F7F6;
   --shadow:0 12px 30px -20px rgba(0,0,0,.85);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -468,6 +468,19 @@ html[data-theme="dark"] .boot img{width:180px;padding:8px 10px}
 .card,.pcard,.banner,.login-card,.mcard{box-shadow:0 18px 38px -26px rgba(90,20,20,.36)}
 .nav .scan svg{filter:drop-shadow(0 2px 3px rgba(80,0,0,.20))}
 .pill-btn.acc:active{filter:brightness(1.06)}
+
+/* ── mode sombre 1.7.8 ── */
+html[data-theme="dark"] .benefit{background:linear-gradient(165deg,#252525,#1B1B1B);
+  box-shadow:0 14px 30px -26px rgba(0,0,0,.9)}
+html[data-theme="dark"] .benefit b{color:var(--ink)}
+html[data-theme="dark"] .benefit small{color:var(--muted)}
+html[data-theme="dark"] .benefit .bico.red{background:#3B171A;color:#FF6B70}
+html[data-theme="dark"] .benefit .bico.amber{background:#3A2C12;color:#FFC24D}
+html[data-theme="dark"] .benefit .bico.green{background:#173326;color:#6FE0A0}
+html[data-theme="dark"] .pill-btn{background:linear-gradient(160deg,#FF3D46,#D4111A);color:#fff;
+  box-shadow:0 14px 26px -14px rgba(229,29,38,.55),inset 0 1px 0 rgba(255,255,255,.22)}
+html[data-theme="dark"] .pill-btn.light{background:var(--seg);color:var(--ink);box-shadow:none}
+html[data-theme="dark"] .sticky-cta{background:linear-gradient(180deg,rgba(18,18,18,0),var(--stage2) 34%)}
 </style>
 </head>
 <body>
@@ -1422,7 +1435,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.7.7 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.7.8 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
