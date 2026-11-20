@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta name="googlebot" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://drc-api-dj8t.onrender.com https://routing.openstreetmap.de https://nominatim.openstreetmap.org; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#1A1A1A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="DRC Livreur">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<script>
+/* jamais dans un cadre d'un autre site */
+if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
+window.DRC_WEB = '3.5';
+</script>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>DRC Livreur</title>
+<meta name="theme-color" content="#071B33">
+<link rel="stylesheet" href="leaflet/leaflet.css">
+<style>
+:root{--navy:#1A1A1A;--navy-2:#262626;--blue:#A30F16;--cyan:#B3121A;--yellow:#C8161D;--ink:#1A1A1A;--muted:#666666;--line:#E7E7E6;--bg:#F4F4F3;--white:#FFF;--green:#1F8A4C;--green-soft:#E5F5EE;--red:#C0392B;--shadow:0 5px 18px rgba(26,26,26,.07);--r:18px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}html,body{min-height:100%;background:var(--bg)}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);font-size:14px;line-height:1.45;padding-bottom:calc(24px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased}button,input{font:inherit;color:inherit}button{cursor:pointer;border:0}button:disabled{cursor:not-allowed;opacity:.5}button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}.hidden{display:none!important}.svg{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+#splash{position:fixed;inset:0;z-index:999;display:grid;place-items:center;background:var(--navy);color:#fff;transition:opacity .35s,visibility .35s}#splash::before{content:"";position:absolute;inset:0;background:linear-gradient(145deg,transparent 45%,rgba(200,22,29,.14)),repeating-linear-gradient(135deg,transparent 0 26px,rgba(255,255,255,.025) 26px 27px)}#splash.hide{opacity:0;visibility:hidden;pointer-events:none}.splash-inner{position:relative;text-align:center;padding:32px}.splash-mark{width:126px;height:126px;margin:auto;border:1px solid rgba(200,22,29,.45);border-radius:30px;background:var(--navy-2);display:grid;place-items:center;box-shadow:0 20px 50px rgba(0,0,0,.3)}.splash-mark .driver-scooter{width:88px;height:88px;color:var(--yellow)}.splash-brand{font-size:12px;letter-spacing:3px;font-weight:800;margin-top:24px;color:#C2C2C2}.splash-role{font-size:34px;line-height:1;font-weight:900;letter-spacing:5px;margin-top:8px;color:#fff}.splash-line{width:48px;height:4px;background:var(--yellow);margin:18px auto}.splash-sub{color:#C2C2C2;font-size:12px;letter-spacing:1px}
+header{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 14px;box-shadow:0 4px 16px rgba(26,26,26,.2)}.hd-top{max-width:720px;margin:auto;display:flex;align-items:center;gap:11px}.brand-icon{width:44px;height:44px;border-radius:13px;background:var(--yellow);color:var(--navy);display:grid;place-items:center;flex:none}.brand-icon .driver-scooter{width:34px;height:34px}.brand{flex:1;min-width:0}.brand b{font-size:15px;letter-spacing:.2px;display:block}.brand small{display:block;color:#F08A8D;font-size:10px;letter-spacing:1.8px;font-weight:800;margin-top:2px}.header-actions{display:flex;gap:7px}.iconbtn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.09);color:#fff}.iconbtn:active{background:rgba(255,255,255,.18)}.service{max-width:720px;margin:12px auto 0;display:flex;align-items:center;gap:7px;border-top:1px solid rgba(255,255,255,.11);padding-top:10px;font-size:11px;color:#C4C4C4}.service-dot{width:8px;height:8px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 4px rgba(200,22,29,.1)}.service.online .service-dot{background:#44D19D}.service.offline .service-dot{background:#FF7183}main{max-width:720px;margin:auto}section{margin:18px 14px 0}
+.login-wrap{padding-top:22px}.login-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px 20px;box-shadow:var(--shadow)}.login-kicker{display:inline-flex;align-items:center;gap:7px;color:var(--blue);font-size:11px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}.login-card h1{font-size:27px;line-height:1.14;letter-spacing:-.8px;margin:12px 0 9px}.login-card>p{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:22px}.field{margin-bottom:15px}.field label{display:block;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.7px;text-transform:uppercase;margin-bottom:7px}.field input{width:100%;min-height:50px;border:1.5px solid var(--line);border-radius:13px;background:#FBFBFA;padding:13px 14px;outline:0}.field input:focus{border-color:var(--cyan);background:#fff;box-shadow:0 0 0 3px rgba(200,22,29,.1)}.field.err input{border-color:var(--red)}.msg{display:none;color:var(--red);font-size:12px;margin-top:6px}.field.err .msg{display:block}.btn{width:100%;min-height:50px;border-radius:13px;padding:13px 16px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-size:14px;font-weight:850;background:var(--navy);color:#fff;transition:transform .12s,opacity .15s}.btn:active:not(:disabled){transform:scale(.98)}.btn.primary{background:var(--yellow);color:var(--navy)}.btn.secondary{background:#FCEBEC;color:var(--navy)}.btn.success{background:var(--green)}.btn.loading{color:transparent!important;pointer-events:none;position:relative}.btn.loading::after{content:"";position:absolute;width:20px;height:20px;border:2px solid rgba(26,26,26,.25);border-top-color:var(--navy);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}details.advanced{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}details.advanced summary{cursor:pointer;color:var(--muted);font-size:12px;font-weight:700}details.advanced .field{margin-top:14px}.server-note{font-size:11px;color:var(--muted);margin-top:8px}
+.tour-hero{margin:18px 14px 0;background:var(--navy);border-radius:22px;padding:21px 20px;color:#fff;position:relative;overflow:hidden;box-shadow:0 9px 24px rgba(26,26,26,.16)}.tour-hero::after{content:"";position:absolute;width:160px;height:160px;border:36px solid rgba(200,22,29,.1);border-radius:50%;right:-70px;top:-76px;pointer-events:none}.tour-top{position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.tour-label{color:#F08A8D;text-transform:uppercase;font-size:10px;font-weight:900;letter-spacing:1.8px}.tour-hero h1{font-size:28px;letter-spacing:-.8px;margin-top:4px}.tour-date{text-align:right;color:#C4C4C4;font-size:11px;line-height:1.5}.tour-summary{position:relative;margin-top:17px;padding-top:15px;border-top:1px solid rgba(255,255,255,.13);display:flex;gap:20px;color:#C4C4C4;font-size:12px}.tour-summary b{color:#fff;font-size:17px;margin-right:4px}.adm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 14px 0}.adm-stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:13px 10px;min-width:0}.adm-stat b{display:block;font-size:22px;line-height:1.1;color:var(--navy);font-variant-numeric:tabular-nums}.adm-stat small{display:block;color:var(--muted);font-size:10px;line-height:1.3;margin-top:6px;font-weight:700}.cash-stat{grid-column:1/-1;background:#FDF1F1;border-color:#F2C2C4;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px}.cash-stat small{margin:0;color:#7E0B10;font-size:11px}.cash-stat b{font-size:19px;white-space:nowrap}.cash-stat b span{font-size:11px;margin-left:4px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:18px 14px 0;padding:5px;background:#EDEDEC;border-radius:15px}.tabs button{min-height:46px;background:transparent;border-radius:11px;color:var(--muted);font-size:11px;font-weight:800;padding:7px 3px;line-height:1.25}.tabs button.on{background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(26,26,26,.1)}.tab-count{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 5px;margin-left:3px;border-radius:10px;background:#DCDCDB;font-size:10px}.tabs button.on .tab-count{background:var(--navy);color:#fff}.list-head{display:flex;align-items:center;justify-content:space-between;margin:20px 16px 10px}.list-head h2{font-size:15px;letter-spacing:-.2px}.list-head span{font-size:11px;color:var(--muted)}
+#orders{margin:0 14px}.mission{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:13px;box-shadow:var(--shadow);overflow:hidden}.mission::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--yellow)}.mission.shipping::before{background:var(--cyan)}.mission.done::before{background:var(--green)}.mission-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.oid{font-size:12px;font-weight:900;letter-spacing:.4px;color:var(--muted)}.status{font-size:10px;font-weight:900;letter-spacing:.4px;padding:5px 9px;border-radius:7px;background:#FCE9EA;color:#7E0B10;white-space:nowrap}.status.shipping{background:#FCEBEC;color:#9E0E14}.status.done{background:var(--green-soft);color:var(--green)}.zone{font-size:20px;line-height:1.28;letter-spacing:-.45px;font-weight:900;margin:13px 0 12px;overflow-wrap:anywhere}.customer{display:flex;align-items:center;gap:10px;padding-bottom:13px;border-bottom:1px solid var(--line)}.avatar{width:36px;height:36px;border-radius:11px;background:#FCEBEC;color:var(--blue);display:grid;place-items:center;font-size:12px;font-weight:900;flex:none}.customer-name{font-weight:800;font-size:14px;overflow-wrap:anywhere}.customer-slot{font-size:11px;color:var(--muted);margin-top:2px}.kv{display:grid;grid-template-columns:72px 1fr;gap:8px;padding:7px 0;font-size:12px;line-height:1.5}.kv:first-of-type{margin-top:8px}.kv b{color:var(--muted);font-weight:700}.kv span{overflow-wrap:anywhere}.cash{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#FDF2F2;border:1px solid #F2C8CA;border-radius:12px;padding:11px 12px;margin-top:10px;color:#7E0B10;font-size:11px;font-weight:800}.cash b{font-size:16px;white-space:nowrap}.cash.prepaid{background:var(--green-soft);border-color:#BFE3D4;color:var(--green)}.mission-cta{margin-top:13px;min-height:52px;font-size:15px}.contact-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}.contact-actions .btn{font-size:12px;padding:11px 8px}.contact-actions .btn:disabled{background:#EDEDEC;color:#707070}.empty{text-align:center;padding:48px 24px;background:#fff;border:1px dashed #DCDCDB;border-radius:var(--r)}.empty-icon{width:64px;height:64px;border-radius:20px;background:#FCEBEC;color:var(--blue);display:grid;place-items:center;margin:0 auto 16px}.empty-icon .svg{width:32px;height:32px}.empty h3{font-size:17px}.empty p{color:var(--muted);font-size:12px;line-height:1.65;margin-top:7px}#toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,15px);max-width:90vw;background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;font-size:12px;font-weight:700;box-shadow:0 8px 30px rgba(26,26,26,.3);opacity:0;pointer-events:none;transition:.2s;z-index:200;text-align:center}#toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:640px){#orders{display:grid;grid-template-columns:1fr 1fr;gap:13px}.mission{margin:0}.empty{grid-column:1/-1}.login-wrap{max-width:480px;margin:auto}.tour-hero,.adm-stats,.tabs{margin-left:0;margin-right:0}section{margin-left:0;margin-right:0}#orders{margin:0}}@media(max-width:370px){.tour-hero h1{font-size:25px}.adm-stat{padding:12px 8px}.adm-stat b{font-size:20px}.tabs button{font-size:10px}.contact-actions{grid-template-columns:1fr}.brand b{font-size:13px}.zone{font-size:18px}}/* Suivi de mission plein écran */
+.tracking-page{position:fixed;inset:0;z-index:100;background:var(--bg);overflow-y:auto;transform:translateX(100%);visibility:hidden;transition:transform .28s cubic-bezier(.22,.75,.26,1),visibility .28s;padding-bottom:calc(24px + env(safe-area-inset-bottom))}.tracking-page.open{transform:translateX(0);visibility:visible}.tracking-nav{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;background:rgba(26,26,26,.97);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 14px 13px}.tracking-nav h2{font-size:16px;flex:1}.tracking-nav .iconbtn{background:rgba(255,255,255,.1)}.tracking-content{max-width:720px;margin:auto}.tracking-hero{margin:14px;background:var(--navy);color:#fff;border-radius:20px;padding:17px 18px}.tracking-order{display:flex;align-items:center;justify-content:space-between;gap:12px}.tracking-order b{font-size:16px}.tracking-order span{font-size:10px;font-weight:900;color:var(--navy);background:var(--yellow);padding:5px 8px;border-radius:7px}.tracking-route{display:flex;justify-content:space-between;gap:12px;margin-top:13px;color:#C4C4C4;font-size:12px}.tracking-route span:last-child{text-align:right}.tracking-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.tracking-metrics div{background:rgba(255,255,255,.08);border-radius:11px;padding:9px;text-align:center}.tracking-metrics b{display:block;font-size:16px;color:#fff}.tracking-metrics small{font-size:9px;color:#C2C2C2;text-transform:uppercase;letter-spacing:.5px}.map-wrap{margin:0 14px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}#mission-map{height:280px;width:100%;background:#F0F0EF}.map-fallback{min-height:180px;display:grid;place-items:center;text-align:center;padding:28px;color:var(--muted)}.map-fallback .svg{width:36px;height:36px;margin-bottom:10px;color:var(--blue)}.map-attribution{font-size:10px}.map-credit{padding:7px 10px;color:var(--muted);font-size:10px}.progress-card{margin:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px 15px}.progress-card h3,.details-card h3{font-size:13px;margin-bottom:14px}.progress-track{height:4px;background:#E7E7E6;border-radius:4px;margin:0 17px 15px}.progress-fill{height:100%;background:var(--cyan);border-radius:4px;transition:width .5s cubic-bezier(.22,.75,.26,1)}.tracking-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}.tracking-step{text-align:center;color:var(--muted);font-size:9px;font-weight:800}.step-dot{width:26px;height:26px;display:grid;place-items:center;margin:0 auto 6px;border-radius:50%;background:#E5EBEF;color:#8795A0;font-size:11px}.tracking-step.past .step-dot{background:var(--green);color:#fff}.tracking-step.now .step-dot{background:var(--yellow);color:var(--navy);box-shadow:0 0 0 4px rgba(200,22,29,.2)}.tracking-step.now{color:var(--navy)}.contact-driver{display:flex;align-items:center;gap:11px;margin:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}.contact-driver .avatar{width:42px;height:42px}.contact-driver .who{flex:1;min-width:0}.contact-driver .who b{display:block;overflow-wrap:anywhere}.contact-driver .who small{color:var(--muted);font-size:11px}.contact-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 14px}.contact-buttons .btn{padding:11px 5px;font-size:11px;min-height:46px}.contact-buttons .whatsapp{background:#E4F6EC;color:#086B45}.details-card{margin:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px 15px}.details-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.detail-cell{min-width:0}.detail-cell.full{grid-column:1/-1}.detail-cell small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}.detail-cell b{font-size:13px;overflow-wrap:anywhere}.tracking-action{margin:14px}.map-open-btn{margin-top:10px}.contact-actions{grid-template-columns:repeat(3,1fr)}
+@media(max-width:370px){#mission-map{height:245px}.tracking-metrics b{font-size:14px}.contact-buttons .btn{font-size:10px}.contact-actions .btn{font-size:10px}}
+.driver-chat{margin:14px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}.driver-chat h3{font-size:14px;margin-bottom:12px}.driver-chat-messages{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow-y:auto;margin-bottom:12px}.chat-empty{color:var(--muted);font-size:12px;text-align:center;padding:15px}.chat-message{max-width:86%;padding:9px 11px;border-radius:13px;background:#EEF3F6;border:1px solid var(--line);overflow-wrap:anywhere}.chat-message.driver{align-self:flex-end;background:#E5F5EE;border-color:#BFE3D4}.chat-message small{display:block;color:var(--muted);font-size:9px;margin-bottom:3px}.chat-message p{font-size:12.5px;white-space:pre-wrap}.driver-chat-compose{display:flex;gap:8px}.driver-chat-compose textarea{flex:1;min-height:46px;max-height:110px;resize:vertical;border:1.5px solid var(--line);border-radius:12px;padding:11px;font:inherit}.driver-chat-compose button{width:auto;min-width:82px;min-height:46px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ── revue : lisibilité & finitions ── */
+.service{font-size:12px}.field label,.server-note{font-size:12px}
+.tour-label{font-size:11.5px;color:#F08A8D}.tour-date{font-size:12px}
+.adm-stat small{font-size:12px}.cash-stat small,.cash-stat b span{font-size:12px}
+.tabs button{font-size:13px}.tab-count{font-size:11.5px;color:#444444}.list-head span{font-size:12.5px}
+.status{font-size:11.5px}.customer-slot,.cash{font-size:12.5px}
+.tracking-order span{font-size:12px}.tracking-metrics small{font-size:11px;color:#C4C4C4;letter-spacing:.3px}
+.tracking-metrics b{font-size:16px}.tracking-step{font-size:11.5px}.detail-cell small{font-size:11.5px}
+.contact-buttons .btn{font-size:13px;min-height:48px;background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+.contact-buttons .whatsapp{background:#E3F2E8;color:#1F7A47}
+.contact-actions .btn{font-size:12.5px}.chat-message small{font-size:11px}
+.tracking-page{margin:0}
+.empty-icon{background:#FCEBEC;color:#A30F16}
+.avatar{background:#FCEBEC;color:#9E0E14}
+#sharePos{display:flex;align-items:center;justify-content:center;gap:9px;min-height:52px;font-size:15px;font-weight:600;background:var(--yellow);color:#1A1A1A;box-shadow:0 10px 22px -14px rgba(179,18,26,.9)}
+#sharePos svg{width:20px;height:20px;fill:currentColor;flex:none}
+.sec-note{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;line-height:1.45;margin:16px 2px 0;color:var(--muted)}
+.sec-note svg{width:16px;height:16px;flex:none;fill:#1F8A4C;margin-top:1px}
+.shake{animation:shake .42s cubic-bezier(.36,.07,.19,.97)}
+@keyframes shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-7px)}40%,60%{transform:translateX(7px)}}
+#gmapsNav{display:flex;align-items:center;justify-content:center;gap:9px;min-height:52px;font-size:15px;font-weight:600;background:#1A1A1A;color:#fff}
+#gmapsNav svg{width:20px;height:20px;fill:#C8161D;flex:none}
+#sharePos{background:#fff;color:#1A1A1A;border:1.5px solid #C8161D;box-shadow:none}
+#sharePos svg{fill:#B3121A}
+.kv a{color:#9E0E14;font-weight:700;text-decoration:none}
+.contact-buttons .btn{border:1px solid var(--line)}
+.contact-buttons .whatsapp{border-color:#CFE7D8}
+.step-dot{background:#EDEDEC;color:#707070}
+</style>
+<style>
+/* ── identité Darou Rahmane Chicken (même monde visuel que les applications) ── */
+@font-face{font-family:PJS;src:url(fonts/pjs-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:PJS;src:url(fonts/pjs-500.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:PJS;src:url(fonts/pjs-600.woff2) format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:PJS;src:url(fonts/pjs-700.woff2) format('woff2');font-weight:700;font-display:swap}
+:root{--navy:#1A1A1A;--navy-2:#262626;--blue:#A30F16;--cyan:#B3121A;--yellow:#C8161D;--ink:#1A1A1A;--muted:#666666;
+  --line:#E7E7E6;--bg:#F4F4F3;--white:#fff;--green:#1F8A4C;--green-soft:#E3F2E8;--red:#C0392B;
+  --shadow:0 10px 30px -20px rgba(60,40,20,.35);--r:24px}
+body{font-family:PJS,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;letter-spacing:-.01em;background:var(--bg)}
+header{background:var(--navy);box-shadow:0 6px 20px -12px rgba(0,0,0,.5)}
+.brand-icon{background:#fff;border-radius:15px;padding:3px 5px;width:58px;height:44px}
+.brand-icon img{height:32px;width:auto;display:block}
+.brand b{font-weight:600;font-size:15.5px}
+.brand small{color:#C7BDB3;letter-spacing:.14em}
+.iconbtn{border-radius:15px;background:rgba(255,255,255,.1)}
+.service{border-top-color:rgba(255,255,255,.14);color:#CFC5BB}
+.service-dot{background:var(--yellow)}
+#splash{background:linear-gradient(180deg,#191919,#121212)}
+#splash::before{background:radial-gradient(circle at 50% 35%,rgba(200,22,29,.16),transparent 60%)}
+.splash-mark{background:#fff;border:0;border-radius:34px;width:186px;height:126px;box-shadow:0 24px 60px -22px rgba(0,0,0,.8)}
+.splash-mark img{height:78px;width:auto;display:block}
+.splash-brand{color:#B6ABA0}.splash-role{font-weight:700;letter-spacing:.16em;font-size:26px}
+.splash-line{background:var(--yellow);width:44px;height:4px;border-radius:2px}
+.splash-sub{color:#9C9186}
+.btn.primary{background:var(--yellow);color:#1A1A1A;font-weight:600}
+.btn{border-radius:16px;font-weight:600;background:var(--navy)}
+.btn.secondary{background:var(--bg);color:var(--ink)}
+.btn.success{background:var(--green);color:#fff}
+.login-card{border:0;box-shadow:var(--shadow);border-radius:28px;background:#fff}
+.login-kicker{color:var(--blue)}
+.login-card h1{font-weight:600;letter-spacing:-.03em;font-size:28px}
+.field input{background:#fff;border-color:var(--line);border-radius:16px;min-height:52px}
+.field input:focus{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(200,22,29,.18)}
+.mission{border:0;box-shadow:var(--shadow);border-radius:26px}
+.mission::before{width:0}
+.status{border-radius:999px;font-weight:700;letter-spacing:0}
+.status.shipping{background:#FBE4E5;color:#A30F16}
+.cash{border-radius:16px}
+.tab{font-weight:600}
+.empty{border-style:solid;border-color:var(--line);border-radius:26px;background:#fff}
+.tracking-nav{background:rgba(26,26,26,.97)}
+.contact-driver,.progress-card,.details-card,.driver-chat,.map-wrap{border:0;box-shadow:var(--shadow);border-radius:26px}
+.map-wrap{border-radius:26px;overflow:hidden}
+.tracking-hero{border-radius:26px;background:linear-gradient(160deg,#262626,#1A1A1A)}
+.tracking-order span{background:var(--yellow);color:#1A1A1A;border-radius:999px;font-weight:700}
+.step-dot{border-radius:50%}
+.progress-fill{background:var(--yellow)}
+.chat-message{border-radius:16px}
+.chat-message.driver{background:var(--green-soft);border-color:#BFE3D4}
+#toast{background:#1A1A1A;border-radius:16px}
+.live-strip{display:flex;align-items:center;gap:9px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.14);font-size:12.5px;color:#E7DED5}
+.live-dot{width:9px;height:9px;border-radius:50%;background:#4ED08A;box-shadow:0 0 0 4px rgba(78,208,138,.18);animation:pulseLive 1.6s infinite}
+@keyframes pulseLive{50%{opacity:.4}}
+.live-strip b{color:#fff;font-weight:600}
+</style>
+
+<style id="refonte">
+/* ====== Reprise exacte du système visuel de l'app client (DRC 1.7.1) ====== */
+@font-face{font-family:PJS;src:url('fonts/pjs-400.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:PJS;src:url('fonts/pjs-600.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:PJS;src:url('fonts/pjs-700.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:PJS;src:url('fonts/pjs-800.woff2') format('woff2');font-weight:800;font-display:swap}
+
+:root{
+  --bg:#F4F4F3; --bg2:#EFE9E1; --card:#FFFFFF; --ink:#1A1A1A; --ink2:#444444; --muted:#666666;
+  --line:#E7E7E6; --acc:#C8161D; --acc2:#A80F15; --acc-soft:#FBE4E5; --acc-ink:#A30F16;
+  --seg:#E4E4E3; --nav:#1F1F1F; --ok:#2E9E5B; --green-soft:#E3F2E8; --green-ink:#25794A;
+  --r-card:28px; --shadow:0 10px 30px -18px rgba(60,40,20,.28);
+  --btn:#1A1A1A; --btn-ink:#fff; --st:env(safe-area-inset-top,0px); --sb:env(safe-area-inset-bottom,0px);
+  --navh:86px;
+}
+html,body{background:var(--bg)!important;font-family:PJS,Inter,system-ui,sans-serif!important;color:var(--ink)}
+body{padding-bottom:calc(var(--navh) + var(--sb) + 18px)!important;-webkit-font-smoothing:antialiased}
+
+/* en-tête : rangée de marque claire, comme l'accueil client */
+header{background:var(--bg)!important;color:var(--ink)!important;box-shadow:none!important;border:0!important;
+  padding:calc(10px + var(--st)) 18px 4px!important;position:sticky;top:0;z-index:50}
+.hd-top{background:transparent;box-shadow:none;padding:0;display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:none}
+.brand-icon{width:auto!important;height:40px!important;border-radius:9px!important;background:transparent!important;overflow:visible}
+.brand-icon img{width:auto;height:40px}
+.brand{flex:1;min-width:0}
+.brand b{font-size:16px!important;font-weight:700!important;letter-spacing:-.01em;color:var(--ink)}
+.brand small{color:var(--acc)!important;font-size:9.5px;letter-spacing:2px;font-weight:700;margin-top:1px}
+.header-actions{gap:8px}
+.iconbtn{width:40px!important;height:40px!important;border-radius:50%!important;background:var(--card)!important;
+  color:var(--ink)!important;border:0!important;box-shadow:var(--shadow)}
+.iconbtn svg{width:20px;height:20px}
+.service{margin:10px 0 0!important;display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:999px;
+  background:var(--card);box-shadow:var(--shadow);font-size:13px!important;font-weight:600!important;color:var(--ink2)!important}
+.service-dot{width:8px;height:8px;border-radius:50%;background:var(--ok)!important;box-shadow:none!important}
+
+/* titres de section */
+.list-head{margin:18px 18px 10px!important}
+#list-title{font-size:20px!important;font-weight:700!important;letter-spacing:-.02em}
+#list-count{font-size:12.5px!important;color:var(--muted)!important;font-weight:600}
+
+/* héros de tournée : carte sombre du client */
+.tour-hero{margin:12px 18px 0!important;padding:20px!important;border-radius:var(--r-card)!important;overflow:hidden;position:relative;
+  background:linear-gradient(160deg,#242120,#1A1A1A 60%,#2A1315)!important;color:#fff;box-shadow:var(--shadow)}
+.tour-hero::after{content:"";position:absolute;right:-70px;top:-80px;width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,22,29,.45),rgba(200,22,29,0) 66%)}
+.tour-label{font-size:10px;letter-spacing:2.4px;font-weight:700;color:#FF6B70;text-transform:uppercase}
+.tour-hero h1{font-size:28px!important;font-weight:700!important;letter-spacing:-.03em;margin-top:6px;color:#fff!important}
+.tour-date{font-size:11.5px;font-weight:600;color:#D8D4D0;background:rgba(255,255,255,.10);border-radius:999px;padding:6px 12px}
+.tour-summary{display:flex;gap:8px;margin-top:16px;position:relative;z-index:1}
+.tour-summary span{flex:1;background:rgba(255,255,255,.08);border-radius:16px;padding:10px 12px;font-size:11.5px;font-weight:600;color:#CFCBC7}
+.tour-summary b{display:block;font-size:21px;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:2px}
+
+/* tuiles : cartes blanches du client */
+.adm-stats{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin:12px 18px 0!important}
+.adm-stat{background:var(--card)!important;border:0!important;border-radius:22px!important;padding:14px 12px!important;box-shadow:var(--shadow)!important}
+.adm-stat b{font-size:22px!important;font-weight:700!important;letter-spacing:-.02em;color:var(--ink)!important}
+.adm-stat span,.adm-stat small{font-size:10px!important;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)!important;font-weight:700}
+.adm-stat.cash,.adm-stat.cash-stat,#stats .cash{grid-column:1/-1!important;display:flex;align-items:baseline;justify-content:space-between;
+  background:var(--card)!important;border-radius:22px!important}
+.adm-stat.cash b,.adm-stat.cash-stat b,#stats .cash b{color:var(--acc)!important;font-size:24px!important}
+
+/* filtres : pastilles du client */
+.tabs{display:flex!important;gap:8px!important;background:transparent!important;border:0!important;box-shadow:none!important;
+  margin:16px 18px 0!important;padding:0!important;overflow-x:auto}
+.tabs button{flex:0 0 auto!important;height:40px!important;border-radius:999px!important;background:var(--bg2)!important;
+  color:var(--ink2)!important;font-size:13.5px!important;font-weight:600!important;padding:0 16px!important;border:0!important;
+  display:flex;align-items:center;gap:7px}
+.tabs button.on{background:var(--btn)!important;color:var(--btn-ink)!important}
+.tab-count{background:rgba(26,26,26,.08);border-radius:999px;min-width:20px;height:20px;display:inline-grid;place-items:center;
+  font-size:11px;font-weight:700;padding:0 6px}
+.tabs button.on .tab-count{background:rgba(255,255,255,.20)}
+
+/* cartes mission */
+#orders{padding:0 18px!important;padding-bottom:calc(var(--navh) + 56px)!important}
+.mission{background:var(--card)!important;border:0!important;border-radius:var(--r-card)!important;box-shadow:var(--shadow)!important;
+  padding:18px!important;margin-bottom:14px!important}
+.oid{background:var(--bg)!important;border:0!important;color:var(--ink2)!important;font-weight:700!important;font-size:11.5px!important;
+  padding:6px 11px!important;border-radius:999px!important}
+.status{font-size:10px!important;font-weight:700!important;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px!important;
+  border-radius:999px!important;background:var(--acc-soft)!important;color:var(--acc-ink)!important}
+.mission .status.shipping{background:var(--acc)!important;color:#fff!important}
+.mission .status.done{background:var(--green-soft)!important;color:var(--green-ink)!important}
+.customer-name{font-size:17px!important;font-weight:700!important;letter-spacing:-.02em}
+.customer,.customer-slot,.kv,.detail-cell{font-size:13px!important;color:var(--muted)!important;font-weight:500}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--acc-soft)!important;color:var(--acc-ink)!important;
+  display:grid;place-items:center;font-size:12.5px;font-weight:700}
+
+/* boutons : pilules du client */
+.btn{border-radius:999px!important;font-weight:600!important;font-size:15px!important;padding:16px 18px!important}
+.btn.primary{background:var(--btn)!important;color:var(--btn-ink)!important;box-shadow:none!important}
+.btn.secondary{background:var(--bg)!important;color:var(--ink)!important;border:0!important}
+.mission-cta{background:var(--btn)!important;color:var(--btn-ink)!important;border-radius:999px!important;font-weight:600!important;
+  font-size:15px!important;width:100%;padding:16px!important;margin-top:14px!important}
+.contact-buttons .btn,.contact-actions .btn{background:var(--bg)!important;color:var(--ink)!important;border:0!important;
+  font-size:13px!important;padding:12px 8px!important;border-radius:999px!important}
+.contact-buttons .btn svg,.contact-actions .btn svg{color:var(--acc)!important}
+
+/* suivi */
+.progress-card,.details-card{background:var(--card)!important;border:0!important;border-radius:var(--r-card)!important;box-shadow:var(--shadow)!important}
+.progress-track{background:var(--seg)!important;border-radius:999px!important;height:8px!important}
+.progress-fill{background:var(--acc)!important;border-radius:999px!important}
+.step-dot.now{background:var(--acc)!important;box-shadow:0 0 0 4px var(--acc-soft)!important}
+.step-dot.past{background:var(--ink)!important}
+.tracking-hero{background:linear-gradient(160deg,#242120,#1A1A1A)!important;border-radius:var(--r-card)!important}
+.map-wrap{border-radius:var(--r-card)!important;overflow:hidden;box-shadow:var(--shadow)}
+.live-strip{background:var(--card)!important;border:0!important;border-radius:999px!important;box-shadow:var(--shadow)!important;
+  font-size:12px!important;font-weight:600;color:var(--ink2)!important}
+.live-dot{background:var(--acc)!important;box-shadow:0 0 0 3px var(--acc-soft)!important}
+
+/* connexion */
+.login-wrap{background:var(--bg)!important}
+.login-card{background:var(--card)!important;border:0!important;border-radius:var(--r-card)!important;box-shadow:var(--shadow)!important;padding:26px 22px!important}
+.login-kicker{color:var(--acc)!important;font-weight:700!important;letter-spacing:.1em;font-size:10px!important;text-transform:uppercase}
+.login-card h1{font-size:30px!important;font-weight:700!important;letter-spacing:-.035em;margin:10px 0 8px}
+.login-card p{font-size:13.5px!important;color:var(--muted)!important;line-height:1.5;font-weight:400}
+.field label{font-size:10px!important;font-weight:700!important;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)!important}
+.field input{background:var(--bg)!important;border:1.5px solid transparent!important;border-radius:16px!important;padding:15px!important;
+  font-weight:600!important;font-size:15px!important}
+.field input:focus{border-color:var(--acc)!important;box-shadow:0 0 0 4px var(--acc-soft)!important;background:var(--card)!important}
+
+/* états vides, messages, toast */
+.empty{background:var(--card)!important;border:0!important;border-radius:var(--r-card)!important;box-shadow:var(--shadow)!important;padding:28px 20px!important}
+.empty h3{font-size:17px!important;font-weight:700!important}
+.empty p{font-size:13px!important;color:var(--muted)!important}
+.empty-icon{background:var(--acc-soft)!important;color:var(--acc)!important;border-radius:50%!important}
+.toast{background:#1A1A1A!important;color:#fff!important;border-radius:999px!important;font-weight:600!important;font-size:13.5px!important;
+  box-shadow:0 10px 24px -12px rgba(0,0,0,.5)!important;bottom:calc(var(--navh) + 18px + var(--sb))!important}
+.msg{background:var(--bg)!important;border-radius:18px!important;font-size:13px!important}
+.msg.me,.driver-chat-messages .me{background:var(--acc)!important;color:#fff!important}
+.driver-chat-compose{background:var(--card)!important;border:0!important;border-radius:18px!important;box-shadow:var(--shadow)!important}
+
+/* barre basse : géométrie exacte du client */
+#drcNav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;height:calc(var(--navh) + var(--sb))!important;
+  padding:0 18px var(--sb)!important;border-radius:0!important;background:var(--nav)!important;box-shadow:0 -8px 24px -18px rgba(0,0,0,.5)!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important}
+#drcNav button{flex:0 0 auto!important;width:48px!important;height:48px!important;padding:0!important;display:grid!important;place-items:center!important;
+  background:none!important;border:0!important;color:#fff!important;font-size:0!important;position:relative}
+#drcNav button .ic{display:grid;place-items:center}
+#drcNav button svg{width:30px!important;height:30px!important;fill:currentColor!important;stroke:none!important}
+#drcNav button.on{color:var(--acc)!important}
+#drcNav button.on .ic{color:var(--acc)}
+#drcNav .mid{width:60px!important;height:60px!important;border-radius:19px!important;background:var(--acc)!important;
+  box-shadow:0 6px 14px -6px rgba(0,0,0,.45)!important}
+#drcNav .mid .ring{width:60px;height:60px;border-radius:19px;background:transparent;margin:0;border:0;box-shadow:none;display:grid;place-items:center}
+#drcNav .mid .ring svg{width:28px!important;height:28px!important;stroke:#fff!important;fill:none!important}
+</style>
+
+<style id="logo-fix">
+/* le logo du PNG est large (434×223) : sans taille explicite il débordait de sa plaque */
+#splash .splash-mark{background:#fff!important;border:0!important;width:118px!important;height:118px!important;
+  border-radius:28px!important;box-shadow:0 18px 44px -20px rgba(0,0,0,.55)!important;overflow:hidden}
+#splash .splash-mark img{width:88px!important;height:auto!important;max-height:88px!important;object-fit:contain;display:block}
+header .brand-icon img{height:40px!important;width:auto!important;object-fit:contain;display:block}
+</style>
+
+<style id="login-like-gerant">
+/* La page de code d'accès reprend trait pour trait celle de l'app gérant */
+header{display:none!important}                 /* pas de bandeau sur l'écran de connexion */
+#view-login{padding:0 22px calc(28px + var(--sb))!important;display:flex;flex-direction:column;justify-content:center;min-height:100vh}
+#view-login .login-wrap{width:100%;max-width:520px;margin:0 auto;background:transparent!important}
+#view-login .login-card{background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important}
+
+.lg-brand{position:relative;display:flex;align-items:center;gap:14px;margin:0 0 30px}
+.lg-brand::before{content:"";position:absolute;left:-10px;top:-10px;width:96px;height:96px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,22,29,.16),rgba(200,22,29,0) 64%);pointer-events:none}
+.lg-brand img{width:74px;height:74px;padding:14px;object-fit:contain;border-radius:20px;background:#fff;
+  box-shadow:0 14px 30px -16px rgba(0,0,0,.45), 0 0 0 1px rgba(26,26,26,.05);position:relative;z-index:1}
+.lg-brand span{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 13px;border-radius:999px;
+  background:#1A1A1A;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  box-shadow:0 8px 18px -10px rgba(0,0,0,.6)}
+.lg-brand span::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acc);box-shadow:0 0 0 3px rgba(200,22,29,.20)}
+
+#view-login .login-kicker{display:none!important}
+#view-login h1{font-size:34px!important;line-height:1.12!important;font-weight:700!important;letter-spacing:-.035em!important;margin:0 0 10px!important}
+#view-login h1 br{display:none}
+#view-login p{font-size:13.5px!important;line-height:1.55!important;color:var(--muted)!important;margin-bottom:26px!important;max-width:420px}
+#view-login .field{margin-bottom:14px}
+#view-login .field label{font-size:10px!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase;color:var(--muted)!important;margin-bottom:8px;display:block}
+#view-login .field input{height:56px!important;border-radius:16px!important;background:var(--bg)!important;border:1.5px solid transparent!important;
+  padding:0 16px!important;font-size:15.5px!important;font-weight:600!important;letter-spacing:.08em}
+#view-login .field input:focus{border-color:var(--acc)!important;background:#fff!important;box-shadow:0 0 0 4px var(--acc-soft)!important}
+#view-login .btn,#view-login #lg-btn{margin-top:10px!important;height:58px!important;border-radius:999px!important;
+  background:var(--btn)!important;color:#fff!important;font-size:16px!important;font-weight:600!important;width:100%;box-shadow:none!important}
+#view-login .sec-note,#view-login .sec-note *{color:var(--muted)!important}
+#view-login .sec-note{margin-top:16px!important;font-size:12px!important;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+#view-login .server-note{margin-top:14px!important;font-size:11.5px!important;color:var(--muted)!important}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="scooter" viewBox="0 0 64 64"><g stroke-width="3.6"><rect x="11" y="13" width="18" height="14" rx="3"/><path d="M20 13v5"/><path d="M8 44c0-7 5-12 12-12h11l3 9h14"/><path d="M50.3 39.5 44.5 19M40 19h8.5"/><circle cx="16" cy="46" r="6.5"/><circle cx="50" cy="46" r="6.5"/><path d="M22.5 46h21"/></g></symbol>
+<symbol id="phone" viewBox="0 0 24 24"><path d="M7 3H5a2 2 0 0 0-2 2c0 8.8 7.2 16 16 16a2 2 0 0 0 2-2v-2l-4-1-2 2c-4-1.5-6.5-4-8-8l2-2-2-5z"/></symbol>
+<symbol id="map" viewBox="0 0 24 24"><path d="M12 21s7-6 7-12A7 7 0 0 0 5 9c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+<symbol id="box" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10M8 5l8 4"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></symbol>
+<symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v5h-5"/></symbol>
+<symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+</defs></svg>
+<div id="splash"><div class="splash-inner"><div class="splash-mark"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="splash-brand">DAROU RAHMANE CHICKEN</div><div class="splash-role">LIVREUR</div><div class="splash-line"></div><div class="splash-sub">VOS LIVRAISONS. VOTRE TOURNÉE.</div></div></div>
+<header><div class="hd-top"><div class="brand-icon"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="brand"><b>DRC LIVREUR</b><small>ESPACE PROFESSIONNEL</small></div><div class="header-actions app-only hidden"><button class="iconbtn" onclick="loadOrders()" aria-label="Actualiser les missions"><svg class="svg"><use href="#refresh"/></svg></button><button class="iconbtn" onclick="lock()" aria-label="Verrouiller l’application"><svg class="svg"><use href="#lock"/></svg></button></div></div><div class="service app-only hidden" id="service"><span class="service-dot"></span><span id="service-text">Connexion au service…</span></div></header>
+<main id="view-login"><section class="login-wrap"><div class="lg-brand"><img src="logo.png" alt="Darou Rahmane Chicken"><span>Espace livreur</span></div><div class="login-card"><div class="login-kicker"><svg class="svg"><use href="#scooter"/></svg> Accès livreur</div><h1>Votre tournée<br>commence ici.</h1><p>Consultez les colis confiés par le gérant, contactez les destinataires et confirmez chaque livraison.</p><div class="field" id="lg-field"><label for="lg-code">Code livreur</label><input id="lg-code" type="password" placeholder="Ex. DRC-1234-5678" autocomplete="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')login()"><div class="server-note">Code donné par le gérant (Espace gérant → Livreurs). Majuscules et tirets facultatifs.</div><div class="msg">Code incorrect ou serveur indisponible</div></div><button class="btn primary" id="lg-btn" onclick="login()">Accéder à mes missions</button><p class="sec-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.6 8 11 4.6-1.4 8-6 8-11V5l-8-3Zm-1 14-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7Z"/></svg>Connexion protégée : votre code n’est jamais enregistré sur le téléphone.</p><input id="lg-server" type="hidden"></div></section></main>
+<main id="view-app" class="hidden"><section class="tour-hero"><div class="tour-top"><div><div class="tour-label">Tableau de bord</div><h1 id="tournee-title">Ma tournée</h1></div><div class="tour-date" id="tour-date"></div></div><div class="tour-summary"><span><b id="active-total">0</b> missions actives</span><span><b id="done-total">0</b> terminées</span></div></section><div class="adm-stats" id="stats"></div><div class="tabs" role="tablist" aria-label="Filtrer les missions"><button id="t-depot" class="on" role="tab" onclick="switchTab('depot')">À récupérer<span class="tab-count" id="count-depot">0</span></button><button id="t-shipping" role="tab" onclick="switchTab('shipping')">En cours<span class="tab-count" id="count-shipping">0</span></button><button id="t-done" role="tab" onclick="switchTab('done')">Terminées<span class="tab-count" id="count-done">0</span></button></div><div class="list-head"><h2 id="list-title">Colis à récupérer au dépôt</h2><span id="list-count">0 mission</span></div><div id="orders" aria-live="polite"></div></main>
+<section id="mission-tracking" class="tracking-page" aria-label="Suivi de la mission">
+  <div class="tracking-nav"><button class="iconbtn" onclick="closeTracking()" aria-label="Retour">←</button><h2>Suivi de la mission</h2><button class="iconbtn" onclick="refreshTracking()" aria-label="Actualiser"><svg class="svg"><use href="#refresh"/></svg></button></div>
+  <div class="tracking-content">
+    <div class="tracking-hero" id="tracking-hero"></div>
+    <div class="map-wrap"><div id="mission-map"></div><div id="map-fallback" class="map-fallback hidden"></div><div class="map-credit">Itinéraire indicatif · OpenStreetMap contributors</div></div>
+    <button class="btn gmaps" id="gmapsNav" data-track-action="maps" style="margin:0 14px 10px;width:calc(100% - 28px)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Itinéraire Google Maps</span></button>
+    <button class="btn secondary" id="sharePos" style="margin:0 14px 14px;width:calc(100% - 28px)" onclick="toggleSharePos()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Partager ma position au client</span></button>
+    <div class="progress-card"><h3>Progression de la livraison</h3><div id="tracking-progress"></div></div>
+    <div class="contact-driver" id="tracking-contact"></div>
+    <div class="contact-buttons">
+      <button class="btn whatsapp" data-track-action="message">Message</button>
+      <button class="btn secondary" data-track-action="sms">SMS</button>
+      <button class="btn secondary" data-track-action="call">Appeler</button>
+    </div>
+    <div class="driver-chat" id="driver-chat"><h3>Conversation avec le client</h3><div class="driver-chat-messages" id="driver-chat-messages" role="log" aria-live="polite"><div class="chat-empty">Chargement…</div></div><div class="driver-chat-compose"><textarea id="driver-chat-input" maxlength="1000" rows="1" aria-label="Réponse au client" placeholder="Écrivez au client…"></textarea><button class="btn primary" onclick="sendDriverMessage()">Envoyer</button></div></div>
+    <div class="details-card"><h3>Détails de la livraison</h3><div class="details-grid" id="tracking-details"></div></div>
+    <div class="tracking-action" id="tracking-action"></div>
+    <div class="tracking-action map-open-btn"><button class="btn secondary" data-track-action="maps"><svg class="svg"><use href="#map"/></svg>Ouvrir dans Maps</button></div>
+  </div>
+</section>
+<div id="toast" role="status"></div>
+<script src="leaflet/leaflet.js"></script>
+<script>
+/* version web : notifications du navigateur à la place du pont Android */
+(function(){
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.5').catch(function(){});
+  function show(t, b){
+    try {
+      /* dans l'app (onglet visible et au premier plan) : pas de notification système */
+      if (!document.hidden && document.hasFocus()) return;
+      if (!('Notification' in window)) return;
+      var go = function(){ navigator.serviceWorker.ready.then(function(r){ r.showNotification(t, {body:b, icon:'icons/icon-192.png', badge:'icons/icon-192.png', vibrate:[60,40,60]}); }); };
+      if (Notification.permission === 'granted') go();
+      else if (Notification.permission === 'default') Notification.requestPermission().then(function(p){ if (p === 'granted') go(); });
+    } catch(e) {}
+  }
+  if (!window.Android) window.Android = {
+    notify: show,
+    vibrate: function(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch(e) {} },
+    copy: function(t){ try { navigator.clipboard.writeText(t); } catch(e) {} }
+  };
+  var seen = null;
+  if (!window.notifyNew) window.notifyNew = function(list){
+    try {
+      var ids = (list || []).map(function(o){ return String(o.id); });
+      if (seen) ids.filter(function(i){ return seen.indexOf(i) < 0; }).forEach(function(i){ show('Nouvelle mission', 'Commande ' + i + ' vous est attribuée'); });
+      seen = ids;
+    } catch(e) {}
+  };
+  document.addEventListener('click', function once(){ try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch(e) {} document.removeEventListener('click', once, true); }, true);
+})();
+</script>
+<script>
+const DEFAULT_API = 'https://drc-api-dj8t.onrender.com';
+function validServer(v){return /^https:\/\/[^\s]+$/.test(v)||/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(v)}
+const API = () => DEFAULT_API;
+let token = localStorage.getItem('drc_driver') || '';
+let tabTouched = false;
+function autoTab(){if(tabTouched)return;const st=o=>o.status||'pending';const dep=orders.some(o=>['confirmed','preparing','paid'].includes(st(o)));const sh=orders.some(o=>st(o)==='shipping');const t=dep?'depot':(sh?'shipping':'depot');if(t===tab)return;tab=t;['depot','shipping','done'].forEach(x=>{const b=document.getElementById('t-'+x);if(b){b.classList.toggle('on',x===t);b.setAttribute('aria-selected',x===t?'true':'false')}})}
+let orders = [], tab = 'depot', timer = null, loadSequence = 0, statusSequence = 0;
+const pendingStatus = new Set();
+const PAY = {wave:'Wave',orange_money:'Orange Money',cod:'Espèces'};
+/* Notification seulement hors de l'app : à l'écran, la mission apparaît déjà dans la liste. */
+const inApp = () => {
+  try {
+    if (window.Android && window.Android.isForeground) return !!window.Android.isForeground();
+    return document.visibilityState === 'visible' && document.hasFocus();
+  } catch(e) { return true; }
+};
+/* Dans l'APK il n'y a pas de passerelle web : on branche notifyNew sur le pont Android,
+   toujours avec la même règle (rien quand le livreur regarde l'écran). */
+if (!window.notifyNew && window.Android && window.Android.notify) {
+  let seenIds = null;
+  window.notifyNew = function(list){
+    try {
+      const ids = (list || []).map(o => String(o.id));
+      if (seenIds) ids.filter(i => seenIds.indexOf(i) < 0).forEach(i => window.Android.notify('Nouvelle mission', 'Commande ' + i + ' vous est attribuée'));
+      seenIds = ids;
+    } catch(e) {}
+  };
+}
+const fmt = n => Number(n||0).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g,' ');
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2600)}
+function net(state,txt){const b=document.getElementById('service');b.classList.toggle('online',state==='on');b.classList.toggle('offline',state==='off');document.getElementById('service-text').textContent=txt}
+function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms||10)}catch(e){}}
+async function api(path, opts){const c=new AbortController();const t=setTimeout(()=>c.abort(),22000);try{const r=await fetch(API()+path,Object.assign({cache:'no-store'},opts||{},{signal:c.signal,headers:Object.assign({'X-Admin-Token':token,'Content-Type':'application/json'},(opts&&opts.headers)||{})}));let j=null;try{j=await r.json()}catch(e){}return {ok:r.ok,status:r.status,data:j}}finally{clearTimeout(t)}}
+function saveServer(){const v=(document.getElementById('lg-server').value||'').trim().replace(/\/+$/,'');if(!validServer(v)){toast('Utilisez une adresse HTTPS sécurisée');return}localStorage.setItem('drc_api',v);toast('Serveur enregistré');location.reload()}
+function applyProfile(d){
+  if(d&&d.depot&&Number.isFinite(Number(d.depot.lat))&&Number.isFinite(Number(d.depot.lng)))DEPOT={lat:Number(d.depot.lat),lng:Number(d.depot.lng),label:String(d.depot.label||DEPOT.label)};
+  if(d&&d.driver){ME=d.driver;const first=String(ME.name||'').trim().split(/\s+/)[0];document.getElementById('tournee-title').textContent=first?'Bonjour '+first:'Ma tournée'}
+}
+function lock(){closeTracking();token='';ME=null;document.getElementById('tournee-title').textContent='Ma tournée';localStorage.removeItem('drc_driver');clearInterval(timer);loadSequence++;statusSequence++;orders=[];pendingStatus.clear();document.getElementById('orders').innerHTML='';document.getElementById('driver-chat-messages').innerHTML='';showLogin();toast('Application verrouillée')}
+function showLogin(){document.getElementById('view-login').classList.remove('hidden');document.getElementById('view-app').classList.add('hidden');document.querySelectorAll('.app-only').forEach(e=>e.classList.add('hidden'));document.getElementById('lg-server').value=API()}
+async function login(){const inp=document.getElementById('lg-code');const code=(inp.value||'').trim();const fld=document.getElementById('lg-field');if(!code){toast('Saisissez votre code livreur');shake(fld);return}const btn=document.getElementById('lg-btn');btn.classList.add('loading');btn.disabled=true;try{const r=await fetch(DEFAULT_API+'/api/staff/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,role:'driver'}),cache:'no-store'});inp.value='';if(r.status===429){const j=await r.json().catch(()=>({}));fld.classList.add('err');shake(fld);toast('Trop d’essais — réessayez dans '+Math.ceil((j.retry_after||600)/60)+' min');return}if(r.status!==200){fld.classList.add('err');shake(fld);toast(r.status===401?'Code livreur incorrect':'Serveur indisponible');return}const j=await r.json();token=j.token;localStorage.setItem('drc_driver',token);fld.classList.remove('err');enter()}catch(e){toast('Serveur injoignable — réessayez')}finally{btn.classList.remove('loading');btn.disabled=false}}
+function shake(el){if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
+async function migrateToken(){if(!token||token.startsWith('stf.'))return;try{const r=await fetch(DEFAULT_API+'/api/staff/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:token,role:'driver'}),cache:'no-store'});if(r.status===200){token=(await r.json()).token;localStorage.setItem('drc_driver',token)}else if(r.status===401){token='';localStorage.removeItem('drc_driver')}}catch(e){}}
+function enter(){document.getElementById('view-login').classList.add('hidden');document.getElementById('view-app').classList.remove('hidden');document.querySelectorAll('.app-only').forEach(e=>e.classList.remove('hidden'));document.getElementById('tour-date').innerHTML=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}).replace(',','<br>');loadOrders();clearInterval(timer);timer=setInterval(loadOrders,20000)}
+function itemsText(o){return (o.items||[]).map(i=>esc(i.name||'')+' ×'+Number(i.qty||1)).join('<br>')||'—'}
+function paymentMethod(o){const c=o.customer||{};return o.payment_method||(c.pay_phone?'wave':'cod')}
+function isCod(o){return paymentMethod(o)==='cod'}
+function isDelivered(o){return o.status==='delivered'}
+function isToday(o){const raw=o.delivered_at||o.updated_at||o.created_at;if(!raw)return true;const d=new Date(raw),n=new Date();return !isNaN(d)&&d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()&&d.getDate()===n.getDate()}
+function doneOrders(){return orders.filter(o=>isDelivered(o)&&isToday(o))}
+async function loadOrders(){if(pendingStatus.size)return;const seq=++loadSequence,mutationAtStart=statusSequence;try{const r=await api('/api/driver/orders');if(seq!==loadSequence||mutationAtStart!==statusSequence)return;if(r.status===401||r.status===403){lock();return}if(!r.ok)throw new Error('HTTP '+r.status);if(!r.data||!Array.isArray(r.data.orders))throw new Error('Réponse invalide');orders=r.data.orders;applyProfile(r.data);if(window.notifyNew&&!inApp())notifyNew(r.data.orders);net('on','En service · synchronisation toutes les 20 s');renderStats();autoTab();renderOrders()}catch(e){if(seq!==loadSequence||mutationAtStart!==statusSequence)return;net('off','Hors ligne · nouvelle tentative dans 20 s');if(!orders.length)document.getElementById('orders').innerHTML='<div class="empty"><div class="empty-icon"><svg class="svg"><use href="#refresh"/></svg></div><h3>Connexion impossible</h3><p>Vos missions réapparaîtront dès que le serveur sera accessible.</p></div>'}}
+function renderStats(){const depot=orders.filter(o=>['confirmed','preparing','paid'].includes(o.status||''));const ship=orders.filter(o=>(o.status||'')==='shipping');const done=doneOrders();const cash=depot.concat(ship).filter(isCod).reduce((s,o)=>s+Number(o.total||0),0);document.getElementById('active-total').textContent=depot.length+ship.length;document.getElementById('done-total').textContent=done.length;document.getElementById('count-depot').textContent=depot.length;document.getElementById('count-shipping').textContent=ship.length;document.getElementById('count-done').textContent=done.length;document.getElementById('stats').innerHTML=`<div class="adm-stat"><b>${depot.length}</b><small>Au dépôt</small></div><div class="adm-stat"><b>${ship.length}</b><small>En cours</small></div><div class="adm-stat"><b>${done.length}</b><small>Terminées</small></div><div class="adm-stat cash-stat"><small>ESPÈCES À ENCAISSER</small><b>${fmt(cash)}<span>F</span></b></div>`}
+function visible(){return orders.slice().reverse().filter(o=>{const s=o.status||'pending';if(tab==='depot')return ['confirmed','preparing','paid'].includes(s);if(tab==='shipping')return s==='shipping';if(tab==='done')return isDelivered(o)&&isToday(o);return false})}
+function renderOrders(){const list=visible(),box=document.getElementById('orders');const titles={depot:'Colis à récupérer au dépôt',shipping:'Livraisons en cours',done:'Livraisons terminées'};document.getElementById('list-title').textContent=titles[tab];document.getElementById('list-count').textContent=list.length+' mission'+(list.length>1?'s':'');const empty={depot:['box','Dépôt à jour','Aucun colis ne vous attend actuellement au dépôt.'],shipping:['scooter','Aucune course en cours','Récupérez un colis au dépôt pour démarrer une livraison.'],done:['check','Aucune livraison terminée','Vos missions confirmées apparaîtront ici.']}[tab];if(!list.length){box.innerHTML=`<div class="empty"><div class="empty-icon"><svg class="svg"><use href="#${empty[0]}"/></svg></div><h3>${empty[1]}</h3><p>${empty[2]}</p></div>`;return}box.innerHTML=list.map(o=>{const c=o.customer||{},s=o.status||'pending',id=String(o.id),busy=pendingStatus.has(id),done=isDelivered(o);const phone=String(c.phone||'').trim(),phoneHref=phone.replace(/[^\d+]/g,''),address=orderAddress(o),zone=String(c.zone||'').trim()||'Dakar';const mapUrl=mapsUrl(o);const initials=String(c.name||'Client').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();return `<article class="mission ${s==='shipping'?'shipping':done?'done':''}" data-order="${esc(id)}"><div class="mission-top"><span class="oid">MISSION ${esc(id)}</span><span class="status ${s==='shipping'?'shipping':done?'done':''}">${statusLabel(s)}</span></div><div class="zone">${esc(zone)}</div><div class="customer"><div class="avatar">${esc(initials||'CL')}</div><div><div class="customer-name">${esc(c.name||'Destinataire non renseigné')}</div><div class="customer-slot">${c.slot?'Créneau : '+esc(c.slot):'Créneau non précisé'}</div></div></div><div class="kv"><b>Adresse</b><span>${address?esc(address):'Adresse non renseignée'}${orderGps(o)?' · <a href="'+esc(mapUrl)+'" target="_blank" rel="noopener">GPS ↗</a>':''}</span></div><div class="kv"><b>Contenu</b><span>${itemsText(o)}</span></div><div class="kv"><b>Repère</b><span>${esc(c.note||'Aucun repère ajouté')}</span></div>${!done?(isCod(o)?`<div class="cash"><span>À ENCAISSER</span><b>${fmt(o.total)} F</b></div>`:`<div class="cash prepaid"><span>DÉJÀ PAYÉ · ${esc(PAY[paymentMethod(o)]||'MOBILE MONEY')}</span><b>0 F</b></div>`):`<div class="cash prepaid"><span>LIVRAISON CONFIRMÉE</span><b>✓</b></div>`}${['confirmed','preparing','paid'].includes(s)?`<button class="btn primary mission-cta" data-action="status" data-id="${esc(id)}" data-status="shipping" ${busy?'disabled':''}><svg class="svg"><use href="#box"/></svg>${busy?'Mise à jour…':'Colis récupéré au dépôt'}</button>`:''}${s==='shipping'?`<button class="btn success mission-cta" data-action="status" data-id="${esc(id)}" data-status="delivered" ${busy?'disabled':''}><svg class="svg"><use href="#check"/></svg>${busy?'Confirmation…':'Confirmer la livraison'}</button>`:''}${!done?`<div class="contact-actions"><button class="btn secondary" data-action="message" data-id="${esc(id)}" ${!phoneHref?'disabled':''}>Message</button><button class="btn secondary" data-action="call" data-id="${esc(id)}" ${!phoneHref?'disabled':''}>Appeler</button><button class="btn secondary" data-action="track" data-id="${esc(id)}"><svg class="svg"><use href="#map"/></svg>Suivi</button></div>`:''}</article>`}).join('')}
+let trackingId = null, missionMap = null, routeGroup = null, trackingSeq = 0;
+let DEPOT = {lat:14.757605, lng:-17.445161, label:'Dépôt DRC · Parcelles Assainies U20'};
+let ME = null;
+const geoCache = {};
+function trackedOrder(){return orders.find(o=>String(o.id)===String(trackingId))}
+function orderAddress(o){const c=(o&&o.customer)||{};return String(c.address||c.zone||'').trim()}
+function statusLabel(s){return {confirmed:'À RÉCUPÉRER',preparing:'EN PRÉPARATION',paid:'PAYÉE',shipping:'EN COURS',delivered:'TERMINÉE'}[s]||'À RÉCUPÉRER'}
+function mapsUrl(o){const g=orderGps(o);if(g)return 'https://www.google.com/maps/dir/?api=1&destination='+g.lat+','+g.lng+'&travelmode=driving&dir_action=navigate';const a=orderAddress(o);return a?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(a+', Dakar, Sénégal'):''}
+function customerPhone(o){const c=(o&&o.customer)||{};return String(c.phone||'').replace(/[^\d+]/g,'')}
+function openTracking(id){
+  const o=orders.find(x=>String(x.id)===String(id));if(!o)return;
+  trackingId=String(id);trackingSeq++;if(missionMap){missionMap.remove();missionMap=null;routeGroup=null}
+  const c=o.customer||{},s=o.status||'pending',address=orderAddress(o);
+  const stages=['Confirmée','Préparée','En route','Livrée'];
+  const stage=s==='shipping'?2:isDelivered(o)?3:s==='preparing'?1:0;
+  const status=s==='shipping'?'EN ROUTE':isDelivered(o)?'LIVRÉE':statusLabel(s);
+  document.getElementById('tracking-hero').innerHTML=`<div class="tracking-order"><b>${esc(o.id)}</b><span>${status}</span></div><div class="tracking-route"><span>${esc(DEPOT.label)}</span><span>${esc(address||'Adresse non renseignée')}</span></div><div class="tracking-metrics"><div><b id="route-distance">—</b><small>Distance</small></div><div><b id="route-duration">—</b><small>Trajet estimé</small></div><div><b id="route-eta">—</b><small>Arrivée estimée</small></div></div>`;
+  document.getElementById('tracking-progress').innerHTML=`<div class="progress-track"><div class="progress-fill" style="width:${stage/3*100}%"></div></div><div class="tracking-steps">${stages.map((label,i)=>`<div class="tracking-step ${i<stage?'past':i===stage?'now':''}"><span class="step-dot">${i<stage?'✓':i+1}</span>${label}</div>`).join('')}</div>`;
+  const phone=customerPhone(o),initials=String(c.name||'Client').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
+  document.getElementById('tracking-contact').innerHTML=`<div class="avatar">${esc(initials||'CL')}</div><div class="who"><b>${esc(c.name||'Destinataire non renseigné')}</b><small>${phone?esc(c.phone):'Aucun numéro de téléphone'}</small></div>`;
+  document.querySelectorAll('.contact-buttons button').forEach(b=>b.disabled=!phone);
+  const count=(o.items||[]).reduce((n,i)=>n+Number(i.qty||1),0);
+  document.getElementById('tracking-details').innerHTML=`<div class="detail-cell"><small>Articles</small><b>${count}</b></div><div class="detail-cell"><small>Paiement</small><b>${esc(PAY[paymentMethod(o)]||'Mobile money')}</b></div><div class="detail-cell"><small>Total</small><b>${fmt(o.total)} F</b></div><div class="detail-cell"><small>Créneau</small><b>${esc(c.slot||'Non précisé')}</b></div><div class="detail-cell full"><small>Adresse</small><b>${esc(address||'Non renseignée')}</b></div><div class="detail-cell full"><small>Contenu</small><b>${itemsText(o)}</b></div><div class="detail-cell full"><small>Repère</small><b>${esc(c.note||'Aucun repère ajouté')}</b></div>`;
+  document.getElementById('tracking-action').innerHTML=['confirmed','preparing','paid'].includes(s)?`<button class="btn primary mission-cta" data-track-action="status" data-status="shipping">Colis récupéré au dépôt</button>`:s==='shipping'?`<button class="btn success mission-cta" data-track-action="status" data-status="delivered">Confirmer la livraison</button>`:'';
+  document.querySelector('[data-track-action="maps"]').disabled=!mapsUrl(o);
+  document.getElementById('mission-tracking').classList.add('open');document.body.style.overflow='hidden';startDriverChat(id);
+  document.getElementById('mission-map').classList.add('hidden');document.getElementById('map-fallback').classList.remove('hidden');document.getElementById('map-fallback').innerHTML='<div><svg class="svg"><use href="#map"/></svg><b>Chargement de l’itinéraire…</b></div>';
+  const openSeq=trackingSeq;
+  setTimeout(()=>{if(openSeq===trackingSeq&&trackingId===String(id))loadMissionMap(o)},80);
+  setTimeout(()=>{if(openSeq===trackingSeq&&trackingId===String(id))startLiveNav(o)},1500);
+}
+let sharePosT = null, sharePosWatch = null;
+async function pushPos(pos){
+  if (!trackingId) return;
+  try {
+    await api('/api/orders/' + encodeURIComponent(trackingId) + '/driver-position', {
+      method: 'POST',
+      body: JSON.stringify({lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy || 0)})
+    });
+  } catch (e) {}
+}
+function toggleSharePos(){
+  const b = document.getElementById('sharePos');
+  if (sharePosT) { stopSharePos(); toast('Position partagée : arrêtée'); return; }
+  if (!navigator.geolocation) { toast('Géolocalisation indisponible'); return; }
+  navigator.geolocation.getCurrentPosition(p => { pushPos(p); toast('Le client voit votre position'); }, () => toast('Autorisez la localisation'), {enableHighAccuracy:true, timeout:12000});
+  sharePosT = setInterval(() => navigator.geolocation.getCurrentPosition(pushPos, () => {}, {enableHighAccuracy:true, timeout:12000, maximumAge:10000}), 10000);
+  if (b) { b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Position partagée en direct · toucher pour arrêter</span>'; b.style.background = '#E4F6EC'; b.style.color = '#086B45'; }
+}
+function stopSharePos(){
+  if (sharePosT) { clearInterval(sharePosT); sharePosT = null; }
+  const b = document.getElementById('sharePos');
+  if (b) { b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Partager ma position au client</span>'; b.style.background = ''; b.style.color = ''; }
+}
+/* ── suivi en temps réel : ma position + itinéraire vers le client ── */
+let liveWatch = null, liveMe = null, liveClient = null, liveRoute = null, liveLastRoute = null, liveLastPush = 0, liveDest = null;
+function haversine(a, b) {
+  const R = 6371, dLat = (b.lat - a.lat) * Math.PI / 180, dLng = (b.lng - a.lng) * Math.PI / 180;
+  const la1 = a.lat * Math.PI / 180, la2 = b.lat * Math.PI / 180;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+function stopLiveNav() {
+  if (liveWatch !== null && navigator.geolocation) navigator.geolocation.clearWatch(liveWatch);
+  liveWatch = null; liveMe = null; liveClient = null; liveRoute = null; liveLastRoute = null; liveDest = null;
+}
+function startLiveNav(o) {
+  stopLiveNav();
+  if (!missionMap || !navigator.geolocation) return;
+  liveDest = orderGps(o);
+  const hero = document.getElementById('tracking-hero');
+  if (hero && !document.getElementById('liveStrip')) {
+    hero.insertAdjacentHTML('beforeend', '<div class="live-strip" id="liveStrip"><span class="live-dot"></span><span id="liveText">Localisation en cours…</span></div>');
+  }
+  if (liveDest) liveClient = L.circleMarker([liveDest.lat, liveDest.lng], {radius:9, color:'#fff', weight:3, fillColor:'#1A1A1A', fillOpacity:1}).addTo(missionMap).bindTooltip('Client');
+  liveWatch = navigator.geolocation.watchPosition(pos => onMyPos(pos), () => {
+    const t = document.getElementById('liveText'); if (t) t.textContent = 'Autorisez la localisation pour le suivi en direct';
+  }, {enableHighAccuracy:true, maximumAge:4000, timeout:15000});
+}
+function onMyPos(pos) {
+  if (!missionMap) return;
+  const me = {lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy || 0)};
+  /* hors du Sénégal (émulateur, position simulée) : on n'affiche pas un trajet absurde */
+  if (me.lat < 12 || me.lat > 17 || me.lng < -18 || me.lng > -11) {
+    const bad = document.getElementById('liveText');
+    if (bad) bad.innerHTML = '<b>Position hors zone</b> · activez le GPS de votre téléphone';
+    if (liveMe) { missionMap.removeLayer(liveMe); liveMe = null; }
+    return;
+  }
+  if (!liveMe) liveMe = L.circleMarker([me.lat, me.lng], {radius:8, color:'#fff', weight:3, fillColor:'#C8161D', fillOpacity:1}).addTo(missionMap).bindTooltip('Vous');
+  else liveMe.setLatLng([me.lat, me.lng]);
+  const txt = document.getElementById('liveText');
+  if (liveDest) {
+    const km = haversine(me, liveDest);
+    if (txt) txt.innerHTML = km < 0.15 ? '<b>Vous êtes arrivé</b> · à quelques mètres du client'
+      : '<b>' + (km < 1 ? Math.round(km * 1000) + ' m' : km.toFixed(1).replace('.', ',') + ' km') + '</b> du client · vous êtes suivi en direct';
+  } else if (txt) txt.innerHTML = '<b>Position active</b> · adresse du client sans GPS';
+  const now = Date.now();
+  if (now - liveLastPush > 10000) { liveLastPush = now; pushPos(pos); }
+  if (!liveLastRoute || haversine(me, liveLastRoute) > 0.25) { liveLastRoute = me; drawLiveRoute(me); }
+}
+async function drawLiveRoute(me) {
+  if (!missionMap || !liveDest || !navigator.onLine) return;
+  try {
+    const url = 'https://routing.openstreetmap.de/routed-car/route/v1/driving/' + me.lng + ',' + me.lat + ';' + liveDest.lng + ',' + liveDest.lat + '?overview=full&geometries=geojson';
+    const data = await mapFetch(url);
+    const route = data.routes && data.routes[0];
+    if (!route || !missionMap) return;
+    if (liveRoute) missionMap.removeLayer(liveRoute);
+    const pts = route.geometry.coordinates.map(p => [p[1], p[0]]);
+    liveRoute = L.polyline(pts, {color:'#C8161D', weight:6, opacity:.95, lineCap:'round'}).addTo(missionMap);
+    const km = (route.distance / 1000).toFixed(1).replace('.', ',');
+    const mins = Math.max(1, Math.round(route.duration / 60));
+    const d = document.getElementById('route-distance'); if (d) d.textContent = km + ' km';
+    const t = document.getElementById('route-duration'); if (t) t.textContent = mins + ' min';
+    const e = document.getElementById('route-eta'); if (e) e.textContent = new Date(Date.now() + mins * 60000).toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    const p = L.latLngBounds(pts); if (p.isValid()) missionMap.fitBounds(p, {padding:[36, 36], maxZoom:16, animate:false});
+  } catch (e) {}
+}
+function closeTracking(){stopSharePos();stopLiveNav();trackingSeq++;trackingId=null;clearInterval(driverChatPoll);driverChatPoll=null;document.getElementById('mission-tracking').classList.remove('open');document.body.style.overflow='';if(missionMap){missionMap.remove();missionMap=null;routeGroup=null}}
+function refreshTracking(){const id=trackingId;loadOrders().then(()=>{if(id&&trackedOrder())openTracking(id)})}
+function mapMessage(title,text){document.getElementById('mission-map').classList.add('hidden');const f=document.getElementById('map-fallback');f.classList.remove('hidden');f.innerHTML=`<div><svg class="svg"><use href="#map"/></svg><b>${esc(title)}</b><p>${esc(text)}</p></div>`}
+async function mapFetch(url){const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);try{const r=await fetch(url,{signal:c.signal,cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
+function orderGps(o){const c=o.customer||{};if(c.lat!==null&&c.lat!==''&&c.lng!==null&&c.lng!==''&&Number.isFinite(Number(c.lat))&&Number.isFinite(Number(c.lng))){const p={lat:Number(c.lat),lng:Number(c.lng)};if(Math.abs(p.lat)<=90&&Math.abs(p.lng)<=180)return p}const raw=String(c.gps||'');const m=raw.match(/(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)/);if(!m)return null;const p={lat:Number(m[1]),lng:Number(m[2])};return Math.abs(p.lat)<=90&&Math.abs(p.lng)<=180?p:null}
+async function loadMissionMap(o){
+  const seq=++trackingSeq,id=String(o.id),c=o.customer||{},address=orderAddress(o);
+  if(!address&&!orderGps(o)){mapMessage('Adresse non renseignée','Ajoutez une adresse ou une position GPS pour afficher l’itinéraire.');return}
+  if(!navigator.onLine){mapMessage('Carte indisponible hors ligne','Les informations de la mission restent accessibles. Reconnectez-vous pour calculer l’itinéraire.');return}
+  if(!window.L){mapMessage('Carte indisponible','Le moteur de carte local n’a pas pu être chargé.');return}
+  try{
+    let destination=orderGps(o);
+    if(!destination){if(geoCache[id])destination=geoCache[id];else{const q=encodeURIComponent(address+', Dakar, Sénégal');const places=await mapFetch('https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&accept-language=fr&q='+q);if(seq!==trackingSeq)return;if(!Array.isArray(places)||!places.length)throw new Error('Adresse introuvable');destination={lat:Number(places[0].lat),lng:Number(places[0].lon)};geoCache[id]=destination}}
+    if(seq!==trackingSeq||!document.getElementById('mission-tracking').classList.contains('open'))return;
+    document.getElementById('mission-map').classList.remove('hidden');document.getElementById('map-fallback').classList.add('hidden');
+    missionMap=L.map('mission-map',{preferCanvas:true,attributionControl:false,zoomControl:true,zoomAnimation:false,fadeAnimation:false,markerZoomAnimation:false}).setView([destination.lat,destination.lng],13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,updateWhenIdle:true,keepBuffer:2,crossOrigin:true}).addTo(missionMap);
+    routeGroup=L.layerGroup().addTo(missionMap);routeGroup.addLayer(L.circleMarker([DEPOT.lat,DEPOT.lng],{radius:9,color:'#fff',weight:3,fillColor:'#B3121A',fillOpacity:1}).bindTooltip('Dépôt DRC'));routeGroup.addLayer(L.circleMarker([destination.lat,destination.lng],{radius:9,color:'#fff',weight:3,fillColor:'#1A1A1A',fillOpacity:1}).bindTooltip('Destination'));
+    let bounds=[[DEPOT.lat,DEPOT.lng],[destination.lat,destination.lng]],route=null;
+    try{const url='https://routing.openstreetmap.de/routed-car/route/v1/driving/'+DEPOT.lng+','+DEPOT.lat+';'+destination.lng+','+destination.lat+'?overview=full&geometries=geojson';const data=await mapFetch(url);if(seq!==trackingSeq)return;route=data.routes&&data.routes[0];if(!route)throw new Error('Itinéraire introuvable');const points=route.geometry.coordinates.map(p=>[p[1],p[0]]);routeGroup.addLayer(L.polyline(points,{color:'#B3121A',weight:5,opacity:.9,lineCap:'round'}));bounds=points;document.getElementById('route-distance').textContent=(route.distance/1000).toFixed(1).replace('.',',')+' km';const mins=Math.max(1,Math.round(route.duration/60));document.getElementById('route-duration').textContent=mins+' min';document.getElementById('route-eta').textContent=new Date(Date.now()+mins*60000).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}catch(e){if(seq!==trackingSeq)return;routeGroup.addLayer(L.polyline(bounds,{color:'#A30F16',weight:3,dashArray:'7 8'}));document.getElementById('route-distance').textContent='—';document.getElementById('route-duration').textContent='—';document.getElementById('route-eta').textContent='—'}
+    missionMap.fitBounds(bounds,{padding:[32,32],maxZoom:16,animate:false});setTimeout(()=>{if(missionMap)missionMap.invalidateSize()},180);
+    setTimeout(()=>{if(seq===trackingSeq&&missionMap)startLiveNav(o)},400);
+  }catch(e){if(seq!==trackingSeq||!trackingId)return;mapMessage('Itinéraire indisponible','Impossible de localiser cette adresse pour le moment. Utilisez le bouton Maps ou appelez le client.')}
+}
+let driverChatPoll=null,driverChatBusy=false;
+function startDriverChat(id){clearInterval(driverChatPoll);driverChatPoll=setInterval(()=>loadDriverMessages(),4000);loadDriverMessages()}
+async function loadDriverMessages(){
+  const id=trackingId;if(!id||driverChatBusy)return;driverChatBusy=true;
+  try{
+    const r=await api('/api/orders/'+encodeURIComponent(id)+'/messages');if(!r.ok||!Array.isArray(r.data)||trackingId!==id)return;
+    const box=document.getElementById('driver-chat-messages');box.innerHTML='';
+    if(!r.data.length){box.innerHTML='<div class="chat-empty">Aucun message. Répondez au client ici.</div>';return}
+    r.data.forEach(m=>{const item=document.createElement('div');item.className='chat-message '+(m.sender_role==='driver'?'driver':'');const meta=document.createElement('small');meta.textContent=(m.sender_role==='driver'?'Vous':m.sender_role==='admin'?'Boutique DRC':'Client · '+m.sender_name)+' · '+new Date(m.created_at).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});const text=document.createElement('p');text.textContent=m.text;item.append(meta,text);box.appendChild(item)});box.scrollTop=box.scrollHeight;
+  }catch(e){}finally{driverChatBusy=false}
+}
+async function sendDriverMessage(){
+  const id=trackingId,input=document.getElementById('driver-chat-input');if(!id)return;const text=input.value.trim();if(!text){toast('Écrivez un message');return}
+  try{const r=await api('/api/orders/'+encodeURIComponent(id)+'/messages',{method:'POST',headers:{'X-Message-Role':'driver'},body:JSON.stringify({text})});if(!r.ok){toast('Message non envoyé');return}input.value='';await loadDriverMessages()}catch(e){toast('Message non envoyé')}
+}
+function messageCustomer(id){const o=orders.find(x=>String(x.id)===String(id));if(!o)return;const phone=customerPhone(o);if(!phone){toast('Téléphone non renseigné');return}const text=encodeURIComponent('Bonjour, je suis le livreur DRC. Au sujet de votre commande '+id+' : ');location.href='https://wa.me/'+phone.replace(/\D/g,'')+'?text='+text}
+function smsCustomer(id){const o=orders.find(x=>String(x.id)===String(id));if(!o)return;const phone=customerPhone(o);if(!phone){toast('Téléphone non renseigné');return}const text=encodeURIComponent('Bonjour, je suis le livreur DRC. Au sujet de votre commande '+id+' : ');location.href='sms:'+phone+'?body='+text}
+function callCustomer(id){const o=orders.find(x=>String(x.id)===String(id));if(!o)return;const phone=customerPhone(o);if(!phone){toast('Téléphone non renseigné');return}location.href='tel:'+phone}
+function openTrackedMaps(){const o=trackedOrder();if(!o)return;const url=mapsUrl(o);if(!url){toast('Adresse non renseignée');return}window.open(url,'_blank','noopener')}
+document.querySelector('.contact-buttons').addEventListener('click',e=>{const b=e.target.closest('button[data-track-action]');if(!b||b.disabled||!trackingId)return;if(b.dataset.trackAction==='message')messageCustomer(trackingId);if(b.dataset.trackAction==='sms')smsCustomer(trackingId);if(b.dataset.trackAction==='call')callCustomer(trackingId)});
+document.getElementById('tracking-action').addEventListener('click',e=>{const b=e.target.closest('button[data-status]');if(b&&trackingId)setStatus(trackingId,b.dataset.status)});
+document.querySelectorAll('[data-track-action="maps"]').forEach(b=>b.addEventListener('click',openTrackedMaps));
+async function setStatus(id,status){id=String(id);if(pendingStatus.has(id))return;statusSequence++;pendingStatus.add(id);renderOrders();try{const r=await api('/api/driver/orders/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status})});if(!r.ok){toast('Échec de la mise à jour — réessayez');return}const o=orders.find(x=>String(x.id)===id);if(o)o.status=status;buzz([12,40,12]);toast(status==='shipping'?'Colis récupéré · bonne route':'Livraison confirmée');renderStats()}catch(e){toast('Serveur injoignable · statut inchangé')}finally{pendingStatus.delete(id);renderOrders();if(trackingId===id)openTracking(id)}}
+function switchTab(t){tabTouched=true;tab=t;['depot','shipping','done'].forEach(x=>{const b=document.getElementById('t-'+x);b.classList.toggle('on',x===t);b.setAttribute('aria-selected',x===t?'true':'false')});renderOrders()}
+document.getElementById('orders').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b||b.disabled)return;if(b.dataset.action==='status')setStatus(b.dataset.id,b.dataset.status);else if(b.dataset.action==='track')openTracking(b.dataset.id);else if(b.dataset.action==='message')messageCustomer(b.dataset.id);else if(b.dataset.action==='call')callCustomer(b.dataset.id);else if(b.dataset.url)location.href=b.dataset.url});
+migrateToken().then(()=>{if(token){enter()}else{showLogin()}});setTimeout(()=>document.getElementById('splash').classList.add('hide'),700);
+</script>
+<!--MOTION-->
+<!-- DRC motion : animations d'entrée, pression, compteurs et jauges (commun aux 3 apps) -->
+<style id="drcMotionCss">
+@media (prefers-reduced-motion:no-preference){
+  .m-in{animation:mRise .52s cubic-bezier(.16,1,.3,1) both}
+  @keyframes mRise{from{opacity:0;transform:translateY(16px) scale(.985)}}
+  .m-pop{animation:mPop .5s cubic-bezier(.16,1,.3,1) both}
+  @keyframes mPop{0%{opacity:0;transform:scale(.86)}100%{opacity:1;transform:scale(1)}}
+  .m-seg rect{animation:mSeg .5s cubic-bezier(.16,1,.3,1) both}
+  @keyframes mSeg{from{opacity:0}}
+  .m-seg rect:nth-child(1){animation-delay:.02s}.m-seg rect:nth-child(2){animation-delay:.06s}.m-seg rect:nth-child(3){animation-delay:.10s}
+  .m-seg rect:nth-child(4){animation-delay:.14s}.m-seg rect:nth-child(5){animation-delay:.18s}.m-seg rect:nth-child(6){animation-delay:.22s}
+  .m-seg rect:nth-child(7){animation-delay:.26s}.m-seg rect:nth-child(8){animation-delay:.30s}.m-seg rect:nth-child(9){animation-delay:.34s}
+  .m-seg rect:nth-child(10){animation-delay:.38s}.m-seg rect:nth-child(11){animation-delay:.42s}
+  button,.btn,.pill,.pill-btn,[data-go],[data-add],[data-id]{transition:transform .16s cubic-bezier(.16,1,.3,1),filter .16s ease}
+  button:active:not(:disabled),.btn:active,.pill:active,.pill-btn:active,[data-id]:active{transform:scale(.965)}
+  .m-flash{animation:mFlash .9s ease}
+  @keyframes mFlash{0%{box-shadow:0 0 0 0 rgba(200,22,29,.45)}100%{box-shadow:0 0 0 14px rgba(200,22,29,0)}}
+}
+</style>
+<script>
+(function(){
+  if (window.__drcMotion) return; window.__drcMotion = 1;
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (still) return;
+  var CARD = '.pcard,.card,.cat,.ord,.mission,.stat,.adm-stat,.cash-stat,.mi,.drv,.empty,.prod,.cline,.tracking-hero,.map-wrap,.progress-card,.details-card,.contact-driver,.driver-chat,.sec,.chip,.pm,.banner,.recipe,.tour-hero,.login-card,.detail-cell,.tracking-step,.liveinfo';
+  var seen = new Set();
+  function sig(el){
+    return (el.className || '') + '|' + (el.dataset && (el.dataset.id || el.dataset.add || el.dataset.fav) || (el.textContent || '').replace(/\s+/g, ' ').slice(0, 48));
+  }
+  function visible(el){ var r = el.getBoundingClientRect(); return r.bottom > -40 && r.top < innerHeight + 40 && r.width > 0; }
+  function animate(list){
+    var n = 0;
+    list.forEach(function(el){
+      var k = sig(el); if (seen.has(k)) return; seen.add(k);
+      if (!visible(el)) return;
+      el.classList.remove('m-in'); void el.offsetWidth;
+      el.style.animationDelay = Math.min(n * 45, 420) + 'ms'; n++;
+      el.classList.add('m-in');
+      el.addEventListener('animationend', function f(){ el.classList.remove('m-in'); el.style.animationDelay = ''; el.removeEventListener('animationend', f); });
+    });
+  }
+  /* compteurs : 0 → montant, ou ancien → nouveau */
+  function countUp(el){
+    if (el.children.length) return;
+    var txt = el.textContent, m = txt.match(/\d[\d\s\u202f\u00a0.]*\d|\d/);
+    if (!m) return;
+    var to = parseInt(m[0].replace(/[^\d]/g, ''), 10); if (!isFinite(to)) return;
+    var from = +(el.dataset.mv || 0); el.dataset.mv = to;
+    if (from === to || to < 10) return;
+    var pre = txt.slice(0, m.index), post = txt.slice(m.index + m[0].length), t0 = performance.now(), dur = 700;
+    function fmt(v){ return Math.round(v).toLocaleString('fr-FR').replace(/\u202f/g, '\u202f'); }
+    el.__busy = true;
+    (function step(t){
+      var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = pre + fmt(from + (to - from) * e) + post;
+      if (p < 1) requestAnimationFrame(step); else { el.textContent = txt; el.__busy = false; }
+    })(t0);
+  }
+  var gseen = new Set();
+  function scan(root){
+    if (!root.querySelectorAll) return;
+    var cards = [];
+    if (root.matches && root.matches(CARD)) cards.push(root);
+    root.querySelectorAll(CARD).forEach(function(c){ cards.push(c); });
+    if (cards.length) animate(cards);
+    var svgs = root.querySelectorAll('.gauge svg'); if (root.matches && root.matches('.gauge svg')) svgs = [root];
+    Array.prototype.forEach.call(svgs, function(s){
+      var k = (s.closest('[id]') || {}).id + '|' + Array.prototype.map.call(s.querySelectorAll('rect'), function(r){ return r.getAttribute('fill'); }).join(',');
+      if (gseen.has(k)) return; gseen.add(k); s.classList.add('m-seg');
+    });
+    root.querySelectorAll('.gcenter .big, .stat b, .adm-stat b, .tot b, .grand b').forEach(function(b){ if (!b.__busy) countUp(b); });
+  }
+  var mo = new MutationObserver(function(muts){
+    var roots = new Set();
+    muts.forEach(function(m){ m.addedNodes.forEach(function(n){ if (n.nodeType === 1 && !n.classList.contains('fly') && n.id !== 'toast') roots.add(n); }); });
+    if (roots.size) requestAnimationFrame(function(){ roots.forEach(scan); });
+  });
+  function start(){ mo.observe(document.body, {childList:true, subtree:true}); setTimeout(function(){ scan(document.body); }, 60); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+  /* l'écran qui apparaît rejoue ses entrées */
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-go],.nav button,.tabs button,[data-tab]'); if (!b) return;
+    setTimeout(function(){
+      var v = document.querySelector('.view.on, .view.active, main:not(.hidden)'); if (!v) return;
+      var list = []; v.querySelectorAll(CARD).forEach(function(c){ list.push(c); });
+      list.forEach(function(c){ seen.delete(sig(c)); }); animate(list);
+    }, 40);
+  }, true);
+})();
+</script>
+<!--/MOTION-->
+
+<div id="drcNav" class="app-only hidden">
+  <button data-tab="depot" class="on"><span class="ic"><svg viewBox="0 0 24 24"><use href="#box"/></svg></span>Dépôt</button>
+  <button data-tab="shipping"><span class="ic"><svg viewBox="0 0 24 24"><use href="#scooter"/></svg></span>En cours</button>
+  <button class="mid" id="drcNavShare" aria-label="Partager ma position"><span class="ring"><svg viewBox="0 0 24 24"><use href="#map"/></svg></span></button>
+  <button data-tab="done"><span class="ic"><svg viewBox="0 0 24 24"><use href="#check"/></svg></span>Terminées</button>
+  <button data-tab="map"><span class="ic"><svg viewBox="0 0 24 24"><use href="#map"/></svg></span>Carte</button>
+</div>
+<script>
+/* barre basse : elle pilote les onglets existants, sans dupliquer la logique */
+(function(){
+  const nav = document.getElementById('drcNav');
+  const mark = t => [...nav.querySelectorAll('button[data-tab]')].forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  nav.querySelectorAll('button[data-tab]').forEach(b => b.addEventListener('click', () => {
+    const t = b.dataset.tab;
+    if (t === 'depot' || t === 'shipping' || t === 'done') {
+      const el = document.getElementById('t-' + t); if (el) el.click();
+      mark(t); try { buzz(8); } catch(e){}
+    } else {
+      const ship = (typeof orders !== 'undefined' ? orders : []).find(o => (o.status||'') === 'shipping');
+      if (ship && typeof openTracking === 'function') openTracking(ship.id);
+      else { try { toast('Aucune livraison en cours'); } catch(e){} }
+      mark('map');
+    }
+  }));
+  const share = document.getElementById('drcNavShare');
+  if (share) share.addEventListener('click', () => {
+    const s = document.getElementById('sharePos');
+    if (s && s.offsetParent !== null) s.click();
+    else { try { toast('Ouvrez une mission pour partager votre position'); } catch(e){} }
+    try { buzz(12); } catch(e){}
+  });
+  /* la nav apparaît quand l'app est déverrouillée */
+  const obs = new MutationObserver(() => {
+    const app = document.getElementById('view-app');
+    const on = app && !app.classList.contains('hidden');
+    nav.classList.toggle('hidden', !on);
+  });
+  const app = document.getElementById('view-app');
+  if (app) obs.observe(app, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+
+
+<script>
+(function(){
+  const app = document.getElementById('view-app');
+  const sync = () => { document.querySelector('header').style.display = (app && !app.classList.contains('hidden')) ? '' : 'none'; };
+  if (app) new MutationObserver(sync).observe(app, {attributes:true, attributeFilter:['class']});
+  sync();
+})();
+</script>
+
+</body>
+</html>
