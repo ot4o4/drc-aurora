@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.6';
+window.DRC_WEB = '4.7';
 </script>
 
 <meta charset="utf-8">
@@ -420,7 +420,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.6').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.7').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -466,7 +466,7 @@ body{font-family:PJS,system-ui,sans-serif}
       <div class="topbar"><div class="logoTile"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div><h1>Tableau de bord<span class="liveDot" id="liveDot" title="En direct avec le serveur"></span></h1><button class="ibtn" id="bRefresh" aria-label="Actualiser"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
       <div class="gauge" id="dashGauge"></div>
       <div class="stats" id="dashStats"></div>
-      <div class="card switch"><span class="swico"><svg viewBox="0 0 24 24"><path d="M4 4h16l1.5 5.5a3.5 3.5 0 0 1-2.4 4.2V20h-2v-5H11v5H9v-6.3a3.5 3.5 0 0 1-2.4-4.2L8 4H4Zm2.4 2-1 3.7a1.5 1.5 0 0 0 2.9.5L8.9 6H6.4Zm5.6 0v5a1.5 1.5 0 0 0 3 0V6h-3Zm5.3 0-.4 4.2a1.5 1.5 0 0 0 2.9-.5L18.3 6h-1Z"/></svg></span><div><b>Boutique ouverte</b><span id="shopSub">Les clients peuvent commander</span></div><button class="tg on" id="shopTg" aria-label="Ouvrir ou fermer la boutique"><i></i></button></div>
+      <div class="card switch"><span class="swico"><svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg></span><div><b>Boutique ouverte</b><span id="shopSub">Les clients peuvent commander</span></div><button class="tg on" id="shopTg" aria-label="Ouvrir ou fermer la boutique"><i></i></button></div>
       <div class="sec"><h2>Dernières commandes</h2><button class="more" id="allOrders">Tout voir</button></div>
       <div id="lastOrders"></div>
     </section>
