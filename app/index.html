@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201835">
+<link rel="manifest" href="manifest.json?v=202611201839">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -555,6 +555,38 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 .notif-body small{display:block;font-size:10px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.06em}
 .notif-dot{width:8px;height:8px;border-radius:50%;background:var(--acc);flex:none;opacity:0;margin-left:2px}
 .notif.new .notif-dot{opacity:1}
+
+/* ── historique d'achats 1.8.3 ── */
+.hist-summary{display:flex;justify-content:space-between;gap:12px;padding:16px 18px;margin:10px 0 12px;border-radius:22px;
+  background:linear-gradient(155deg,#24211F,#141312);color:#fff;box-shadow:0 18px 36px -24px rgba(40,10,10,.7)}
+.hist-summary small{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:800;margin-bottom:3px}
+.hist-summary b{font-size:18px;letter-spacing:-.01em}
+.hist-summary div:last-child{text-align:right}
+.hist-summary div:last-child b{color:#FF6B70}
+.hist-cal{padding:14px 14px 16px;border-radius:24px}
+.hist-month{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.hist-month b{font-size:15px;text-transform:capitalize}
+.hist-month button{width:34px;height:34px;border-radius:50%;background:var(--seg);color:var(--ink2);font-size:20px;line-height:1;display:grid;place-items:center}
+.hist-week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:5px}
+.hist-week span{text-align:center;font-size:8px;letter-spacing:.06em;font-weight:800;color:var(--muted)}
+.hist-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.hist-blank{height:42px}
+.hist-day{position:relative;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--ink);background:transparent}
+.hist-day.today{box-shadow:inset 0 0 0 1.5px var(--line)}
+.hist-day.has{background:var(--acc-soft);color:var(--acc-ink)}
+.hist-day.sel{background:var(--acc);color:#fff;box-shadow:0 8px 18px -10px rgba(229,29,38,.7)}
+.hist-dot{position:absolute;right:5px;bottom:4px;min-width:12px;height:12px;padding:0 3px;border-radius:99px;background:var(--acc);color:#fff;font-size:8px;font-style:normal;line-height:12px;text-align:center;font-weight:800}
+.hist-day.sel .hist-dot{background:#fff;color:var(--acc)}
+.hist-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.hist-item{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);text-align:left;color:var(--ink)}
+.hist-time{flex:0 0 44px;text-align:center;border-right:1px solid var(--line);padding-right:10px}
+.hist-time b{display:block;font-size:12px}
+.hist-time small{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+.hist-info{flex:1;min-width:0}
+.hist-info b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-info span{display:block;font-size:10.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-amt{font-size:13.5px;white-space:nowrap}
+#histRefresh svg{width:20px;height:20px;color:var(--ink2)}
 </style>
 </head>
 <body>
@@ -642,7 +674,7 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
     <!-- COMMANDES -->
     <section class="view" data-view="orders" id="vOrders">
       <div class="topbar">
-        <button class="ibtn" id="ordRefresh" aria-label="Actualiser"><svg viewBox="0 0 24 24"><path d="M19 4h-1V3a1 1 0 0 0-2 0v1H8V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8h16Zm-12-6h2v2H8Zm4 0h2v2h-2Zm4 0h2v2h-2Zm-8 3h2v2H8Zm4 0h2v2h-2Z"/></svg></button>
+        <button class="ibtn" id="ordRefresh" aria-label="Historique d’achats"><svg viewBox="0 0 24 24"><path d="M19 4h-1V3a1 1 0 0 0-2 0v1H8V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8h16Zm-12-6h2v2H8Zm4 0h2v2h-2Zm4 0h2v2h-2Zm-8 3h2v2H8Zm4 0h2v2h-2Z"/></svg></button>
         <h1>Mes commandes</h1>
         <button class="ibtn" id="ordWa" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-1.7-.1a12 12 0 0 1-4.6-2.9 11 11 0 0 1-2.1-3.4c-.2-.6-.2-1.2 0-1.7.2-.4.7-1 1-1.2.3-.2.6-.2.8-.2h.6c.2 0 .4 0 .6.5l.8 1.9c.1.2 0 .4-.1.6l-.5.6c-.1.2-.3.3-.1.6.5.9 1.1 1.6 1.9 2.2.7.5 1.2.7 1.5.8.2.1.4 0 .5-.1l.7-.8c.2-.2.4-.2.6-.1l1.8.9c.2.1.4.2.4.3.1.2.1.6-.1 1.1Z"/></svg><span class="dot" id="bellDot2"></span></button>
       </div>
@@ -652,7 +684,7 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
     <!-- PANIER (tableau de bord) -->
     <section class="view" data-view="cart" id="vCart">
       <div class="topbar">
-        <button class="ibtn" id="cartOrders" aria-label="Mes commandes"><svg viewBox="0 0 24 24"><path d="M19 4h-1V3a1 1 0 0 0-2 0v1H8V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8h16Zm-12-6h2v2H8Zm4 0h2v2h-2Zm4 0h2v2h-2Zm-8 3h2v2H8Zm4 0h2v2h-2Z"/></svg></button>
+        <button class="ibtn" id="cartOrders" aria-label="Historique d’achats"><svg viewBox="0 0 24 24"><path d="M19 4h-1V3a1 1 0 0 0-2 0v1H8V3a1 1 0 0 0-2 0v1H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8h16Zm-12-6h2v2H8Zm4 0h2v2h-2Zm4 0h2v2h-2Zm-8 3h2v2H8Zm4 0h2v2h-2Z"/></svg></button>
         <h1>Mon panier</h1>
         <button class="ibtn" id="cartBell" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-1.7 1.7A1 1 0 0 0 4 19.4h16a1 1 0 0 0 .7-1.7Z"/></svg><span class="dot" id="bellDot3"></span></button>
       </div>
@@ -688,6 +720,7 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
     <section class="view push-view" data-view="order" id="vOrder"></section>
     <section class="view push-view" data-view="invoice" id="vInvoice"></section>
     <section class="view push-view" data-view="notifs" id="vNotifs"></section>
+    <section class="view push-view" data-view="history" id="vHistory"></section>
   </div>
 
   <nav class="nav" id="nav">
@@ -1122,7 +1155,7 @@ function paintCart(){
   $('#toCheckout').onclick = () => { vib(); push({name:'checkout'}); paintCheckout(); };
 }
 $('#cartPlus').onclick = () => go('home');
-$('#cartOrders').onclick = () => go('orders');
+$('#cartOrders').onclick = openHistory;
 $('#cartBell').onclick = openNotifs;
 
 /* ════════════════ FICHE PRODUIT ════════════════ */
@@ -1434,7 +1467,7 @@ async function paintOrders(fetchAll){
     if (changed && route.name === 'orders') paintOrders(false);
   }
 }
-$('#ordRefresh').onclick = () => { vib(); paintOrders(true); toast('Commandes actualisées'); };
+$('#ordRefresh').onclick = openHistory;
 $('#ordWa').onclick = () => openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour Darou Rahmane Chicken 🐔')}`);
 
 function openOrder(id, refresh){
@@ -1575,6 +1608,80 @@ function markNotifsSeen(){
 function openNotifs(){
   push({ name: 'notifs' }); renderNotifs(); markNotifsSeen();
 }
+let histDate = null, histSelected = null;
+function localDateKey(d){
+  if (!(d instanceof Date) || isNaN(d)) return '';
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function historyOrders(){
+  return myOrders.map(x => ordersCache[x.id]).filter(o => o && o.status !== 'cancelled');
+}
+function openHistory(){
+  histDate = new Date(); histDate.setDate(1); histSelected = null;
+  push({ name: 'history' });
+  renderHistory();
+  if (!myOrders.length) {
+    paintOrders(true).then(() => { if (route.name === 'history') renderHistory(); }).catch(() => {});
+  }
+}
+function renderHistory(){
+  const v = $('#vHistory'); if (!v) return;
+  const orders = historyOrders();
+  const y = histDate.getFullYear(), m = histDate.getMonth();
+  const monthKey = y + '-' + String(m+1).padStart(2,'0');
+  const byDay = {};
+  orders.forEach(o => { const k = localDateKey(new Date(o.created_at)); if (k) (byDay[k] = byDay[k] || []).push(o); });
+  const monthOrders = orders.filter(o => localDateKey(new Date(o.created_at)).startsWith(monthKey));
+  const monthTotal = monthOrders.reduce((s,o) => s + (Number(o.total)||0), 0);
+  if (!histSelected || !histSelected.startsWith(monthKey)) {
+    const todayKey = localDateKey(new Date());
+    if (byDay[todayKey]) histSelected = todayKey;
+    else { const keys = Object.keys(byDay).filter(k => k.startsWith(monthKey)).sort(); histSelected = keys[keys.length-1] || todayKey; }
+  }
+  const selected = byDay[histSelected] || [];
+  const first = (new Date(y, m, 1).getDay() + 6) % 7;
+  const dim = new Date(y, m+1, 0).getDate();
+  const nowKey = localDateKey(new Date());
+  let cells = Array(first).fill('<span class="hist-blank"></span>').join('');
+  for (let d=1; d<=dim; d++) {
+    const k = monthKey + '-' + String(d).padStart(2,'0');
+    const count = (byDay[k] || []).length;
+    cells += `<button class="hist-day ${count ? 'has' : ''} ${k === histSelected ? 'sel' : ''} ${k === nowKey ? 'today' : ''}" data-day="${k}">
+      <span>${d}</span>${count ? `<i class="hist-dot">${count > 1 ? count : ''}</i>` : ''}
+    </button>`;
+  }
+  const pad = (7 - ((first + dim) % 7)) % 7;
+  cells += Array(pad).fill('<span class="hist-blank"></span>').join('');
+  const monthLabel = histDate.toLocaleDateString('fr-FR', { month:'long', year:'numeric' });
+  const selDate = new Date(histSelected + 'T12:00:00');
+  const selLabel = selDate.toLocaleDateString('fr-FR', { day:'numeric', month:'long' });
+  const list = selected.sort((a,b) => String(b.created_at).localeCompare(String(a.created_at))).map(o => {
+    const names = (o.items || []).map(i => i.name).filter(Boolean).slice(0,2).join(', ') || 'Commande';
+    const n = (o.items || []).reduce((s,i) => s + Number(i.qty||1), 0);
+    return `<button class="hist-item" data-order="${esc(o.id)}">
+      <span class="hist-time"><b>${frTime(o.created_at)}</b><small>${n} art.</small></span>
+      <span class="hist-info"><b>${esc(names)}</b><span>${esc(o.id)} · ${esc(statusText(o))}</span></span>
+      <b class="hist-amt">${fcfa(o.total)}</b>
+    </button>`;
+  }).join('');
+  v.innerHTML = `<div class="topbar"><button class="back" data-back aria-label="Retour">${ICON.back}</button><h1>Historique</h1>
+    <button class="ibtn" id="histRefresh" aria-label="Actualiser"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.9-4M4 4v5h5M4 13a8 8 0 0 0 14.9 4M20 20v-5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+    <div class="card hist-summary"><div><small>CE MOIS-CI</small><b>${monthOrders.length} achat${monthOrders.length > 1 ? 's' : ''}</b></div><div><small>TOTAL</small><b>${fcfa(monthTotal)}</b></div></div>
+    <div class="card hist-cal">
+      <div class="hist-month"><button id="histPrev" aria-label="Mois précédent">‹</button><b>${esc(monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1))}</b><button id="histNext" aria-label="Mois suivant">›</button></div>
+      <div class="hist-week">${['LUN','MAR','MER','JEU','VEN','SAM','DIM'].map(d => `<span>${d}</span>`).join('')}</div>
+      <div class="hist-grid">${cells}</div>
+    </div>
+    <div class="sec"><h2>Achats du ${esc(selLabel)}</h2><span class="cnt">${selected.length}</span></div>
+    ${list ? `<div class="hist-list">${list}</div>` : '<div class="card empty"><b>Aucun achat ce jour</b><span>Choisissez un jour marqué dans le calendrier.</span></div>'}`;
+  v.querySelector('[data-back]').onclick = pop;
+  $('#histPrev').onclick = () => { histDate = new Date(y, m-1, 1); histSelected = null; renderHistory(); };
+  $('#histNext').onclick = () => { histDate = new Date(y, m+1, 1); histSelected = null; renderHistory(); };
+  $('#histRefresh').onclick = async () => { try { await paintOrders(true); renderHistory(); toast('Historique actualisé'); } catch(e) { toast('Actualisation impossible'); } };
+  v.querySelectorAll('.hist-day').forEach(b => b.onclick = () => { histSelected = b.dataset.day; renderHistory(); });
+  v.querySelectorAll('.hist-item').forEach(b => b.onclick = () => openOrder(b.dataset.order));
+}
+
 function updateBells(){
   const unread = notifUnread();
   ['#bellDot', '#bellDot2', '#bellDot3'].forEach(s => $(s) && $(s).classList.toggle('on', unread > 0));
@@ -1617,7 +1724,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.2 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.3 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
