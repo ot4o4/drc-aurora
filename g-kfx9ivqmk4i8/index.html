@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '3.8';
+window.DRC_WEB = '3.9';
 </script>
 
 <meta charset="utf-8">
@@ -470,7 +470,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.8').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.9').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -603,12 +603,16 @@ function go(v){
   view = v;
   document.querySelectorAll('.view[data-view]').forEach(x => x.classList.toggle('on', x.dataset.view === v && x.id !== 'vDetail'));
   document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('on', b.dataset.go === v));
-  if (v === 'home' || v === 'orders' || v === 'pay') $('#app').style.display = 'flex';
+  /* toutes les vues vivent dans #app : on ne le masque jamais, sauf pour la fiche détail */
+  $('#app').style.display = 'flex';
+  $('#vDetail').style.display = 'none';
+  $('#vDetail').classList.remove('on');
   const el = document.querySelector('.view[data-view="' + v + '"]'); if (el) el.scrollTop = 0;
   if (v === 'settings') paintSettings();
   if (v === 'pay') paintPay();
   if (v === 'products') paintProducts();
   if (v === 'orders') paintOrders();
+  if (v === 'compta' && window.__ledger) window.__ledger.paint();
 }
 document.querySelectorAll('.nav button').forEach(b => b.onclick = () => { vib(); go(b.dataset.go); });
 function openDetail(id){
