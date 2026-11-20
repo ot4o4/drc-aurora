@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '2.4';
+window.DRC_WEB = '3.4';
 </script>
 
 <meta charset="utf-8">
@@ -124,6 +124,154 @@ header{background:var(--navy);box-shadow:0 6px 20px -12px rgba(0,0,0,.5)}
 @keyframes pulseLive{50%{opacity:.4}}
 .live-strip b{color:#fff;font-weight:600}
 </style>
+
+<style id="refonte">
+/* ====== Reprise exacte du système visuel de l'app client (DRC 1.7.1) ====== */
+@font-face{font-family:PJS;src:url('fonts/pjs-400.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:PJS;src:url('fonts/pjs-600.woff2') format('woff2');font-weight:600;font-display:swap}
+@font-face{font-family:PJS;src:url('fonts/pjs-700.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:PJS;src:url('fonts/pjs-800.woff2') format('woff2');font-weight:800;font-display:swap}
+
+:root{
+  --bg:#F4F4F3; --bg2:#EFE9E1; --card:#FFFFFF; --ink:#1A1A1A; --ink2:#444444; --muted:#666666;
+  --line:#E7E7E6; --acc:#C8161D; --acc2:#A80F15; --acc-soft:#FBE4E5; --acc-ink:#A30F16;
+  --seg:#E4E4E3; --nav:#1F1F1F; --ok:#2E9E5B; --green-soft:#E3F2E8; --green-ink:#25794A;
+  --r-card:28px; --shadow:0 10px 30px -18px rgba(60,40,20,.28);
+  --btn:#1A1A1A; --btn-ink:#fff; --st:env(safe-area-inset-top,0px); --sb:env(safe-area-inset-bottom,0px);
+  --navh:86px;
+}
+html,body{background:var(--bg)!important;font-family:PJS,Inter,system-ui,sans-serif!important;color:var(--ink)}
+body{padding-bottom:calc(var(--navh) + var(--sb) + 18px)!important;-webkit-font-smoothing:antialiased}
+
+/* en-tête : rangée de marque claire, comme l'accueil client */
+header{background:var(--bg)!important;color:var(--ink)!important;box-shadow:none!important;border:0!important;
+  padding:calc(10px + var(--st)) 18px 4px!important;position:sticky;top:0;z-index:50}
+.hd-top{background:transparent;box-shadow:none;padding:0;display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:none}
+.brand-icon{width:auto!important;height:40px!important;border-radius:9px!important;background:transparent!important;overflow:visible}
+.brand-icon img{width:auto;height:40px}
+.brand{flex:1;min-width:0}
+.brand b{font-size:16px!important;font-weight:700!important;letter-spacing:-.01em;color:var(--ink)}
+.brand small{color:var(--acc)!important;font-size:9.5px;letter-spacing:2px;font-weight:700;margin-top:1px}
+.header-actions{gap:8px}
+.iconbtn{width:40px!important;height:40px!important;border-radius:50%!important;background:var(--card)!important;
+  color:var(--ink)!important;border:0!important;box-shadow:var(--shadow)}
+.iconbtn svg{width:20px;height:20px}
+.service{margin:10px 0 0!important;display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:999px;
+  background:var(--card);box-shadow:var(--shadow);font-size:13px!important;font-weight:600!important;color:var(--ink2)!important}
+.service-dot{width:8px;height:8px;border-radius:50%;background:var(--ok)!important;box-shadow:none!important}
+
+/* titres de section */
+.list-head{margin:18px 18px 10px!important}
+#list-title{font-size:20px!important;font-weight:700!important;letter-spacing:-.02em}
+#list-count{font-size:12.5px!important;color:var(--muted)!important;font-weight:600}
+
+/* héros de tournée : carte sombre du client */
+.tour-hero{margin:12px 18px 0!important;padding:20px!important;border-radius:var(--r-card)!important;overflow:hidden;position:relative;
+  background:linear-gradient(160deg,#242120,#1A1A1A 60%,#2A1315)!important;color:#fff;box-shadow:var(--shadow)}
+.tour-hero::after{content:"";position:absolute;right:-70px;top:-80px;width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,22,29,.45),rgba(200,22,29,0) 66%)}
+.tour-label{font-size:10px;letter-spacing:2.4px;font-weight:700;color:#FF6B70;text-transform:uppercase}
+.tour-hero h1{font-size:28px!important;font-weight:700!important;letter-spacing:-.03em;margin-top:6px;color:#fff!important}
+.tour-date{font-size:11.5px;font-weight:600;color:#D8D4D0;background:rgba(255,255,255,.10);border-radius:999px;padding:6px 12px}
+.tour-summary{display:flex;gap:8px;margin-top:16px;position:relative;z-index:1}
+.tour-summary span{flex:1;background:rgba(255,255,255,.08);border-radius:16px;padding:10px 12px;font-size:11.5px;font-weight:600;color:#CFCBC7}
+.tour-summary b{display:block;font-size:21px;font-weight:700;color:#fff;letter-spacing:-.02em;margin-bottom:2px}
+
+/* tuiles : cartes blanches du client */
+.adm-stats{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:10px!important;margin:12px 18px 0!important}
+.adm-stat{background:var(--card)!important;border:0!important;border-radius:22px!important;padding:14px 12px!important;box-shadow:var(--shadow)!important}
+.adm-stat b{font-size:22px!important;font-weight:700!important;letter-spacing:-.02em;color:var(--ink)!important}
+.adm-stat span,.adm-stat small{font-size:10px!important;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)!important;font-weight:700}
+.adm-stat.cash,.adm-stat.cash-stat,#stats .cash{grid-column:1/-1!important;display:flex;align-items:baseline;justify-content:space-between;
+  background:var(--card)!important;border-radius:22px!important}
+.adm-stat.cash b,.adm-stat.cash-stat b,#stats .cash b{color:var(--acc)!important;font-size:24px!important}
+
+/* filtres : pastilles du client */
+.tabs{display:flex!important;gap:8px!important;background:transparent!important;border:0!important;box-shadow:none!important;
+  margin:16px 18px 0!important;padding:0!important;overflow-x:auto}
+.tabs button{flex:0 0 auto!important;height:40px!important;border-radius:999px!important;background:var(--bg2)!important;
+  color:var(--ink2)!important;font-size:13.5px!important;font-weight:600!important;padding:0 16px!important;border:0!important;
+  display:flex;align-items:center;gap:7px}
+.tabs button.on{background:var(--btn)!important;color:var(--btn-ink)!important}
+.tab-count{background:rgba(26,26,26,.08);border-radius:999px;min-width:20px;height:20px;display:inline-grid;place-items:center;
+  font-size:11px;font-weight:700;padding:0 6px}
+.tabs button.on .tab-count{background:rgba(255,255,255,.20)}
+
+/* cartes mission */
+#orders{padding:0 18px!important;padding-bottom:calc(var(--navh) + 56px)!important}
+.mission{background:var(--card)!important;border:0!important;border-radius:var(--r-card)!important;box-shadow:var(--shadow)!important;
+  padding:18px!important;margin-bottom:14px!important}
+.oid{background:var(--bg)!important;border:0!important;color:var(--ink2)!important;font-weight:700!important;font-size:11.5px!important;
+  padding:6px 11px!important;border-radius:999px!important}
+.status{font-size:10px!important;font-weight:700!important;letter-spacing:.08em;text-transform:uppercase;padding:6px 11px!important;
+  border-radius:999px!important;background:var(--acc-soft)!important;color:var(--acc-ink)!important}
+.mission .status.shipping{background:var(--acc)!important;color:#fff!important}
+.mission .status.done{background:var(--green-soft)!important;color:var(--green-ink)!important}
+.customer-name{font-size:17px!important;font-weight:700!important;letter-spacing:-.02em}
+.customer,.customer-slot,.kv,.detail-cell{font-size:13px!important;color:var(--muted)!important;font-weight:500}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--acc-soft)!important;color:var(--acc-ink)!important;
+  display:grid;place-items:center;font-size:12.5px;font-weight:700}
+
+/* boutons : pilules du client */
+.btn{border-radius:999px!important;font-weight:600!important;font-size:15px!important;padding:16px 18px!important}
+.btn.primary{background:var(--btn)!important;color:var(--btn-ink)!important;box-shadow:none!important}
+.btn.secondary{background:var(--bg)!important;color:var(--ink)!important;border:0!important}
+.mission-cta{background:var(--btn)!important;color:var(--btn-ink)!important;border-radius:999px!important;font-weight:600!important;
+  font-size:15px!important;width:100%;padding:16px!important;margin-top:14px!important}
+.contact-buttons .btn,.contact-actions .btn{background:var(--bg)!important;color:var(--ink)!important;border:0!important;
+  font-size:13px!important;padding:12px 8px!important;border-radius:999px!important}
+.contact-buttons .btn svg,.contact-actions .btn svg{color:var(--acc)!important}
+
+/* suivi */
+.progress-card,.details-card{background:var(--card)!important;border:0!important;border-radius:var(--r-card)!important;box-shadow:var(--shadow)!important}
+.progress-track{background:var(--seg)!important;border-radius:999px!important;height:8px!important}
+.progress-fill{background:var(--acc)!important;border-radius:999px!important}
+.step-dot.now{background:var(--acc)!important;box-shadow:0 0 0 4px var(--acc-soft)!important}
+.step-dot.past{background:var(--ink)!important}
+.tracking-hero{background:linear-gradient(160deg,#242120,#1A1A1A)!important;border-radius:var(--r-card)!important}
+.map-wrap{border-radius:var(--r-card)!important;overflow:hidden;box-shadow:var(--shadow)}
+.live-strip{background:var(--card)!important;border:0!important;border-radius:999px!important;box-shadow:var(--shadow)!important;
+  font-size:12px!important;font-weight:600;color:var(--ink2)!important}
+.live-dot{background:var(--acc)!important;box-shadow:0 0 0 3px var(--acc-soft)!important}
+
+/* connexion */
+.login-wrap{background:var(--bg)!important}
+.login-card{background:var(--card)!important;border:0!important;border-radius:var(--r-card)!important;box-shadow:var(--shadow)!important;padding:26px 22px!important}
+.login-kicker{color:var(--acc)!important;font-weight:700!important;letter-spacing:.1em;font-size:10px!important;text-transform:uppercase}
+.login-card h1{font-size:30px!important;font-weight:700!important;letter-spacing:-.035em;margin:10px 0 8px}
+.login-card p{font-size:13.5px!important;color:var(--muted)!important;line-height:1.5;font-weight:400}
+.field label{font-size:10px!important;font-weight:700!important;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)!important}
+.field input{background:var(--bg)!important;border:1.5px solid transparent!important;border-radius:16px!important;padding:15px!important;
+  font-weight:600!important;font-size:15px!important}
+.field input:focus{border-color:var(--acc)!important;box-shadow:0 0 0 4px var(--acc-soft)!important;background:var(--card)!important}
+
+/* états vides, messages, toast */
+.empty{background:var(--card)!important;border:0!important;border-radius:var(--r-card)!important;box-shadow:var(--shadow)!important;padding:28px 20px!important}
+.empty h3{font-size:17px!important;font-weight:700!important}
+.empty p{font-size:13px!important;color:var(--muted)!important}
+.empty-icon{background:var(--acc-soft)!important;color:var(--acc)!important;border-radius:50%!important}
+.toast{background:#1A1A1A!important;color:#fff!important;border-radius:999px!important;font-weight:600!important;font-size:13.5px!important;
+  box-shadow:0 10px 24px -12px rgba(0,0,0,.5)!important;bottom:calc(var(--navh) + 18px + var(--sb))!important}
+.msg{background:var(--bg)!important;border-radius:18px!important;font-size:13px!important}
+.msg.me,.driver-chat-messages .me{background:var(--acc)!important;color:#fff!important}
+.driver-chat-compose{background:var(--card)!important;border:0!important;border-radius:18px!important;box-shadow:var(--shadow)!important}
+
+/* barre basse : géométrie exacte du client */
+#drcNav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;height:calc(var(--navh) + var(--sb))!important;
+  padding:0 18px var(--sb)!important;border-radius:0!important;background:var(--nav)!important;box-shadow:0 -8px 24px -18px rgba(0,0,0,.5)!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important}
+#drcNav button{flex:0 0 auto!important;width:48px!important;height:48px!important;padding:0!important;display:grid!important;place-items:center!important;
+  background:none!important;border:0!important;color:#fff!important;font-size:0!important;position:relative}
+#drcNav button .ic{display:grid;place-items:center}
+#drcNav button svg{width:30px!important;height:30px!important;fill:currentColor!important;stroke:none!important}
+#drcNav button.on{color:var(--acc)!important}
+#drcNav button.on .ic{color:var(--acc)}
+#drcNav .mid{width:60px!important;height:60px!important;border-radius:19px!important;background:var(--acc)!important;
+  box-shadow:0 6px 14px -6px rgba(0,0,0,.45)!important}
+#drcNav .mid .ring{width:60px;height:60px;border-radius:19px;background:transparent;margin:0;border:0;box-shadow:none;display:grid;place-items:center}
+#drcNav .mid .ring svg{width:28px!important;height:28px!important;stroke:#fff!important;fill:none!important}
+</style>
+
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -132,7 +280,7 @@ header{background:var(--navy);box-shadow:0 6px 20px -12px rgba(0,0,0,.5)}
 <symbol id="map" viewBox="0 0 24 24"><path d="M12 21s7-6 7-12A7 7 0 0 0 5 9c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
 <symbol id="box" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10M8 5l8 4"/></symbol>
 <symbol id="check" viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></symbol>
-<symbol id="refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5M6.1 8a7 7 0 0 1 11.8-1L20 12M4 12l2.1 5a7 7 0 0 0 11.8-1"/></symbol>
+<symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v5h-5"/></symbol>
 <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
 </defs></svg>
 <div id="splash"><div class="splash-inner"><div class="splash-mark"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="splash-brand">DAROU RAHMANE CHICKEN</div><div class="splash-role">LIVREUR</div><div class="splash-line"></div><div class="splash-sub">VOS LIVRAISONS. VOTRE TOURNÉE.</div></div></div>
@@ -164,7 +312,7 @@ header{background:var(--navy);box-shadow:0 6px 20px -12px rgba(0,0,0,.5)}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.4').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.4').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -509,5 +657,48 @@ migrateToken().then(()=>{if(token){enter()}else{showLogin()}});setTimeout(()=>do
 })();
 </script>
 <!--/MOTION-->
+
+<div id="drcNav" class="app-only hidden">
+  <button data-tab="depot" class="on"><span class="ic"><svg viewBox="0 0 24 24"><use href="#box"/></svg></span>Dépôt</button>
+  <button data-tab="shipping"><span class="ic"><svg viewBox="0 0 24 24"><use href="#scooter"/></svg></span>En cours</button>
+  <button class="mid" id="drcNavShare" aria-label="Partager ma position"><span class="ring"><svg viewBox="0 0 24 24"><use href="#map"/></svg></span></button>
+  <button data-tab="done"><span class="ic"><svg viewBox="0 0 24 24"><use href="#check"/></svg></span>Terminées</button>
+  <button data-tab="map"><span class="ic"><svg viewBox="0 0 24 24"><use href="#map"/></svg></span>Carte</button>
+</div>
+<script>
+/* barre basse : elle pilote les onglets existants, sans dupliquer la logique */
+(function(){
+  const nav = document.getElementById('drcNav');
+  const mark = t => [...nav.querySelectorAll('button[data-tab]')].forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  nav.querySelectorAll('button[data-tab]').forEach(b => b.addEventListener('click', () => {
+    const t = b.dataset.tab;
+    if (t === 'depot' || t === 'shipping' || t === 'done') {
+      const el = document.getElementById('t-' + t); if (el) el.click();
+      mark(t); try { buzz(8); } catch(e){}
+    } else {
+      const ship = (typeof orders !== 'undefined' ? orders : []).find(o => (o.status||'') === 'shipping');
+      if (ship && typeof openTracking === 'function') openTracking(ship.id);
+      else { try { toast('Aucune livraison en cours'); } catch(e){} }
+      mark('map');
+    }
+  }));
+  const share = document.getElementById('drcNavShare');
+  if (share) share.addEventListener('click', () => {
+    const s = document.getElementById('sharePos');
+    if (s && s.offsetParent !== null) s.click();
+    else { try { toast('Ouvrez une mission pour partager votre position'); } catch(e){} }
+    try { buzz(12); } catch(e){}
+  });
+  /* la nav apparaît quand l'app est déverrouillée */
+  const obs = new MutationObserver(() => {
+    const app = document.getElementById('view-app');
+    const on = app && !app.classList.contains('hidden');
+    nav.classList.toggle('hidden', !on);
+  });
+  const app = document.getElementById('view-app');
+  if (app) obs.observe(app, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+
 </body>
 </html>
