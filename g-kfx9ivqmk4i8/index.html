@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.7';
+window.DRC_WEB = '4.8';
 </script>
 
 <meta charset="utf-8">
@@ -215,6 +215,32 @@ details.adv .fld{margin-top:12px}
 .btn,.pill-btn{background:linear-gradient(160deg,#2A2A2A,#111111)}
 .pill-btn.acc,.btn.primary{background:linear-gradient(160deg,#D91F27,#A90F16);
   box-shadow:0 14px 26px -14px rgba(200,22,29,.55)}
+
+/* ── facture gérant 4.8 ── */
+.inv-overlay{position:fixed;inset:0;z-index:140;background:rgba(20,14,14,.55);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;padding:14px}
+.inv-sheet{width:100%;max-width:520px;max-height:90vh;overflow:auto;background:#FFFDF9;color:#1A1A1A;border-radius:26px;padding:20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+.inv-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.inv-head>div{display:flex;flex-direction:column;gap:3px}
+.inv-head img{width:132px;height:auto;display:block}
+.inv-head span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8A827C;font-weight:700}
+.inv-x{width:34px;height:34px;border-radius:50%;background:#F1EEE9;color:#5B5550;font-size:22px;line-height:1;display:grid;place-items:center}
+.inv-title{display:flex;justify-content:space-between;gap:12px;margin:18px 0 12px;padding:14px 0;border-top:1px solid #ECE7E0;border-bottom:1px solid #ECE7E0}
+.inv-title small,.inv-client small,.inv-note small{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#9A9188;font-weight:800;margin-bottom:3px}
+.inv-title b{font-size:16px}
+.inv-client{display:flex;flex-direction:column;gap:2px;margin-bottom:14px}
+.inv-client b{font-size:15px}
+.inv-client span{font-size:12px;color:#6E665F}
+.inv-lines{border-top:1px solid #ECE7E0}
+.inv-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #F1ECE6;font-size:13px}
+.inv-row span small{display:block;color:#948B83;font-size:10px;margin-top:2px}
+.inv-row b{white-space:nowrap;font-weight:600}
+.inv-totals{margin-top:12px}
+.inv-totals div{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:4px 0;color:#57504A}
+.inv-totals .g{border-top:1px solid #E7E1D9;margin-top:5px;padding-top:9px;font-size:17px;font-weight:700;color:#1A1A1A}
+.inv-pay{margin-top:14px;padding:10px 12px;border-radius:12px;background:#F6F1EA;font-size:12px;color:#5B534C}
+.inv-note{margin-top:12px;padding:13px 14px;border-radius:14px;background:#FBF4E9;border:1px solid #F0E2CC}
+.inv-note p{font-size:12.5px;line-height:1.55;color:#4A433D}
+.inv-foot{margin-top:16px;text-align:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#A39A91}
 </style>
 
 <style id="compta">
@@ -420,7 +446,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.7').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.8').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -701,6 +727,13 @@ function openDetail(id){
       ${(o.items || []).map(i => `<div class="row" style="padding:8px 0;border-bottom:1px solid var(--line)"><span class="v">${i.qty} × ${esc(i.name)}</span><span style="font-weight:600">${fcfa(i.price * i.qty)}</span></div>`).join('')}
       <div class="row" style="padding-top:12px"><span class="v" style="font-weight:600">Total</span><span style="font-weight:700;font-size:17px">${fcfa(o.total)}</span></div>
       ${o.delivery_fee ? `<div class="hint" style="text-align:left;margin:6px 0 0">dont ${fcfa(o.delivery_fee)} de livraison</div>` : ''}
+    </div>
+    <div class="sec"><h2>Facture</h2></div>
+    <div class="card" style="padding:16px 18px">
+      <div class="row"><span class="k">Statut</span><span class="v">${o.invoice ? 'Envoyée le ' + esc(frDate(o.invoice.sent_at)) + ' à ' + esc(frTime(o.invoice.sent_at)) : 'Aucune facture envoyée'}</span></div>
+      ${o.invoice ? `<div class="row"><span class="k">Numéro</span><span class="v">${esc(o.invoice.number)} · ${fcfa(o.invoice.total)}</span></div>` : '<div class="hint" style="text-align:left;margin:4px 0 12px">Une note personnalisée sera générée à partir des articles commandés.</div>'}
+      <button class="pill acc sm" id="dInvBtn" style="margin-top:12px">${o.invoice ? 'Renvoyer la facture' : 'Générer et envoyer la facture'}</button>
+      ${o.invoice ? '<button class="pill sm light" id="dInvView" style="margin-top:8px">Voir la facture</button>' : ''}
     </div>`;
   $('#dBack').onclick = closeDetail;
   v.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
@@ -734,6 +767,49 @@ function openDetail(id){
     try { await api('/api/admin/orders/' + encodeURIComponent(o.id) + '/payment', {method:'POST', body:{action:'refuse', reason:'Paiement non reçu'}}); toast('Paiement refusé — commande annulée'); closeDetail(); await refreshOrders(); }
     catch(e) { toast('Refus impossible'); }
   };
+  if ($('#dInvBtn')) $('#dInvBtn').onclick = async () => {
+    const existing = Boolean(o.invoice);
+    if (!confirm(existing ? 'Renvoyer la facture au client ?' : 'Générer et envoyer la facture au client ?')) return;
+    const btn = $('#dInvBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = 'Génération…';
+    try {
+      const j = await api('/api/admin/orders/' + encodeURIComponent(o.id) + '/invoice', {method:'POST', body:{regenerate:existing}});
+      toast('Facture envoyée au client');
+      await refreshOrders();
+      openDetail(o.id);
+      if (j && j.invoice) setTimeout(() => showInvoice(j.invoice), 150);
+    } catch(e) { btn.disabled = false; btn.textContent = old; toast('Facture impossible'); }
+  };
+  if ($('#dInvView')) $('#dInvView').onclick = () => showInvoice(o.invoice);
+}
+
+function showInvoice(inv){
+  if (!inv) return;
+  const old = document.getElementById('invOverlay'); if (old) old.remove();
+  const rows = (inv.items || []).map(i => `<div class="inv-row"><span>${esc(i.qty)} × ${esc(i.name)}<small>${fcfa(i.unit_price)} l’unité</small></span><b>${fcfa(i.line_total)}</b></div>`).join('');
+  const el = document.createElement('div');
+  el.id = 'invOverlay'; el.className = 'inv-overlay';
+  el.innerHTML = `<div class="inv-sheet" role="dialog" aria-label="Facture ${esc(inv.number)}">
+    <div class="inv-head">
+      <div><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"><span>${esc((inv.shop && inv.shop.name) || 'Darou Rahmane Chicken')}</span></div>
+      <button class="inv-x" id="invClose" aria-label="Fermer">×</button>
+    </div>
+    <div class="inv-title"><div><small>FACTURE</small><b>${esc(inv.number)}</b></div><div><small>DATE</small><b>${esc(frDate(inv.sent_at || inv.created_at))}</b></div></div>
+    <div class="inv-client"><small>CLIENT</small><b>${esc(inv.customer && inv.customer.name || '—')}</b><span>${esc(inv.customer && inv.customer.phone || '')}</span><span>${esc(inv.customer && inv.customer.address || '')}</span></div>
+    <div class="inv-lines">${rows}</div>
+    <div class="inv-totals">
+      <div><span>Sous-total</span><b>${fcfa(inv.subtotal)}</b></div>
+      ${inv.discount ? `<div><span>Remise</span><b>−${fcfa(inv.discount)}</b></div>` : ''}
+      <div><span>Livraison</span><b>${inv.delivery_fee ? fcfa(inv.delivery_fee) : 'Offerte'}</b></div>
+      <div class="g"><span>Total</span><b>${fcfa(inv.total)}</b></div>
+    </div>
+    <div class="inv-pay">${esc(PAY[inv.payment_method] || 'Paiement')} · ${inv.payment_status === 'paid' ? 'réglé' : inv.payment_method === 'cod' ? 'à la livraison' : 'à vérifier'}</div>
+    <div class="inv-note"><small>${inv.ai_source === 'ai' ? 'NOTE GÉNÉRÉE PAR IA' : 'NOTE PERSONNALISÉE'}</small><p>${esc(inv.note || '')}</p></div>
+    <div class="inv-foot">Merci de votre confiance · ${esc((inv.shop && inv.shop.site) || 'drc.sn')}</div>
+  </div>`;
+  document.body.appendChild(el);
+  const close = () => el.remove();
+  el.querySelector('#invClose').onclick = close;
+  el.addEventListener('click', e => { if (e.target === el) close(); });
 }
 function renderDriverSelect(o){
   const box = $('#drvSel'); if (!box) return;
