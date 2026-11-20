@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '3.5';
+window.DRC_WEB = '3.8';
 </script>
 
 <meta charset="utf-8">
@@ -282,7 +282,7 @@ header .brand-icon img{height:40px!important;width:auto!important;object-fit:con
 
 <style id="login-like-gerant">
 /* La page de code d'accès reprend trait pour trait celle de l'app gérant */
-header{display:none!important}                 /* pas de bandeau sur l'écran de connexion */
+body.logged-out header{display:none}          /* bandeau masqué seulement sur l'écran de connexion */
 #view-login{padding:0 22px calc(28px + var(--sb))!important;display:flex;flex-direction:column;justify-content:center;min-height:100vh}
 #view-login .login-wrap{width:100%;max-width:520px;margin:0 auto;background:transparent!important}
 #view-login .login-card{background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important}
@@ -313,6 +313,18 @@ header{display:none!important}                 /* pas de bandeau sur l'écran de
 #view-login .server-note{margin-top:14px!important;font-size:11.5px!important;color:var(--muted)!important}
 </style>
 
+
+<style id="fix-tabs">
+.tabs{overflow:visible!important}
+.tabs button{flex:1 1 0!important;min-width:0!important;padding:0 8px!important;font-size:12.5px!important;gap:5px}
+.tab-count{min-width:18px;height:18px;font-size:10.5px;padding:0 5px}
+</style>
+
+<style id="fix-bottom-space">
+/* le contenu ne doit jamais finir sous la barre basse */
+#drcNav + * , main, .wrap{padding-bottom:calc(112px + var(--sb))!important}
+main{padding-bottom:calc(112px + var(--sb))!important}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -353,7 +365,7 @@ header{display:none!important}                 /* pas de bandeau sur l'écran de
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.5').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.8').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -701,10 +713,10 @@ migrateToken().then(()=>{if(token){enter()}else{showLogin()}});setTimeout(()=>do
 
 <div id="drcNav" class="app-only hidden">
   <button data-tab="depot" class="on"><span class="ic"><svg viewBox="0 0 24 24"><use href="#box"/></svg></span>Dépôt</button>
-  <button data-tab="shipping"><span class="ic"><svg viewBox="0 0 24 24"><use href="#scooter"/></svg></span>En cours</button>
+  <button data-tab="shipping"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="17.4" r="2.3"/><circle cx="18" cy="17.4" r="2.3"/><path d="M8.4 17.4h7.2M10.2 17.4 13 9h2.6l2 8.4"/></svg></span>En cours</button>
   <button class="mid" id="drcNavShare" aria-label="Partager ma position"><span class="ring"><svg viewBox="0 0 24 24"><use href="#map"/></svg></span></button>
-  <button data-tab="done"><span class="ic"><svg viewBox="0 0 24 24"><use href="#check"/></svg></span>Terminées</button>
-  <button data-tab="map"><span class="ic"><svg viewBox="0 0 24 24"><use href="#map"/></svg></span>Carte</button>
+  <button data-tab="done"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.6 4.6 4.6L19 7.6"/></svg></span>Terminées</button>
+  <button data-tab="map"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6.5 9 4l6 2.5L20 4v13.5L15 20l-6-2.5L4 20V6.5ZM9 4v13.5M15 6.5V20"/></svg></span>Carte</button>
 </div>
 <script>
 /* barre basse : elle pilote les onglets existants, sans dupliquer la logique */
@@ -745,7 +757,7 @@ migrateToken().then(()=>{if(token){enter()}else{showLogin()}});setTimeout(()=>do
 <script>
 (function(){
   const app = document.getElementById('view-app');
-  const sync = () => { document.querySelector('header').style.display = (app && !app.classList.contains('hidden')) ? '' : 'none'; };
+  const sync = () => { document.body.classList.toggle('logged-out', !(app && !app.classList.contains('hidden'))); };
   if (app) new MutationObserver(sync).observe(app, {attributes:true, attributeFilter:['class']});
   sync();
 })();
