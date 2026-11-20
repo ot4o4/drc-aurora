@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '3.7';
+window.DRC_WEB = '3.8';
 </script>
 
 <meta charset="utf-8">
@@ -196,54 +196,79 @@ details.adv .fld{margin-top:12px}
 </style>
 
 <style id="compta">
-/* ---------- Registre de compte ---------- */
-#vCompta .lg-hero{position:relative;margin:14px 14px 0;padding:20px;border-radius:26px;color:#fff;overflow:hidden;
+/* ---------- Registre de compte : alignement strict sur la grille .view ---------- */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text}
+
+#vCompta .lg-hero{position:relative;margin:4px 0 0;padding:20px 20px 18px;border-radius:var(--r);color:#fff;overflow:hidden;
   background:linear-gradient(135deg,#1A1A1A,#26211F 60%,#33161A);box-shadow:0 14px 34px rgba(26,26,26,.22)}
 #vCompta .lg-hero::after{content:"";position:absolute;right:-60px;top:-60px;width:210px;height:210px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,22,29,.45),rgba(200,22,29,0) 65%)}
-#vCompta .lg-hero-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.14em;
+  background:radial-gradient(circle,rgba(200,22,29,.45),rgba(200,22,29,0) 65%);pointer-events:none}
+#vCompta .lg-hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:10.5px;letter-spacing:.12em;
   text-transform:uppercase;font-weight:800;color:#C9C4C0;position:relative;z-index:1}
-#vCompta .lg-period{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 10px;letter-spacing:.02em}
-#vCompta .lg-hero b{display:block;font-size:38px;font-weight:800;letter-spacing:-.04em;margin:10px 0 6px;position:relative;z-index:1}
-#vCompta .lg-hero-sub{display:flex;gap:14px;font-size:11.5px;font-weight:700;color:#CFCAC6;position:relative;z-index:1}
-#vCompta .lg-chips{display:flex;gap:8px;margin:14px 14px 0;flex-wrap:wrap}
-#vCompta .lg-chips button{border-radius:999px;padding:8px 14px;font-size:12px;font-weight:800;background:#fff;
-  border:1px solid var(--line);color:var(--muted)}
+#vCompta .lg-period{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:999px;
+  padding:5px 11px;letter-spacing:.04em;white-space:nowrap}
+#vCompta .lg-hero b{display:block;font-size:36px;line-height:1.1;font-weight:800;letter-spacing:-.04em;margin:10px 0 8px;
+  position:relative;z-index:1;font-variant-numeric:tabular-nums}
+#vCompta .lg-hero-sub{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;font-weight:700;
+  color:#CFCAC6;position:relative;z-index:1;font-variant-numeric:tabular-nums}
+
+/* Filtres de période : 3 colonnes égales parfaitement alignées sur la largeur */
+#vCompta .lg-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 0}
+#vCompta .lg-chips button{height:40px;border-radius:999px;padding:0 10px;font-size:12.5px;font-weight:700;background:#fff;
+  border:1px solid var(--line);color:var(--ink2);display:inline-flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 12px -8px rgba(0,0,0,.12)}
 #vCompta .lg-chips button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
-#vCompta .lg-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 14px 0}
-#vCompta .lg-kpi{background:#fff;border:1px solid var(--line);border-radius:20px;padding:13px 14px}
-#vCompta .lg-kpi span{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--muted)}
-#vCompta .lg-kpi b{display:block;font-size:20px;font-weight:800;letter-spacing:-.03em;margin-top:5px}
+
+/* Grille KPI 2×3 : hauteur uniforme, libellé en haut, chiffre aligné en bas */
+#vCompta .lg-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0 0}
+#vCompta .lg-kpi{background:#fff;border:1px solid var(--line);border-radius:22px;padding:14px 16px;min-height:82px;
+  display:flex;flex-direction:column;justify-content:space-between;box-shadow:var(--shadow)}
+#vCompta .lg-kpi span{display:block;font-size:10px;line-height:1.3;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:800;color:var(--muted)}
+#vCompta .lg-kpi b{display:block;font-size:20px;line-height:1.15;font-weight:800;letter-spacing:-.03em;margin-top:8px;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
 #vCompta .lg-kpi.acc b{color:var(--acc)}
-#vCompta .lg-h2{font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
-#vCompta .lg-day{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
-#vCompta .lg-day:last-child{border-bottom:0}
-#vCompta .lg-day i{font-style:normal;font-size:11px;font-weight:800;color:var(--muted);width:58px;flex:none}
-#vCompta .lg-bar{flex:1;height:9px;border-radius:999px;background:#EFEDEA;overflow:hidden}
+
+/* Cartes « Jour par jour », « Mouvements », « Agent comptable » : même largeur et vrai padding interne */
+#vCompta .card{margin:12px 0 0!important;padding:18px 18px!important;border-radius:var(--r)!important;background:#fff;box-shadow:var(--shadow)}
+#vCompta .lg-h2{font-size:15px;font-weight:800;letter-spacing:-.02em;margin:0 0 12px;color:var(--ink)}
+
+/* Jour par jour : 3 colonnes fixes/flex sans retour à la ligne */
+#vCompta .lg-day{display:grid;grid-template-columns:82px 1fr 86px;align-items:center;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--line)}
+#vCompta .lg-day:last-child{border-bottom:0;padding-bottom:2px}
+#vCompta .lg-day i{font-style:normal;font-size:11.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+#vCompta .lg-bar{width:100%;height:9px;border-radius:999px;background:#EFEDEA;overflow:hidden}
 #vCompta .lg-bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--acc),#E4444A)}
-#vCompta .lg-day b{font-size:12px;font-weight:800;width:82px;text-align:right;font-variant-numeric:tabular-nums}
-#vCompta .lg-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px}
-#vCompta .lg-row:last-child{border-bottom:0}
-#vCompta .lg-row .id{font-weight:800;letter-spacing:-.01em}
-#vCompta .lg-row .who{color:var(--muted);font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#vCompta .lg-row .m{font-weight:800;font-variant-numeric:tabular-nums}
-#vCompta .lg-row .pm{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:999px;
-  background:#F1EFEC;color:#5E5A57}
+#vCompta .lg-day b{font-size:12.5px;font-weight:800;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* Mouvements : 4 colonnes alignées verticalement */
+#vCompta .lg-row{display:grid;grid-template-columns:64px minmax(0,1fr) auto 68px;align-items:center;gap:8px;
+  padding:11px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+#vCompta .lg-row:last-child{border-bottom:0;padding-bottom:2px}
+#vCompta .lg-row .id{font-weight:800;letter-spacing:-.01em;font-variant-numeric:tabular-nums;white-space:nowrap}
+#vCompta .lg-row .who{color:var(--muted);font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vCompta .lg-row .m{font-weight:800;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+#vCompta .lg-row .pm{font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:4px 0;
+  border-radius:999px;background:#F1EFEC;color:#5E5A57;text-align:center;white-space:nowrap}
 #vCompta .lg-row.paid .pm{background:#E5F5EE;color:#1F8A4C}
 #vCompta .lg-row.due .pm{background:#FBE4E5;color:#A30F16}
-#vCompta .lg-agent{background:#fff}
-#vCompta .lg-note{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:10px}
-#vCompta .lg-chat{display:flex;flex-direction:column;gap:8px;max-height:250px;overflow:auto}
-#vCompta .lg-msg{max-width:88%;padding:10px 12px;border-radius:16px;font-size:12.5px;line-height:1.45;font-weight:600}
-#vCompta .lg-msg.me{align-self:flex-end;background:var(--acc);color:#fff;border-bottom-right-radius:6px}
-#vCompta .lg-msg.bot{align-self:flex-start;background:#F4F2EF;color:#26211F;border-bottom-left-radius:6px}
-#vCompta .lg-msg.bot b{color:var(--acc)}
-#vCompta .lg-compose{display:flex;gap:8px;margin-top:10px}
-#vCompta .lg-compose input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:14px;padding:12px;font-size:13px;font-weight:600;background:#FBFAF8}
-#vCompta .lg-compose input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px rgba(200,22,29,.10)}
-#vCompta .lg-send{border-radius:14px;background:var(--acc);color:#fff;font-weight:800;font-size:13px;padding:0 16px}
-#vCompta .lg-suggest{margin-top:10px}
-#vCompta .lg-suggest button{font-size:11px;padding:6px 11px}
+
+/* Agent comptable */
+#vCompta .lg-note{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 12px}
+#vCompta .lg-chat{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow:auto;margin-bottom:10px}
+#vCompta .lg-chat:empty{display:none}
+#vCompta .lg-msg{padding:10px 13px;border-radius:16px;font-size:12.5px;line-height:1.45;max-width:88%}
+#vCompta .lg-msg.me{align-self:flex-end;background:#1A1A1A;color:#fff;border-bottom-right-radius:5px}
+#vCompta .lg-msg.bot{align-self:flex-start;background:#F4F2EF;color:var(--ink);border-bottom-left-radius:5px}
+#vCompta .lg-compose{display:flex;gap:8px;align-items:center}
+#vCompta .lg-compose input{flex:1;min-width:0;height:44px;border-radius:999px;border:1px solid var(--line);
+  background:var(--bg);padding:0 15px;font-size:13px;font-family:inherit;color:var(--ink)}
+#vCompta .lg-send{height:44px;padding:0 18px;border-radius:999px;background:var(--acc);color:#fff;font-size:12.5px;
+  font-weight:800;flex:none}
+#vCompta .lg-chips.lg-suggest{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+#vCompta .lg-chips.lg-suggest button{height:32px;padding:0 12px;font-size:11.5px;box-shadow:none;background:var(--bg)}
 </style>
 
 
@@ -445,7 +470,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.7').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.8').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -1173,7 +1198,7 @@ async function migrateToken(){
       const m = o.payment_method || 'cod';
       const paid = o.payment_status === 'paid' || m !== 'cod';
       const who = (o.customer && o.customer.name) || 'Client';
-      return `<div class="lg-row ${paid ? 'paid' : 'due'}"><span class="id">${o.id}</span><span class="who">${who}</span>
+      return `<div class="lg-row ${paid ? 'paid' : 'due'}"><span class="id">${String(o.id).replace(/^DRC-\d{4}-/, "N° ")}</span><span class="who">${who}</span>
         <span class="m">${money(o.total)}</span><span class="pm">${m === 'wave' ? 'Wave' : m === 'orange_money' ? 'OM' : 'Espèces'}</span></div>`;
     }).join('') || `<p class="lg-note">Rien à afficher.</p>`;
 
@@ -1233,7 +1258,7 @@ async function migrateToken(){
   document.addEventListener('click', (e) => {
     if (!e.target) return;
     if (e.target.id === 'lgSend') { const i = document.getElementById('lgAsk'); ask(i.value); i.value = ''; }
-    if (e.target.id === 'bLedger') { paint(); try { toast('Registre recalculé'); } catch(e) {} }
+    if (e.target.closest && e.target.closest('#bLedger')) { paint(); try { toast('Registre recalculé'); } catch(e) {} }
   });
   document.addEventListener('keydown', (e) => {
     if (e.target && e.target.id === 'lgAsk' && e.key === 'Enter') { ask(e.target.value); e.target.value = ''; }
