@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.0';
+window.DRC_WEB = '4.1';
 </script>
 
 <meta charset="utf-8">
@@ -344,6 +344,52 @@ header .brand-icon{background:#fff!important;border-radius:14px!important;paddin
   width:16px;height:3px;border-radius:3px;background:var(--acc)}
 #drcNav button svg,#drcNav .mid .ring svg{width:27px!important;height:27px!important;fill:currentColor!important;stroke:none!important}
 </style>
+<style id="enrich">
+/* ── 1. Ma journée ── */
+.journee{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.journee .jn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:10px 11px;
+  display:flex;flex-direction:column;gap:2px}
+.journee .jn b{font-size:16px;font-weight:800;letter-spacing:-.02em;color:#fff;font-variant-numeric:tabular-nums}
+.journee .jn small{font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.62);font-weight:700}
+.journee .jr{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:14px;
+  background:#fff;color:#1A1A1A;font-size:13px;font-weight:700;border:0}
+.journee .jr svg{width:17px;height:17px;fill:currentColor}
+
+/* ── 2. Preuve de livraison ── */
+.proof-card{background:#fff;border-radius:20px;padding:16px 16px 14px;margin:0 14px 12px;box-shadow:0 10px 30px -18px rgba(60,40,20,.28)}
+.proof-card h3{font-size:14px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em}
+.proof-card p{font-size:11.5px;color:#666;line-height:1.45;margin:0 0 12px}
+.proof-row{display:flex;gap:8px;align-items:center}
+.proof-row input[type=text]{flex:1;min-width:0;height:52px;border-radius:14px;border:1.5px solid #E7E7E6;background:#F7F6F4;
+  text-align:center;font-size:22px;font-weight:800;letter-spacing:.34em;font-family:inherit;color:#1A1A1A}
+.proof-row input[type=text]:focus{border-color:#C8161D;background:#fff;outline:0}
+.proof-photo{position:relative;flex:none}
+.proof-photo input{position:absolute;inset:0;opacity:0}
+.proof-photo span{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;
+  background:#F1EFEC;color:#1A1A1A;font-size:19px}
+.proof-photo.done span{background:#E3F2E8;color:#25794A}
+.proof-ok{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11.5px;font-weight:700;color:#25794A}
+.proof-ok.hidden{display:none}
+
+/* ── 3. Encaissement sur place ── */
+.cash-card{margin:0 14px 12px;border-radius:20px;padding:16px;background:linear-gradient(150deg,#171413,#2A1216);
+  color:#fff;box-shadow:0 16px 34px -20px rgba(0,0,0,.6)}
+.cash-card.hidden{display:none}
+.cash-card .cc-top{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:800;color:rgba(255,255,255,.6)}
+.cash-card .cc-amount{font-size:30px;font-weight:800;letter-spacing:-.03em;margin:6px 0 12px;font-variant-numeric:tabular-nums}
+.cash-card label{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;
+  color:rgba(255,255,255,.6);margin-bottom:6px}
+.cash-card input{width:100%;height:50px;border-radius:14px;border:1.5px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.07);color:#fff;font-size:19px;font-weight:800;padding:0 14px;font-family:inherit;
+  font-variant-numeric:tabular-nums}
+.cash-card input::placeholder{color:rgba(255,255,255,.35);font-weight:600}
+.cash-card input:focus{border-color:#FF6B6B;outline:0;background:rgba(255,255,255,.12)}
+.cash-card .cc-change{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;font-size:12px;
+  font-weight:700;color:rgba(255,255,255,.68)}
+.cash-card .cc-change b{font-size:19px;color:#fff;font-variant-numeric:tabular-nums}
+.cash-card .cc-change.short b{color:#FF8A8A}
+</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -358,7 +404,7 @@ header .brand-icon{background:#fff!important;border-radius:14px!important;paddin
 <div id="splash"><div class="splash-inner"><div class="splash-mark"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="splash-brand">DAROU RAHMANE CHICKEN</div><div class="splash-role">LIVREUR</div><div class="splash-line"></div><div class="splash-sub">VOS LIVRAISONS. VOTRE TOURNÉE.</div></div></div>
 <header><div class="hd-top"><div class="brand-icon"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="brand"><b>DRC LIVREUR</b><small>ESPACE PROFESSIONNEL</small></div><div class="header-actions app-only hidden"><button class="iconbtn" onclick="loadOrders()" aria-label="Actualiser les missions"><img src="refresh.png" alt="" class="rf-ico"></button><button class="iconbtn" onclick="lock()" aria-label="Verrouiller l’application"><svg class="svg"><use href="#lock"/></svg></button></div></div><div class="service app-only hidden" id="service"><span class="service-dot"></span><span id="service-text">Connexion au service…</span></div></header>
 <main id="view-login"><section class="login-wrap"><div class="lg-brand"><img src="logo.png" alt="Darou Rahmane Chicken"><span>Espace livreur</span></div><div class="login-card"><div class="login-kicker"><svg class="svg"><use href="#scooter"/></svg> Accès livreur</div><h1>Votre tournée<br>commence ici.</h1><p>Consultez les colis confiés par le gérant, contactez les destinataires et confirmez chaque livraison.</p><div class="field" id="lg-field"><label for="lg-code">Code livreur</label><input id="lg-code" type="password" placeholder="Ex. DRC-1234-5678" autocomplete="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')login()"><div class="server-note">Code donné par le gérant (Espace gérant → Livreurs). Majuscules et tirets facultatifs.</div><div class="msg">Code incorrect ou serveur indisponible</div></div><button class="btn primary" id="lg-btn" onclick="login()">Accéder à mes missions</button><p class="sec-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.6 8 11 4.6-1.4 8-6 8-11V5l-8-3Zm-1 14-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7Z"/></svg>Connexion protégée : votre code n’est jamais enregistré sur le téléphone.</p><input id="lg-server" type="hidden"></div></section></main>
-<main id="view-app" class="hidden"><section class="tour-hero"><div class="tour-top"><div><div class="tour-label">Tableau de bord</div><h1 id="tournee-title">Ma tournée</h1></div><div class="tour-date" id="tour-date"></div></div><div class="tour-summary"><span><b id="active-total">0</b> missions actives</span><span><b id="done-total">0</b> terminées</span></div></section><div class="adm-stats" id="stats"></div><div class="tabs" role="tablist" aria-label="Filtrer les missions"><button id="t-depot" class="on" role="tab" onclick="switchTab('depot')">À récupérer<span class="tab-count" id="count-depot">0</span></button><button id="t-shipping" role="tab" onclick="switchTab('shipping')">En cours<span class="tab-count" id="count-shipping">0</span></button><button id="t-done" role="tab" onclick="switchTab('done')">Terminées<span class="tab-count" id="count-done">0</span></button></div><div class="list-head"><h2 id="list-title">Colis à récupérer au dépôt</h2><span id="list-count">0 mission</span></div><div id="orders" aria-live="polite"></div></main>
+<main id="view-app" class="hidden"><section class="tour-hero"><div class="tour-top"><div><div class="tour-label">Tableau de bord</div><h1 id="tournee-title">Ma tournée</h1></div><div class="tour-date" id="tour-date"></div></div><div class="tour-summary"><span><b id="active-total">0</b> missions actives</span><span><b id="done-total">0</b> terminées</span></div><div class="journee" id="journee"></div></section><div class="adm-stats" id="stats"></div><div class="tabs" role="tablist" aria-label="Filtrer les missions"><button id="t-depot" class="on" role="tab" onclick="switchTab('depot')">À récupérer<span class="tab-count" id="count-depot">0</span></button><button id="t-shipping" role="tab" onclick="switchTab('shipping')">En cours<span class="tab-count" id="count-shipping">0</span></button><button id="t-done" role="tab" onclick="switchTab('done')">Terminées<span class="tab-count" id="count-done">0</span></button></div><div class="list-head"><h2 id="list-title">Colis à récupérer au dépôt</h2><span id="list-count">0 mission</span></div><div id="orders" aria-live="polite"></div></main>
 <section id="mission-tracking" class="tracking-page" aria-label="Suivi de la mission">
   <div class="tracking-nav"><button class="iconbtn" onclick="closeTracking()" aria-label="Retour">←</button><h2>Suivi de la mission</h2><button class="iconbtn" onclick="refreshTracking()" aria-label="Actualiser"><svg class="svg"><use href="#refresh"/></svg></button></div>
   <div class="tracking-content">
@@ -375,6 +421,8 @@ header .brand-icon{background:#fff!important;border-radius:14px!important;paddin
     </div>
     <div class="driver-chat" id="driver-chat"><h3>Conversation avec le client</h3><div class="driver-chat-messages" id="driver-chat-messages" role="log" aria-live="polite"><div class="chat-empty">Chargement…</div></div><div class="driver-chat-compose"><textarea id="driver-chat-input" maxlength="1000" rows="1" aria-label="Réponse au client" placeholder="Écrivez au client…"></textarea><button class="btn primary" onclick="sendDriverMessage()">Envoyer</button></div></div>
     <div class="details-card"><h3>Détails de la livraison</h3><div class="details-grid" id="tracking-details"></div></div>
+    <div class="cash-card hidden" id="cashCard"></div>
+    <div class="proof-card hidden" id="proofCard"></div>
     <div class="tracking-action" id="tracking-action"></div>
     <div class="tracking-action map-open-btn"><button class="btn secondary" data-track-action="maps"><svg class="svg"><use href="#map"/></svg>Ouvrir dans Maps</button></div>
   </div>
@@ -384,7 +432,7 @@ header .brand-icon{background:#fff!important;border-radius:14px!important;paddin
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.0').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.1').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -810,6 +858,160 @@ document.addEventListener('click', e => {
     setTimeout(() => b.classList.remove('spin'), 500);
   }
 });
+</script>
+<script id="enrich-js">
+/* ═══ Ma journée · preuve de livraison · encaissement sur place ═══ */
+(function(){
+  const money = n => Math.round(Number(n)||0).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g,' ') + ' F';
+
+  /* ── 1. bandeau de journée ── */
+  function paintJournee(){
+    const box = document.getElementById('journee');
+    if (!box || typeof orders === 'undefined') return;
+    const actives = orders.filter(o => ['confirmed','preparing','paid','shipping'].includes(o.status||''));
+    const restantes = actives.length;
+    const cash = actives.filter(o => (o.payment_method||'cod') === 'cod').reduce((s,o)=>s+Number(o.total||0),0);
+    /* prochaine échéance : la mission en cours, sinon la première à récupérer */
+    const next = orders.find(o => (o.status||'')==='shipping') || actives[0];
+    const echeance = next ? (next.slot || next.creneau || (next.delivery_slot || 'Express 2 h')) : '—';
+    box.innerHTML =
+      '<div class="jn"><b>' + restantes + '</b><small>courses à faire</small></div>' +
+      '<div class="jn"><b>' + money(cash) + '</b><small>espèces à remettre</small></div>' +
+      '<div class="jn"><b>' + String(echeance).slice(0,14) + '</b><small>prochaine</small></div>' +
+      '<button class="jr" id="jnRoute"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>Itinéraire de la tournée</button>';
+    const btn = document.getElementById('jnRoute');
+    if (btn) btn.onclick = () => {
+      const stops = actives.map(o => (o.address || (o.customer && o.customer.address) || '')).filter(Boolean);
+      if (!stops.length) { toast('Aucune adresse à visiter'); return; }
+      const depot = 'Dakar';
+      const url = 'https://www.google.com/maps/dir/?api=1&origin=' + encodeURIComponent(depot) +
+        '&destination=' + encodeURIComponent(stops[stops.length-1]) +
+        (stops.length > 1 ? '&waypoints=' + encodeURIComponent(stops.slice(0,-1).join('|')) : '') +
+        '&travelmode=driving';
+      location.href = url;
+    };
+  }
+
+  /* ── 2 & 3. preuve + encaissement, remplis par openTracking ── */
+  function paintTrackingExtras(o){
+    const cashBox = document.getElementById('cashCard');
+    const proofBox = document.getElementById('proofCard');
+    if (!cashBox || !proofBox || !o) return;
+    const delivered = (o.status||'') === 'delivered';
+    const cod = (o.payment_method || 'cod') === 'cod';
+
+    /* encaissement */
+    if (cod && !delivered) {
+      cashBox.classList.remove('hidden');
+      cashBox.innerHTML =
+        '<div class="cc-top"><span>À encaisser</span><span>Espèces</span></div>' +
+        '<div class="cc-amount">' + money(o.total) + '</div>' +
+        '<label for="cashRecu">Montant reçu du client</label>' +
+        '<input id="cashRecu" inputmode="numeric" placeholder="0" autocomplete="off">' +
+        '<div class="cc-change" id="ccChange"><span>À rendre</span><b>—</b></div>';
+      const inp = document.getElementById('cashRecu');
+      const out = document.getElementById('ccChange');
+      const upd = () => {
+        const recu = Number(String(inp.value||'').replace(/\D/g,''))||0;
+        const diff = recu - Number(o.total||0);
+        out.classList.toggle('short', diff < 0);
+        out.innerHTML = '<span>' + (diff < 0 ? 'Il manque' : 'À rendre') + '</span><b>' +
+          (recu ? money(Math.abs(diff)) : '—') + '</b>';
+      };
+      inp.addEventListener('input', () => { inp.value = String(inp.value||'').replace(/\D/g,''); upd(); });
+      upd();
+    } else {
+      cashBox.classList.add('hidden');
+      cashBox.innerHTML = '';
+    }
+
+    /* preuve de livraison */
+    if (!delivered) {
+      proofBox.classList.remove('hidden');
+      proofBox.innerHTML =
+        '<h3>Preuve de livraison</h3>' +
+        '<p>Demandez le code à 4 chiffres au client, ou prenez une photo du colis remis.</p>' +
+        '<div class="proof-row">' +
+          '<input id="proofCode" type="text" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">' +
+          '<label class="proof-photo" id="proofPhotoWrap"><input id="proofPhoto" type="file" accept="image/*" capture="environment"><span>📷</span></label>' +
+        '</div>' +
+        '<div class="proof-ok hidden" id="proofOk">Preuve enregistrée — vous pouvez confirmer</div>';
+      const code = document.getElementById('proofCode');
+      const ok = document.getElementById('proofOk');
+      const mark = () => {
+        const hasCode = String(code.value||'').replace(/\D/g,'').length === 4;
+        const hasPhoto = !!(document.getElementById('proofPhoto').files||[]).length;
+        ok.classList.toggle('hidden', !(hasCode || hasPhoto));
+        window.__drcProof = { code: String(code.value||'').replace(/\D/g,''), photo: hasPhoto };
+      };
+      code.addEventListener('input', () => { code.value = String(code.value||'').replace(/\D/g,''); mark(); });
+      document.getElementById('proofPhoto').addEventListener('change', e => {
+        const f = e.target.files && e.target.files[0];
+        document.getElementById('proofPhotoWrap').classList.toggle('done', !!f);
+        mark();
+      });
+      window.__drcProof = { code: '', photo: false };
+    } else {
+      proofBox.classList.add('hidden');
+      proofBox.innerHTML = '';
+    }
+  }
+
+  /* hook : à chaque rendu du suivi, on rafraîchit les deux cartes */
+  const paintOrders0 = window.paintOrders;
+  function hookTracking(){
+    const origOpen = window.openTracking;
+    if (origOpen && !origOpen.__hooked) {
+      const wrapped = function(id){
+        const r = origOpen.apply(this, arguments);
+        const o = (typeof orders !== 'undefined' ? orders : []).find(x => String(x.id) === String(id));
+        try { paintTrackingExtras(o); } catch(e) {}
+        return r;
+      };
+      wrapped.__hooked = true;
+      window.openTracking = wrapped;
+    }
+  }
+
+  /* garde avant confirmation : preuve + espèces encaissées */
+  const setStatus0 = window.setStatus;
+  if (setStatus0 && !setStatus0.__guarded) {
+    const guarded = function(id, status){
+      if (status === 'delivered') {
+        const o = (typeof orders !== 'undefined' ? orders : []).find(x => String(x.id) === String(id));
+        const proof = window.__drcProof || { code: '', photo: false };
+        if (!proof.code && !proof.photo) {
+          toast('Ajoutez la preuve : code du client ou photo');
+          return Promise.resolve();
+        }
+        if (o && (o.payment_method || 'cod') === 'cod') {
+          const inp = document.getElementById('cashRecu');
+          const recu = Number(String((inp && inp.value)||'').replace(/\D/g,''))||0;
+          if (recu < Number(o.total||0)) {
+            toast('Encaissez ' + money(o.total) + ' avant de confirmer');
+            return Promise.resolve();
+          }
+          toast('Rendu ' + money(recu - Number(o.total||0)));
+        }
+      }
+      return setStatus0.apply(this, arguments);
+    };
+    guarded.__guarded = true;
+    window.setStatus = guarded;
+  }
+
+  /* branchements */
+  const rs = window.renderStats;
+  if (rs && !rs.__journee) {
+    const wrappedRS = function(){ const r = rs.apply(this, arguments); try { paintJournee(); hookTracking(); } catch(e) {} return r; };
+    wrappedRS.__journee = true;
+    window.renderStats = wrappedRS;
+  }
+  document.addEventListener('DOMContentLoaded', () => { paintJournee(); hookTracking(); });
+  setTimeout(() => { paintJournee(); hookTracking(); }, 400);
+  setTimeout(() => { paintJournee(); hookTracking(); }, 1600);
+  window.__journee = { paintJournee, paintTrackingExtras };
+})();
 </script>
 </body>
 </html>
