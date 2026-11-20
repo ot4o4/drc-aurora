@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201205">
+<link rel="manifest" href="manifest.json?v=202611201208">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -455,6 +455,12 @@ html[data-theme="dark"] .boot img{width:180px;padding:8px 10px}
 
 .banner>div{position:relative;z-index:1;min-width:0}
 .banner img{position:absolute;right:-8px;bottom:-20px;width:106px;height:106px;flex:none;margin:0;opacity:.20;object-fit:contain;pointer-events:none}
+
+.empty-orders{display:flex;flex-direction:column;align-items:center;text-align:center;padding:26px 20px 22px;margin-top:14px}
+.empty-orders img{width:96px;height:96px;margin:0 auto 10px}
+.empty-orders b{font-size:18px;margin-bottom:5px}
+.empty-orders span{display:block;font-size:13px;line-height:1.5;color:var(--muted);max-width:310px}
+.empty-orders .pill-btn{width:100%;margin-top:16px}
 </style>
 </head>
 <body>
@@ -1286,14 +1292,17 @@ async function paintOrders(fetchAll){
   const list = myOrders.map(x => ordersCache[x.id] || {id:x.id, total:x.total, created_at:x.created_at, status:'pending', items:[]});
   if (!list.length) {
     body.innerHTML = `<div class="gauge">${gaugeHTML(0, frDate(new Date()), '0 commande', 'Votre première commande vous attend')}</div>
-      <button class="plus" id="ordPlus"><svg style="stroke:var(--ink);stroke-width:1.8;fill:none;width:20px;height:20px" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nouvelle commande</button>
-      <div class="card empty"><b>Aucune commande</b>Vos commandes et leur suivi s’affichent ici.${auth ? '' : '<br>Connectez-vous pour retrouver celles passées sur un autre téléphone.'}</div>`;
+      <div class="card empty empty-orders">
+        <img src="assets/img/cat-tout.webp" alt="">
+        <b>Aucune commande</b>
+        <span>Vos commandes et leur suivi s’affichent ici.${auth ? '' : '<br>Connectez-vous pour retrouver celles passées sur un autre téléphone.'}</span>
+        <button class="pill-btn acc" id="ordPlus">Nouvelle commande</button>
+      </div>`;
     $('#ordPlus').onclick = () => go('home');
     return;
   }
   const active = list.find(o => !['delivered', 'cancelled'].includes(o.status)) || list[0];
-  body.innerHTML = `<div class="gauge" id="ordGauge">${gaugeHTML(progress(active), esc(active.id), fcfa(active.total), statusText(active))}</div>
-    <button class="plus" id="ordPlus"><svg style="stroke:var(--ink);stroke-width:1.8;fill:none;width:20px;height:20px" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nouvelle commande</button>` +
+  body.innerHTML = `<div class="gauge" id="ordGauge">${gaugeHTML(progress(active), esc(active.id), fcfa(active.total), statusText(active))}</div>` +
     list.map(o => {
       const first = prod((o.items && o.items[0] || {}).id) || PRODUCTS[0];
       const n = (o.items || []).reduce((s, i) => s + (i.qty || 0), 0);
@@ -1305,7 +1314,6 @@ async function paintOrders(fetchAll){
           <div class="act"><span class="edit">${ICON.pen}</span></div></div>
       </div>`;
     }).join('');
-  $('#ordPlus').onclick = () => go('home');
   $('#ordGauge').onclick = () => openOrder(active.id);
   body.querySelectorAll('[data-ord]').forEach(c => c.onclick = () => openOrder(c.dataset.ord));
   updateBells();
