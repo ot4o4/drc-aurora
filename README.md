@@ -7,7 +7,7 @@ Nouvelle vitrine, indépendante du site en production (`darourahmane-chicken.onr
 - **Dossier local** : `/home/ot4o4/drc-aurora/`
 - **Fichier unique** : `index.html` (HTML + CSS + JS, aucune dépendance de build)
 - **Assets** : `assets/` — logo, bannière et photos produits reprises du site officiel
-- **Catalogue** : `products.json` (copie de l'API) ; le site interroge aussi l'API live `https://drc-api-dj8t.onrender.com/api/products` et retombe sur le catalogue local si l'API dort.
+- **Catalogue** : `products.json` (copie de l'API) ; le site interroge aussi l'API live `https://hermes11.vps.webdock.cloud/drc-api/api/products` et retombe sur le catalogue local si l'API dort.
 
 ## Ce que fait le site
 
