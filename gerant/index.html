@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '2.3';
+window.DRC_WEB = '2.4';
 </script>
 
 <meta charset="utf-8">
@@ -254,11 +254,11 @@ details.adv .fld{margin-top:12px}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.3').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.4').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
-      if (document.visibilityState === 'visible' && document.hasFocus()) return;
+      if (!document.hidden && document.hasFocus()) return;
       if (!('Notification' in window)) return;
       var go = function(){ navigator.serviceWorker.ready.then(function(r){ r.showNotification(t, {body:b, icon:'icons/icon-192.png', badge:'icons/icon-192.png', vibrate:[60,40,60]}); }); };
       if (Notification.permission === 'granted') go();
@@ -289,7 +289,12 @@ const NATIVE = window.Android || null;
 /* On n'alerte le téléphone que si l'utilisateur N'EST PAS dans l'app (écran éteint, autre app,
    ou app en arrière-plan) : quand il regarde l'écran, la commande apparaît déjà dans la liste et
    le toast suffit. */
-const inApp = () => { try { return document.visibilityState === 'visible' && document.hasFocus(); } catch(e) { return true; } };
+const inApp = () => {
+  try {
+    if (window.Android && window.Android.isForeground) return !!window.Android.isForeground();
+    return document.visibilityState === 'visible' && document.hasFocus();
+  } catch(e) { return true; }
+};
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fcfa = n => (Math.round(Number(n) || 0)).toLocaleString('fr-FR').replace(/\u202f|\u00a0|\s/g, '\u00a0') + '\u00a0F';
