@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201213">
+<link rel="manifest" href="manifest.json?v=202611201216">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -274,7 +274,7 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .pm .lg.w, .pm .lg.o{background:#0E0E0E;padding:5px}
 .pm .lg img{width:100%;height:100%;object-fit:contain;display:block;border-radius:10px}
 .pm .lg.c{background:#1A1A1A;padding:0}
-.pm .lg.w{padding:0}
+.pm .lg.w{padding:0;background:#1DC8FF}
 .pm .lg.w img{border-radius:14px}
 .pm .lg svg{width:24px;height:24px;fill:#fff}
 .pm b{display:block;font-size:16px;font-weight:600}
@@ -1422,7 +1422,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.7.6 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.7.7 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
