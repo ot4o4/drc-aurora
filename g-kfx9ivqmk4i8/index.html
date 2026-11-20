@@ -446,7 +446,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.8').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.81').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -769,8 +769,15 @@ function openDetail(id){
   };
   if ($('#dInvBtn')) $('#dInvBtn').onclick = async () => {
     const existing = Boolean(o.invoice);
-    if (!confirm(existing ? 'Renvoyer la facture au client ?' : 'Générer et envoyer la facture au client ?')) return;
-    const btn = $('#dInvBtn'); btn.disabled = true; const old = btn.textContent; btn.textContent = 'Génération…';
+    const btn = $('#dInvBtn');
+    if (btn.dataset.arm !== '1') {
+      btn.dataset.arm = '1'; btn.dataset.label = btn.textContent;
+      btn.textContent = existing ? 'Confirmer le renvoi ?' : 'Confirmer l’envoi ?';
+      setTimeout(() => { if (btn.isConnected && btn.dataset.arm === '1') { btn.dataset.arm = ''; btn.textContent = btn.dataset.label || (existing ? 'Renvoyer la facture' : 'Générer et envoyer la facture'); } }, 4000);
+      return;
+    }
+    btn.dataset.arm = '';
+    btn.disabled = true; const old = btn.dataset.label || btn.textContent; btn.textContent = 'Génération…';
     try {
       const j = await api('/api/admin/orders/' + encodeURIComponent(o.id) + '/invoice', {method:'POST', body:{regenerate:existing}});
       toast('Facture envoyée au client');
