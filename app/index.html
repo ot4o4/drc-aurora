@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201825">
+<link rel="manifest" href="manifest.json?v=202611201829">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -524,15 +524,17 @@ html[data-theme="dark"] .sticky-cta{background:linear-gradient(180deg,rgba(18,18
 
 /* ── code de livraison 1.8.0 ── */
 .code-card{display:flex;align-items:center;gap:14px;padding:16px 17px;margin:10px 0 6px;border-radius:22px;
-  background:linear-gradient(150deg,#241F1D,#191314);color:#fff;box-shadow:0 18px 34px -22px rgba(40,10,10,.75);
-  border:1px solid rgba(255,255,255,.06)}
+  background:linear-gradient(155deg,#FF3D46,#D4111A 72%,#C00E17);color:#fff;
+  box-shadow:0 20px 38px -22px rgba(229,29,38,.78),inset 0 1px 0 rgba(255,255,255,.22);
+  border:1px solid rgba(255,255,255,.10)}
 .code-txt{flex:1;min-width:0}
-.code-txt small{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:#D0A8A4;font-weight:800}
-.code-txt b{display:block;font-size:31px;line-height:1.15;letter-spacing:.26em;font-variant-numeric:tabular-nums;margin:3px 0 2px}
-.code-txt span{display:block;font-size:11px;line-height:1.45;color:#C9BDB7}
-.code-copy{flex:none;height:38px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;
-  font-size:11px;font-weight:700;border:1px solid rgba(255,255,255,.14)}
-.code-copy:active{background:rgba(255,255,255,.22)}
+.code-txt small{display:block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.78);font-weight:800}
+.code-txt b{display:block;font-size:31px;line-height:1.15;letter-spacing:.26em;font-variant-numeric:tabular-nums;margin:3px 0 2px;color:#fff}
+.code-txt span{display:block;font-size:11px;line-height:1.45;color:rgba(255,255,255,.88)}
+.code-copy{flex:none;height:38px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.18);color:#fff;
+  font-size:11px;font-weight:700;border:1px solid rgba(255,255,255,.28)}
+.code-copy:active{background:rgba(255,255,255,.30)}
+html[data-theme="dark"] .code-card{background:linear-gradient(155deg,#FF3D46,#D4111A 72%,#C00E17)}
 </style>
 </head>
 <body>
@@ -1546,7 +1548,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.0 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.1 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
