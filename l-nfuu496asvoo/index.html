@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.18';
+window.DRC_WEB = '4.19';
 </script>
 
 <meta charset="utf-8">
@@ -545,7 +545,7 @@ body.drc2 #drcNav .badge.on{display:grid}
 body.drc2 #view-login{display:block;padding:0!important;background:var(--bg);min-height:100vh}
 body.drc2 #view-login.hidden{display:none!important}
 body.drc2 #view-login .login-hero{position:relative;height:44vh;min-height:290px;max-height:450px;overflow:hidden;border-radius:0 0 36px 36px}
-body.drc2 #view-login .login-hero .hero-img{width:100%;height:100%;object-fit:cover;display:block}
+body.drc2 #view-login .login-hero .hero-img{width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block}
 body.drc2 #view-login .login-hero .hero-shade{position:absolute;inset:0;
   background:linear-gradient(180deg,rgba(10,10,10,.06) 0%,rgba(10,10,10,.04) 52%,rgba(244,244,243,.97) 100%)}
 body.drc2 #view-login .hero-role{position:absolute;left:18px;top:calc(14px + var(--st));display:inline-flex;align-items:center;gap:7px;
@@ -678,7 +678,7 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.18').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.19').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
