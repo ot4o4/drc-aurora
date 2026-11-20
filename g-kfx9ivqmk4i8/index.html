@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '3.6';
+window.DRC_WEB = '3.7';
 </script>
 
 <meta charset="utf-8">
@@ -323,19 +323,36 @@ body{font-family:PJS,system-ui,sans-serif}
 
 
 
-<style id="nav-frame-style">
-/* Cadre rouge mobile dans la barre du bas : suit et encadre l'icône touchée */
-.nav{position:relative!important;padding:34px 12px var(--sb)!important}
-.nav .nav-frame{position:absolute;left:0;top:0;width:54px;height:54px;border-radius:18px;
-  background:var(--acc);box-shadow:0 6px 14px -6px rgba(0,0,0,.45), 0 8px 20px -8px rgba(200,22,29,.55);
-  pointer-events:none;z-index:0;
-  transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .2s}
-.nav button,.nav .scan{width:52px!important;height:52px!important;border-radius:18px!important;
-  background:transparent!important;box-shadow:none!important;color:rgba(255,255,255,.78)!important;
-  position:relative!important;z-index:1!important;transition:color .2s,transform .18s cubic-bezier(.22,1,.36,1)!important}
-.nav button.on,.nav .scan.on{color:#fff!important}
+<style id="polish-all">
+/* 1. Tuile du logo en haut à gauche : fond blanc propre, proportions respectées */
+.topbar{padding:2px 2px 0;align-items:center}
+.logoTile{width:42px!important;height:42px!important;border-radius:14px!important;background:#fff!important;
+  box-shadow:var(--shadow)!important;padding:5px!important;display:grid!important;place-items:center!important}
+.logoTile::before,.logoTile::after{display:none!important}
+.logoTile img{width:100%!important;height:100%!important;object-fit:contain!important;filter:none!important}
+
+/* 2. Bouton d'actualisation : icône fournie par l'utilisateur + rotation fluide au toucher */
+.ibtn{width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important;
+  background:#fff!important;box-shadow:var(--shadow)!important;display:grid!important;place-items:center!important}
+.ibtn .rf-ico{width:20px;height:20px;object-fit:contain;display:block;transition:transform .45s cubic-bezier(.22,1,.36,1)}
+.ibtn.spin .rf-ico{transform:rotate(360deg)}
+
+/* 3. Barre du bas : plus de gros cadre carré rouge ; icônes uniformes, onglet actif en rouge + trait fin */
+.nav{position:relative!important;height:calc(82px + var(--sb))!important;padding:28px 14px var(--sb)!important;margin-top:-28px!important}
+.nav .nav-frame{display:none!important}
+.nav button,.nav .scan{width:48px!important;height:48px!important;border-radius:14px!important;
+  background:transparent!important;box-shadow:none!important;color:rgba(255,255,255,.65)!important;
+  position:relative!important;transition:color .18s,transform .18s cubic-bezier(.22,1,.36,1)!important}
+.nav button.on,.nav .scan.on{color:var(--acc)!important;transform:translateY(-2px)}
+.nav button.on::after,.nav .scan.on::after{content:"";position:absolute;left:50%;bottom:3px;transform:translateX(-50%);
+  width:16px;height:3px;border-radius:3px;background:var(--acc)}
 .nav button svg,.nav .scan svg{width:27px!important;height:27px!important;fill:currentColor!important}
-.nav .badge{z-index:2;top:-3px!important;right:-3px!important}
+.nav .badge{top:0!important;right:0!important;background:var(--acc)!important;color:#fff!important;border:2px solid var(--nav)!important}
+
+/* 4. Cartes et contraste : sous-titres plus nets, marge basse confortable */
+.view{padding-bottom:28px!important}
+.stat span{color:#585552!important;font-weight:600!important}
+.ord{padding:14px 16px!important;align-items:center!important}
 </style>
 </head>
 <body>
@@ -355,7 +372,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <div class="app" id="app">
   <div class="stage" id="stage">
     <section class="view on" data-view="home" id="vHome">
-      <div class="topbar"><div class="logoTile"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div><h1>Tableau de bord<span class="liveDot" id="liveDot" title="En direct avec le serveur"></span></h1><button class="ibtn" id="bRefresh" aria-label="Actualiser"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v5h-5"/></svg></button></div>
+      <div class="topbar"><div class="logoTile"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div><h1>Tableau de bord<span class="liveDot" id="liveDot" title="En direct avec le serveur"></span></h1><button class="ibtn" id="bRefresh" aria-label="Actualiser"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
       <div class="gauge" id="dashGauge"></div>
       <div class="stats" id="dashStats"></div>
       <div class="card switch"><div><b>Boutique ouverte</b><span id="shopSub">Les clients peuvent commander</span></div><button class="tg on" id="shopTg" aria-label="Ouvrir ou fermer la boutique"><i></i></button></div>
@@ -364,27 +381,27 @@ body{font-family:PJS,system-ui,sans-serif}
     </section>
 
     <section class="view" data-view="orders" id="vOrders">
-      <div class="topbar"><div style="width:50px"></div><h1>Commandes</h1><button class="ibtn" id="oRefresh" aria-label="Actualiser"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 7.4 5H17a1 1 0 0 0 0 2h4a1 1 0 0 0 1-1V6a1 1 0 0 0-2 0v1.4A10 10 0 1 0 22 12a1 1 0 0 0-2 0 8 8 0 1 1-8-8Z"/></svg></button></div>
+      <div class="topbar"><div style="width:40px"></div><h1>Commandes</h1><button class="ibtn" id="oRefresh" aria-label="Actualiser"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
       <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="Numéro, client, téléphone" autocomplete="off"></div>
       <div class="chips" id="chips"></div>
       <div id="ordersList"></div>
     </section>
 
     <section class="view" data-view="pay" id="vPay">
-      <div class="topbar"><div style="width:50px"></div><h1>Encaissements</h1><button class="ibtn" id="pRefresh" aria-label="Actualiser"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 7.4 5H17a1 1 0 0 0 0 2h4a1 1 0 0 0 1-1V6a1 1 0 0 0-2 0v1.4A10 10 0 1 0 22 12a1 1 0 0 0-2 0 8 8 0 1 1-8-8Z"/></svg></button></div>
+      <div class="topbar"><div style="width:40px"></div><h1>Encaissements</h1><button class="ibtn" id="pRefresh" aria-label="Actualiser"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
       <div id="payList"></div>
     </section>
 
     <section class="view" data-view="products" id="vProducts">
-      <div class="topbar"><div style="width:50px"></div><h1>Produits</h1><button class="ibtn" id="prRefresh" aria-label="Actualiser"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 7.4 5H17a1 1 0 0 0 0 2h4a1 1 0 0 0 1-1V6a1 1 0 0 0-2 0v1.4A10 10 0 1 0 22 12a1 1 0 0 0-2 0 8 8 0 1 1-8-8Z"/></svg></button></div>
+      <div class="topbar"><div style="width:40px"></div><h1>Produits</h1><button class="ibtn" id="prRefresh" aria-label="Actualiser"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
       <p class="hint" style="text-align:left;margin:0 2px 12px">Le prix enregistré ici est celui facturé au client.</p>
       <div class="products" id="prodList"></div>
     </section>
 
 
     <section class="view" data-view="compta" id="vCompta">
-      <div class="topbar"><div style="width:50px"></div><h1>Registre de compte<span class="liveDot" id="lgDot"></span></h1>
-        <button class="ibtn" id="bLedger" aria-label="Recalculer"><svg viewBox="0 0 24 24" class="s"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v5h-5"/></svg></button></div>
+      <div class="topbar"><div style="width:40px"></div><h1>Registre de compte<span class="liveDot" id="lgDot"></span></h1>
+        <button class="ibtn" id="bLedger" aria-label="Recalculer"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
 
       <div class="lg-hero">
         <div class="lg-hero-top"><span>Encaissé sur la période</span><span class="lg-period" id="lgPeriod">7 jours</span></div>
@@ -428,7 +445,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.6').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.7').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -580,7 +597,7 @@ function openDetail(id){
   const claim = o.payment_claim;
   const maps = (c.lat && c.lng) ? 'https://www.google.com/maps?q=' + c.lat + ',' + c.lng : '';
   v.innerHTML = `
-    <div class="topbar"><button class="ibtn" id="dBack">${ICON.back}</button><h1>${esc(o.id)}</h1><div style="width:50px"></div></div>
+    <div class="topbar"><button class="ibtn" id="dBack">${ICON.back}</button><h1>${esc(o.id)}</h1><div style="width:40px"></div></div>
     <div class="card" style="padding:16px 18px">
       <div class="row"><span class="k">Client</span><span class="v">${esc(c.name || '—')}</span></div>
       <div class="row"><span class="k">Téléphone</span><span class="v">${esc(c.phone || '—')}</span></div>
@@ -838,7 +855,7 @@ function paintSettings(){
   const v = $('#vSettings');
   const pm = s.pay_methods || {};
   v.innerHTML = `
-    <div class="topbar"><div style="width:50px"></div><h1>Réglages</h1><div style="width:50px"></div></div>
+    <div class="topbar"><div style="width:40px"></div><h1>Réglages</h1><div style="width:40px"></div></div>
     <div class="sec" style="margin-top:0"><h2>Boutique</h2></div>
     <div class="card" style="padding:6px 16px 16px">
       <div class="switch" style="padding:14px 0;box-shadow:none;background:none"><div><b>Ouverte</b><span>Bloque les commandes si fermé</span></div><button class="tg ${s.shop_open !== false ? 'on' : ''}" id="sOpen"><i></i></button></div>
@@ -1336,31 +1353,13 @@ async function migrateToken(){
 
 
 <script id="nav-frame-script">
-(function(){
-  const nav = document.querySelector('.nav');
-  if (!nav) return;
-  let frame = nav.querySelector('.nav-frame');
-  if (!frame) {
-    frame = document.createElement('span');
-    frame.className = 'nav-frame';
-    frame.setAttribute('aria-hidden', 'true');
-    nav.insertBefore(frame, nav.firstChild);
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('.ibtn');
+  if (b && b.querySelector('.rf-ico')) {
+    b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin');
+    setTimeout(() => b.classList.remove('spin'), 500);
   }
-  function moveFrame(animate) {
-    const on = nav.querySelector('button.on') || nav.querySelector('button');
-    if (!on || !on.offsetWidth) return;
-    if (animate === false) frame.style.transition = 'none';
-    const x = on.offsetLeft + (on.offsetWidth - frame.offsetWidth) / 2;
-    const y = on.offsetTop + (on.offsetHeight - frame.offsetHeight) / 2;
-    frame.style.transform = 'translate3d(' + Math.round(x) + 'px,' + Math.round(y) + 'px,0)';
-    if (animate === false) requestAnimationFrame(() => { frame.style.transition = ''; });
-  }
-  nav.querySelectorAll('button').forEach(b => b.addEventListener('click', () => moveFrame(true)));
-  new MutationObserver(() => moveFrame(true)).observe(nav, { subtree: true, attributes: true, attributeFilter: ['class'] });
-  if (window.ResizeObserver) new ResizeObserver(() => moveFrame(false)).observe(nav);
-  window.addEventListener('resize', () => moveFrame(false));
-  setTimeout(() => moveFrame(false), 40);
-})();
+});
 </script>
 </body>
 </html>
