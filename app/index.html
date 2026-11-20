@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201839">
+<link rel="manifest" href="manifest.json?v=202611201841">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -725,7 +725,7 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 
   <nav class="nav" id="nav">
     <button data-go="home" class="on" aria-label="Accueil"><svg viewBox="0 0 24 24"><path d="M10.3 3.1a2.6 2.6 0 0 1 3.4 0l6.4 5.5c.6.5.9 1.2.9 2V19a2.5 2.5 0 0 1-2.5 2.5H15a1 1 0 0 1-1-1v-4.2a2 2 0 0 0-4 0v4.2a1 1 0 0 1-1 1H5.5A2.5 2.5 0 0 1 3 19v-8.4c0-.8.3-1.5.9-2Z"/></svg></button>
-    <button data-go="orders" aria-label="Mes commandes"><svg viewBox="0 0 24 24"><path d="M6 2h11a3 3 0 0 1 3 3v15a1 1 0 0 1-1 1H6.5A2.5 2.5 0 0 1 4 18.5v-14A2.5 2.5 0 0 1 6 2Zm0 17h12v-2H6.5a.5.5 0 0 0 0 1H6Zm6.5-13.5a2.3 2.3 0 0 0-2.2 1.6 2 2 0 0 0-.8 3.8v1.6c0 .3.2.5.5.5h5c.3 0 .5-.2.5-.5v-1.6a2 2 0 0 0-.8-3.8 2.3 2.3 0 0 0-2.2-1.6Zm-3 8.5v1h6v-1Z"/></svg></button>
+    <button data-go="orders" aria-label="Mes commandes"><svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4 4 4 0 0 0-4 4c0 1.8 1.2 3.3 2.8 3.8L6 21h12l-.8-6.2A4 4 0 0 0 20 11a4 4 0 0 0-4-4 4 4 0 0 0-4-4Zm-5 14h10l.4 2H6.6l.4-2Z"/></svg></button>
     <button data-go="cart" class="scan" aria-label="Panier"><svg viewBox="0 0 24 24"><path d="M7 4a1 1 0 0 1 1 1v1h8V5a1 1 0 1 1 2 0v1h1.3a1.7 1.7 0 0 1 1.7 1.9l-1.1 10.4a3 3 0 0 1-3 2.7H7.1a3 3 0 0 1-3-2.7L3 7.9A1.7 1.7 0 0 1 4.7 6H6V5a1 1 0 0 1 1-1Zm1 6a1 1 0 1 0-2 0 6 6 0 0 0 12 0 1 1 0 1 0-2 0 4 4 0 0 1-8 0Z"/></svg><span class="badge" id="badge">0</span></button>
     <button data-go="track" aria-label="Suivi de commande"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 6 12 6.3 12.3a1 1 0 0 0 1.4 0C13 21 19 14.2 19 9a7 7 0 0 0-7-7Zm0 9.6A2.6 2.6 0 1 1 12 6.4a2.6 2.6 0 0 1 0 5.2Z"/></svg></button>
     <button data-go="account" aria-label="Mon compte"><svg viewBox="0 0 24 24"><path d="M12 12.4a4.7 4.7 0 1 0 0-9.4 4.7 4.7 0 0 0 0 9.4Zm0 1.9c-4.2 0-7.6 2.1-7.6 4.8V20a1.6 1.6 0 0 0 1.6 1.6h12A1.6 1.6 0 0 0 18.2 20v-.9c0-2.7-3.4-4.8-7.6-4.8Z"/></svg></button>
@@ -1724,7 +1724,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.3 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.4 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
