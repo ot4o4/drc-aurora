@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201829">
+<link rel="manifest" href="manifest.json?v=202611201835">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -535,6 +535,26 @@ html[data-theme="dark"] .sticky-cta{background:linear-gradient(180deg,rgba(18,18
   font-size:11px;font-weight:700;border:1px solid rgba(255,255,255,.28)}
 .code-copy:active{background:rgba(255,255,255,.30)}
 html[data-theme="dark"] .code-card{background:linear-gradient(155deg,#FF3D46,#D4111A 72%,#C00E17)}
+
+/* ── centre de notifications 1.8.2 ── */
+.notif-list{display:flex;flex-direction:column;gap:9px;margin-top:4px}
+.notif{display:flex;align-items:center;gap:12px;width:100%;padding:14px 15px;text-align:left;border:0;
+  border-radius:20px;background:var(--card);box-shadow:var(--shadow);color:var(--ink);position:relative}
+.notif.new{background:linear-gradient(150deg,#FFF7F6,#FFFFFF);box-shadow:0 16px 32px -22px rgba(229,29,38,.45)}
+html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E1E1E)}
+.notif-ico{width:40px;height:40px;border-radius:13px;display:grid;place-items:center;flex:none;background:var(--seg);color:var(--ink2)}
+.notif-ico svg{width:20px;height:20px;fill:currentColor}
+.notif-ico.pay{background:#FFF1D6;color:#8A5B00}
+.notif-ico.ship{background:#FCE8E8;color:#A90F16}
+.notif-ico.done{background:#E3F2E8;color:#1F8A4C}
+.notif-ico.invoice{background:var(--acc-soft);color:var(--acc-ink)}
+.notif-ico.code{background:#FCE8E8;color:#C8161D}
+.notif-body{flex:1;min-width:0}
+.notif-body b{display:block;font-size:14px;font-weight:600}
+.notif-body span{display:block;font-size:11.5px;line-height:1.4;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+.notif-body small{display:block;font-size:10px;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.06em}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--acc);flex:none;opacity:0;margin-left:2px}
+.notif.new .notif-dot{opacity:1}
 </style>
 </head>
 <body>
@@ -667,6 +687,7 @@ html[data-theme="dark"] .code-card{background:linear-gradient(155deg,#FF3D46,#D4
     <section class="view push-view" data-view="pay" id="vPay"></section>
     <section class="view push-view" data-view="order" id="vOrder"></section>
     <section class="view push-view" data-view="invoice" id="vInvoice"></section>
+    <section class="view push-view" data-view="notifs" id="vNotifs"></section>
   </div>
 
   <nav class="nav" id="nav">
@@ -721,6 +742,14 @@ const RECIPES = {
   8:{txt:'Avec ce plateau, une omelette aux oignons pour toute la famille — le dépannage le plus réconfortant.', w:'Ci sa keur'},
   9:{txt:'Avec ces cuisses, un rôti doré au four, oignons et pommes de terre : simple, généreux, imbattable.', w:'Ñam bu baax'}
 };
+const N_ICON = {
+  order: '<svg viewBox="0 0 24 24"><path d="M6 7V6a6 6 0 0 1 12 0v1h2.2a1 1 0 0 1 1 1.1l-.9 12A2.2 2.2 0 0 1 18.1 22H5.9a2.2 2.2 0 0 1-2.2-1.9l-.9-12A1 1 0 0 1 3.8 7H6Zm2 0h8V6a4 4 0 0 0-8 0v1Z"/></svg>',
+  pay: '<svg viewBox="0 0 24 24"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v1H3V6Zm0 3h18v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V9Zm3 6a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>',
+  ship: '<svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v2h2.4a2 2 0 0 1 1.7.9l2.1 3.3c.2.3.3.7.3 1.1V16a2 2 0 0 1-2 2h-.8a3.2 3.2 0 0 1-6.2 0H9.5a3.2 3.2 0 0 1-6.2 0H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm13 4v2.5h3.8L18.2 10H16Zm-9.6 5.8a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Zm10.2 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></svg>',
+  done: '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 14.2-4.2-4.2 1.5-1.5L11 13.2l5.7-5.7 1.5 1.5-7.2 7.2Z"/></svg>',
+  invoice: '<svg viewBox="0 0 24 24"><path d="M6 2h8l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Zm7 1.5V8h4.5L13 3.5ZM8 12h8v2H8v-2Zm0 4h6v2H8v-2Z"/></svg>',
+  code: '<svg viewBox="0 0 24 24"><path d="M14 2a6 6 0 0 0-5.66 8H2v4h2v2h2v2h4v-4.34A6 6 0 1 0 14 2Zm2 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>'
+};
 const CATS = [['tout','Tout','cat-tout'],['entier','Entier','cat-entier'],['blancs','Filets','cat-blancs'],['cuisses','Cuisses','cat-cuisses'],['abats','Abats','cat-abats'],['oeufs','Œufs','cat-oeufs']];
 const ORDER_IDS = [1,2,3,9,4,5,8];
 
@@ -771,6 +800,9 @@ const ICON = {
   back:'<svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   chev:'<svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   doc:'<svg viewBox="0 0 24 24"><path d="M6 2h8l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Zm7 1.5V8h4.5L13 3.5ZM8 12h8v2H8v-2Zm0 4h6v2H8v-2Z"/></svg>',
+  truck:'<svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v2h2.4a2 2 0 0 1 1.7.9l2.1 3.3c.2.3.3.7.3 1.1V16a2 2 0 0 1-2 2h-.8a3.2 3.2 0 0 1-6.2 0H9.5a3.2 3.2 0 0 1-6.2 0H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm13 4v2.5h3.8L18.2 10H16Zm-9.6 5.8a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Zm10.2 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></svg>',
+  bag:'<svg viewBox="0 0 24 24"><path d="M6 7V6a6 6 0 0 1 12 0v1h2.2a1 1 0 0 1 1 1.1l-.9 12A2.2 2.2 0 0 1 18.1 22H5.9a2.2 2.2 0 0 1-2.2-1.9l-.9-12A1 1 0 0 1 3.8 7H6Zm2 0h8V6a4 4 0 0 0-8 0v1Z"/></svg>',
+  key:'<svg viewBox="0 0 24 24"><path d="M14 2a6 6 0 0 0-5.66 8H2v4h2v2h2v2h4v-4.34A6 6 0 1 0 14 2Zm2 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>',
   bell:'<svg viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-1.7 1.7A1 1 0 0 0 4 19.4h16a1 1 0 0 0 .7-1.7Z"/></svg>',
   pen:'<svg viewBox="0 0 24 24"><path d="M15.2 4.3a2.4 2.4 0 0 1 3.4 0l1.1 1.1a2.4 2.4 0 0 1 0 3.4L9.4 19.1 4 20l.9-5.4ZM3 22h18v-1.6H3Z"/></svg>',
   flame:'<svg viewBox="0 0 24 24"><path d="M13.5 2 6 13.2h5.2L9.8 22 18 10.4h-5.4Z"/></svg>',
@@ -985,7 +1017,7 @@ function bindProductClicks(root){
 }
 $('#q').addEventListener('input', e => { query = e.target.value; renderHome(); });
 $('#seeAll').onclick = () => { curCat = 'tout'; query = ''; $('#q').value = ''; renderHome(); $('#quick').scrollIntoView({behavior:'smooth', block:'start'}); };
-$('#bell').onclick = () => go('orders');
+$('#bell').onclick = openNotifs;
 $('#favBtn').onclick = () => { vib(); push({name:'favs'}); paintFavs(); bindFavBack(); };
 function bindFavBack(){ const b = $('#favBack'); if (b) b.onclick = pop; }
 const paintFavDot = () => { const d = $('#favDot'); if (d) d.classList.toggle('on', favs.size > 0); };
@@ -1091,7 +1123,7 @@ function paintCart(){
 }
 $('#cartPlus').onclick = () => go('home');
 $('#cartOrders').onclick = () => go('orders');
-$('#cartBell').onclick = () => go('orders');
+$('#cartBell').onclick = openNotifs;
 
 /* ════════════════ FICHE PRODUIT ════════════════ */
 let detailQty = 1;
@@ -1504,11 +1536,48 @@ async function openInvoice(id){
   }
 }
 
+function notifSeenSet(){ const v = store.get('drc_notifs_seen'); return new Set(Array.isArray(v) ? v : []); }
+function buildNotifications(){
+  const seen = new Set();
+  const out = [];
+  myOrders.forEach(({ id }) => {
+    const o = ordersCache[id]; if (!o) return;
+    const at0 = o.created_at || new Date().toISOString();
+    out.push({ key: id + ':created', kind: 'order', at: at0, orderId: id, title: 'Commande reçue', body: 'Votre commande ' + id + ' est bien enregistrée.' });
+    if (isPaid(o) || o.paid_at) out.push({ key: id + ':paid', kind: 'pay', at: o.paid_at || o.updated_at || at0, orderId: id, title: 'Paiement confirmé', body: 'Nous avons bien reçu votre paiement pour ' + id + '.' });
+    if (o.status === 'preparing') out.push({ key: id + ':prep', kind: 'order', at: o.updated_at || at0, orderId: id, title: 'Commande en préparation', body: 'Votre commande ' + id + ' est en cours de préparation.' });
+    if (o.status === 'shipping') out.push({ key: id + ':ship', kind: 'ship', at: o.picked_up_at || o.updated_at || at0, orderId: id, title: 'Commande en livraison', body: 'Votre commande ' + id + ' est en route.' });
+    if (o.status === 'delivered') out.push({ key: id + ':done', kind: 'done', at: o.delivered_at || o.updated_at || at0, orderId: id, title: 'Commande livrée', body: 'Votre commande ' + id + ' a bien été livrée.' });
+    if (o.invoice) out.push({ key: id + ':inv:' + o.invoice.number, kind: 'invoice', at: o.invoice.sent_at || o.invoice.created_at || at0, orderId: id, title: 'Facture disponible', body: 'Votre facture ' + o.invoice.number + ' est prête.' });
+    if (o.delivery_code && !['delivered','cancelled'].includes(o.status)) out.push({ key: id + ':code', kind: 'code', at: o.created_at || at0, orderId: id, title: 'Code de livraison prêt', body: 'Retrouvez votre code pour la commande ' + id + '.' });
+  });
+  return out.filter(n => n.at).sort((a, b) => String(b.at).localeCompare(String(a.at))).slice(0, 50);
+}
+function notifUnread(){ const seen = notifSeenSet(); return buildNotifications().filter(n => !seen.has(n.key)).length; }
+function renderNotifs(){
+  const v = $('#vNotifs'); const seen = notifSeenSet(); const list = buildNotifications();
+  v.innerHTML = `<div class="topbar"><button class="back" data-back aria-label="Retour">${ICON.back}</button><h1>Notifications</h1><div style="width:52px"></div></div>` +
+    (list.length ? `<div class="notif-list">${list.map(n => `<button class="notif ${seen.has(n.key) ? '' : 'new'}" data-order="${esc(n.orderId)}" data-kind="${n.kind}">
+      <span class="notif-ico ${n.kind}">${N_ICON[n.kind] || N_ICON.order}</span>
+      <span class="notif-body"><b>${esc(n.title)}</b><span>${esc(n.body)}</span><small>${frDate(n.at)} · ${frTime(n.at)}</small></span>
+      <span class="notif-dot"></span>
+    </button>`).join('')}</div>` : `<div class="card empty empty-orders"><b>Aucune notification</b><span>Vos commandes, paiements, factures et codes de livraison apparaîtront ici.</span></div>`);
+  v.querySelector('[data-back]').onclick = pop;
+  v.querySelectorAll('.notif').forEach(b => b.onclick = () => {
+    const id = b.dataset.order;
+    if (b.dataset.kind === 'invoice') openInvoice(id); else openOrder(id);
+  });
+}
+function markNotifsSeen(){
+  const seen = notifSeenSet(); buildNotifications().forEach(n => seen.add(n.key));
+  store.set('drc_notifs_seen', Array.from(seen).slice(-300)); updateBells();
+}
+function openNotifs(){
+  push({ name: 'notifs' }); renderNotifs(); markNotifsSeen();
+}
 function updateBells(){
-  const pending = myOrders.some(x => { const o = ordersCache[x.id]; return o && !isPaid(o) && o.payment_method !== 'cod' && !['cancelled', 'delivered'].includes(o.status); });
-  const live = myOrders.some(x => { const o = ordersCache[x.id]; return o && !['cancelled', 'delivered'].includes(o.status); });
-  const invoiceNew = myOrders.some(x => ordersCache[x.id] && ordersCache[x.id].invoice && !ordersCache[x.id].invoice.seen_at);
-  ['#bellDot', '#bellDot2', '#bellDot3'].forEach(s => $(s) && $(s).classList.toggle('on', pending || live || invoiceNew));
+  const unread = notifUnread();
+  ['#bellDot', '#bellDot2', '#bellDot3'].forEach(s => $(s) && $(s).classList.toggle('on', unread > 0));
 }
 
 /* ════════════════ FAVORIS ════════════════ */
@@ -1548,7 +1617,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.1 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.2 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
