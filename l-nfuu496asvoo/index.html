@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.17';
+window.DRC_WEB = '4.18';
 </script>
 
 <meta charset="utf-8">
@@ -560,7 +560,7 @@ body.drc2 #view-login .login-kicker{display:inline-flex!important;align-items:ce
   font-size:10.5px!important;font-weight:800!important;letter-spacing:.14em!important;text-transform:uppercase;margin:0 0 10px}
 body.drc2 #view-login .login-kicker svg{width:16px;height:16px;fill:var(--acc)!important;stroke:none}
 body.drc2 #view-login h1{font-size:31px!important;line-height:1.08!important;letter-spacing:-.035em!important;margin:0 0 10px!important;color:var(--ink)}
-body.drc2 #view-login .login-card>p{font-size:13.5px!important;line-height:1.55;color:var(--muted)!important;margin:0 0 22px!important}
+body.drc2 #view-login .login-card>p:not(.sec-note){font-size:13.5px!important;line-height:1.55;color:var(--muted)!important;margin:0 0 22px!important}
 body.drc2 #view-login .field{margin-bottom:14px}
 body.drc2 #view-login .field label{display:block;font-size:10px!important;font-weight:700!important;letter-spacing:.14em!important;
   text-transform:uppercase;color:var(--muted)!important;margin-bottom:8px}
@@ -678,7 +678,7 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.17').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.18').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
