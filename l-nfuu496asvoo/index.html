@@ -3,7 +3,7 @@
 <head>
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
 <meta name="googlebot" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://hermes11.vps.webdock.cloud/drc-api https://routing.openstreetmap.de https://nominatim.openstreetmap.org; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://hermes11.vps.webdock.cloud https://routing.openstreetmap.de https://nominatim.openstreetmap.org; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1A1A1A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,13 +16,13 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.1';
+window.DRC_WEB = '4.14';
 </script>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>DRC Livreur</title>
-<meta name="theme-color" content="#071B33">
+<meta name="theme-color" content="#F4F4F3">
 <link rel="stylesheet" href="leaflet/leaflet.css">
 <style>
 :root{--navy:#1A1A1A;--navy-2:#262626;--blue:#A30F16;--cyan:#B3121A;--yellow:#C8161D;--ink:#1A1A1A;--muted:#666666;--line:#E7E7E6;--bg:#F4F4F3;--white:#FFF;--green:#1F8A4C;--green-soft:#E5F5EE;--red:#C0392B;--shadow:0 5px 18px rgba(26,26,26,.07);--r:18px}
@@ -163,7 +163,7 @@ header{background:var(--bg)!important;color:var(--ink)!important;box-shadow:none
 /* titres de section */
 .list-head{margin:18px 18px 10px!important}
 #list-title{font-size:20px!important;font-weight:700!important;letter-spacing:-.02em}
-#list-count{font-size:12.5px!important;color:var(--muted)!important;font-weight:600}
+#list-count{font-size:12.5px!important;font-weight:600}
 
 /* héros de tournée : carte sombre du client */
 .tour-hero{margin:12px 18px 0!important;padding:20px!important;border-radius:var(--r-card)!important;overflow:hidden;position:relative;
@@ -282,7 +282,7 @@ header .brand-icon img{height:40px!important;width:auto!important;object-fit:con
 
 <style id="login-like-gerant">
 /* La page de code d'accès reprend trait pour trait celle de l'app gérant */
-body.logged-out header{display:none}          /* bandeau masqué seulement sur l'écran de connexion */
+body.logged-out header,body.logged-out #drcNav{display:none!important} /* connexion : ni bandeau ni barre basse */
 #view-login{padding:0 22px calc(28px + var(--sb))!important;display:flex;flex-direction:column;justify-content:center;min-height:100vh}
 #view-login .login-wrap{width:100%;max-width:520px;margin:0 auto;background:transparent!important}
 #view-login .login-card{background:transparent!important;box-shadow:none!important;border:0!important;border-radius:0!important;padding:0!important}
@@ -290,7 +290,7 @@ body.logged-out header{display:none}          /* bandeau masqué seulement sur l
 .lg-brand{position:relative;display:flex;align-items:center;gap:14px;margin:0 0 30px}
 .lg-brand::before{content:"";position:absolute;left:-10px;top:-10px;width:96px;height:96px;border-radius:50%;
   background:radial-gradient(circle,rgba(200,22,29,.16),rgba(200,22,29,0) 64%);pointer-events:none}
-.lg-brand img{width:74px;height:74px;padding:14px;object-fit:contain;border-radius:20px;background:#fff;
+.lg-brand img{width:104px;height:66px;padding:9px 11px;object-fit:contain;border-radius:18px;background:#fff;
   box-shadow:0 14px 30px -16px rgba(0,0,0,.45), 0 0 0 1px rgba(26,26,26,.05);position:relative;z-index:1}
 .lg-brand span{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 13px;border-radius:999px;
   background:#1A1A1A;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
@@ -299,11 +299,10 @@ body.logged-out header{display:none}          /* bandeau masqué seulement sur l
 
 #view-login .login-kicker{display:none!important}
 #view-login h1{font-size:34px!important;line-height:1.12!important;font-weight:700!important;letter-spacing:-.035em!important;margin:0 0 10px!important}
-#view-login h1 br{display:none}
 #view-login p{font-size:13.5px!important;line-height:1.55!important;color:var(--muted)!important;margin-bottom:26px!important;max-width:420px}
 #view-login .field{margin-bottom:14px}
 #view-login .field label{font-size:10px!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase;color:var(--muted)!important;margin-bottom:8px;display:block}
-#view-login .field input{height:56px!important;border-radius:16px!important;background:var(--bg)!important;border:1.5px solid transparent!important;
+#view-login .field input{height:56px!important;border-radius:16px!important;background:#fff!important;border:1.5px solid var(--line)!important;box-shadow:0 4px 14px -10px rgba(60,40,20,.25);
   padding:0 16px!important;font-size:15.5px!important;font-weight:600!important;letter-spacing:.08em}
 #view-login .field input:focus{border-color:var(--acc)!important;background:#fff!important;box-shadow:0 0 0 4px var(--acc-soft)!important}
 #view-login .btn,#view-login #lg-btn{margin-top:10px!important;height:58px!important;border-radius:999px!important;
@@ -311,6 +310,7 @@ body.logged-out header{display:none}          /* bandeau masqué seulement sur l
 #view-login .sec-note,#view-login .sec-note *{color:var(--muted)!important}
 #view-login .sec-note{margin-top:16px!important;font-size:12px!important;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
 #view-login .server-note{margin-top:14px!important;font-size:11.5px!important;color:var(--muted)!important}
+#view-login .client-link{margin-top:18px;padding:0;background:none;border:0;font-size:12.5px;font-weight:700;color:var(--acc-ink);letter-spacing:0;text-align:left;line-height:1.4}
 </style>
 
 
@@ -349,7 +349,7 @@ header .brand-icon{background:#fff!important;border-radius:14px!important;paddin
 .journee{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .journee .jn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:10px 11px;
   display:flex;flex-direction:column;gap:2px}
-.journee .jn b{font-size:16px;font-weight:800;letter-spacing:-.02em;color:#fff;font-variant-numeric:tabular-nums}
+.journee .jn b{font-size:14.5px;font-weight:800;letter-spacing:-.02em;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .journee .jn small{font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.62);font-weight:700}
 .journee .jr{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:14px;
   background:#fff;color:#1A1A1A;font-size:13px;font-weight:700;border:0}
@@ -390,49 +390,295 @@ header .brand-icon{background:#fff!important;border-radius:14px!important;paddin
 .cash-card .cc-change b{font-size:19px;color:#fff;font-variant-numeric:tabular-nums}
 .cash-card .cc-change.short b{color:#FF8A8A}
 </style>
+<style id="client-clone">
+/* ══════════════════════════════════════════════════════════════
+   App livreur — clone du système visuel de l'app client (1.7.1)
+   Crème, cartes blanches 28px, accent rouge, jauge segmentée,
+   recherche, pastilles, barre basse sombre à bouton central.
+   ══════════════════════════════════════════════════════════════ */
+body.drc2{
+  --bg:#F4F4F3;--bg2:#EFE9E1;--card:#fff;--ink:#1A1A1A;--ink2:#444444;--muted:#666666;
+  --line:#E7E7E6;--acc:#C8161D;--acc2:#A80F15;--acc-soft:#FBE4E5;--acc-ink:#A30F16;
+  --seg:#E4E4E3;--nav:#1F1F1F;--ok:#2E9E5B;--r-card:28px;
+  --shadow:0 10px 30px -18px rgba(60,40,20,.28);
+  --plate:#2B2724;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);--navh:86px;
+  background:var(--bg)!important;color:var(--ink)!important;
+  font-family:PJS,system-ui,-apple-system,sans-serif!important;
+  padding-bottom:calc(var(--navh) + var(--sb) + 16px)!important;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── en-tête ── */
+body.drc2 header.hd{
+  position:sticky;top:0;z-index:60;background:var(--bg);
+  padding:calc(10px + var(--st)) 18px 8px;border:0;box-shadow:none;color:var(--ink)!important;
+}
+body.drc2 header.hd .brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0;flex:none}
+body.drc2 header.hd .brand img{height:44px;width:auto;background:none;padding:0;border-radius:0;box-shadow:none}
+body.drc2 header.hd .open{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 14px;border-radius:999px;max-width:calc(100% - 132px);overflow:hidden;
+  background:var(--card);font-size:13px;font-weight:600;color:var(--ink);box-shadow:var(--shadow);white-space:nowrap;text-overflow:ellipsis}
+body.drc2 header.hd .open i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+body.drc2 header.hd #service.online i{background:var(--ok)}
+body.drc2 header.hd #service.offline i{background:#D9443B}
+body.drc2 header.hd .topbar{display:flex;align-items:center;gap:10px;margin:14px 0 0;padding:0;background:none;box-shadow:none}
+body.drc2 header.hd .search{flex:1;min-width:0;height:56px;border-radius:20px;background:var(--card);
+  display:flex;align-items:center;gap:12px;padding:0 18px;box-shadow:var(--shadow);margin:0}
+body.drc2 header.hd .search svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2;flex:0 0 22px}
+body.drc2 header.hd .search input{flex:1;min-width:0;border:0;background:none;font-size:15.5px;color:var(--ink);outline:0}
+body.drc2 header.hd .search input::placeholder{color:var(--muted)}
+body.drc2 header.hd .ibtn{width:56px;height:56px;flex:0 0 56px;border-radius:50%;background:var(--card);
+  box-shadow:var(--shadow);display:grid;place-items:center;padding:0;border:0}
+body.drc2 header.hd .ibtn .rf-ico{width:22px;height:22px;object-fit:contain}
+body.drc2 header.hd .ibtn .lockico{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+body.drc2 header.hd .ibtn .refrico{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── jauge du jour ── */
+body.drc2 #view-app{padding-top:2px}
+body.drc2 .day{padding:2px 18px 0}
+body.drc2 .gauge{position:relative;width:100%;max-width:300px;margin:0 auto}
+body.drc2 .gauge svg{width:100%;height:auto;overflow:visible}
+body.drc2 .gcenter{position:absolute;left:19%;right:19%;top:31%;text-align:center}
+body.drc2 .gcenter .ic{width:24px;height:24px;margin:0 auto 4px;fill:var(--acc)}
+body.drc2 .gcenter .ic svg{width:24px;height:24px;fill:var(--acc)}
+body.drc2 .gcenter .d{font-size:14.5px;color:var(--ink2);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.drc2 .gcenter .big{font-size:clamp(26px,7.6vw,32px);font-weight:700;letter-spacing:-.04em;margin-top:4px;white-space:nowrap}
+body.drc2 .gcenter .goal{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.3}
+
+/* ── tuiles de la journée (remplies par le script existant) ── */
+body.drc2 #journee{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 18px 0}
+body.drc2 #journee .jn{background:var(--card);border:0;border-radius:20px;padding:12px;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;justify-content:center;gap:4px;min-width:0;height:84px}
+body.drc2 #journee .jn b{font-size:15px;line-height:22px;height:22px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.drc2 #journee .jn small{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.drc2 #journee .jr{grid-column:1/-1;height:52px;border-radius:999px;background:var(--ink);color:#fff;
+  font-size:14.5px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;border:0;margin-top:2px}
+body.drc2 #journee .jr svg{width:18px;height:18px;fill:#fff}
+
+/* ── pastilles de filtre ── */
+body.drc2 .cats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;overflow:visible;margin:16px 0 0;padding:0 18px 6px}
+body.drc2 .cats::-webkit-scrollbar{display:none}
+body.drc2 .cat{flex:none;min-width:0;width:auto;background:var(--card);border-radius:22px;padding:12px 8px 10px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:6px;border:2px solid transparent;position:relative}
+body.drc2 .cat .tile{width:46px;height:46px;border-radius:15px;background:var(--bg);display:grid;place-items:center;color:var(--ink)}
+body.drc2 .cat .tile svg{width:26px;height:26px;fill:currentColor}
+body.drc2 .cat>span{font-size:12.5px;font-weight:600;color:var(--ink2);white-space:nowrap}
+body.drc2 .cat .cat-count{position:absolute;top:10px;right:10px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;
+  background:#fff;color:var(--ink2);font-size:11.5px;font-weight:800;display:grid;place-items:center;border:1px solid var(--line)}
+body.drc2 .cat.on{border-color:var(--acc);box-shadow:0 10px 26px -16px rgba(200,22,29,.9)}
+body.drc2 .cat.on .tile{background:var(--acc);color:#fff}
+body.drc2 .cat.on>span{color:var(--ink)}
+body.drc2 .cat.on .cat-count{background:var(--acc);color:#fff}
+
+/* ── titres de section ── */
+body.drc2 .sec{display:flex;align-items:center;gap:9px;margin:22px 20px 12px}
+body.drc2 .sec h2{font-size:20px;font-weight:700;letter-spacing:-.02em;margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.drc2 .sec .cnt.zero{background:var(--seg);color:var(--ink2);box-shadow:none}
+body.drc2 .sec .cnt{min-width:26px;height:26px;padding:0 10px;border-radius:13px;background:var(--acc);color:#fff;
+  font-size:12px;font-weight:800;display:inline-grid;place-items:center;white-space:nowrap;
+  box-shadow:0 6px 14px -8px rgba(200,22,29,.9);letter-spacing:.01em}
+
+/* ── cartes mission ── */
+body.drc2 #orders{padding:0 18px;display:block!important}
+body.drc2 .mcard{background:var(--card);border-radius:var(--r-card);box-shadow:var(--shadow);padding:18px;margin-bottom:14px;position:relative;overflow:hidden}
+body.drc2 .mtop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+body.drc2 .mzone{font-size:20px;font-weight:700;letter-spacing:-.025em;line-height:1.2;min-width:0}
+body.drc2 .mstatus{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:6px 11px;border-radius:999px;
+  background:var(--acc-soft);color:var(--acc-ink);white-space:nowrap;flex:none}
+body.drc2 .mstatus.shipping{background:var(--acc);color:#fff}
+body.drc2 .mstatus.done{background:#E3F2E8;color:#25794A}
+body.drc2 .mrow{display:flex;align-items:center;gap:12px;margin-top:14px}
+body.drc2 .mphoto{width:74px;height:74px;border-radius:50%;background:var(--plate);padding:4px;flex:none;
+  box-shadow:0 12px 24px -14px rgba(0,0,0,.7)}
+body.drc2 .mphoto img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+body.drc2 .minfo{flex:1;min-width:0}
+body.drc2 .minfo b{display:block;font-size:16.5px;font-weight:700;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.drc2 .minfo span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.drc2 .mbars{display:flex;gap:3px;margin-top:8px}
+body.drc2 .mbars i{width:14px;height:5px;border-radius:3px;background:var(--seg)}
+body.drc2 .mbars i.on{background:var(--acc)}
+body.drc2 .mprice{font-size:23px;font-weight:600;letter-spacing:-.04em;white-space:nowrap;display:flex;align-items:baseline;gap:2px}
+body.drc2 .mprice small{font-size:13px;color:var(--muted);font-weight:500}
+body.drc2 .mmeta{margin-top:13px;font-size:12.5px;color:var(--muted);line-height:1.55;display:grid;gap:4px}
+body.drc2 .mmeta b{color:var(--ink2);font-weight:600}
+body.drc2 .mcash{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:11px 14px;
+  border-radius:16px;background:var(--acc-soft);color:var(--acc-ink);font-size:10.5px;font-weight:800;letter-spacing:.08em}
+body.drc2 .mcash b{font-size:18px;letter-spacing:-.02em;color:var(--acc)}
+body.drc2 .mcash.prepaid{background:#E3F2E8;color:#25794A}
+body.drc2 .mcash.prepaid b{color:#1F8A4C}
+body.drc2 .mcard .pill-btn{height:54px;border-radius:999px;margin-top:12px;font-size:15px;font-weight:600;width:100%;
+  display:flex;align-items:center;justify-content:center;gap:8px;background:var(--ink);color:#fff;border:0}
+body.drc2 .mcard .pill-btn.acc{background:var(--acc)}
+body.drc2 .mcard .pill-btn[disabled]{opacity:.5}
+body.drc2 .macts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+body.drc2 .macts button{height:46px;border-radius:15px;background:var(--bg);color:var(--ink);font-size:12.5px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:6px;border:0}
+body.drc2 .macts button:disabled{opacity:.45}
+body.drc2 .macts button svg{width:16px;height:16px;flex:none;fill:var(--acc);stroke:none}
+body.drc2 .mcard .pill-btn svg{width:20px;height:20px;flex:none;fill:none!important;stroke:#fff!important;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+body.drc2 #orders .empty{background:var(--card);border:0;border-radius:var(--r-card);box-shadow:var(--shadow);padding:30px 20px;text-align:center}
+body.drc2 #orders .empty img{width:112px;height:112px;object-fit:contain;margin:0 auto 14px}
+body.drc2 #orders .empty h3{font-size:17px;margin:0 0 6px;font-weight:700}
+body.drc2 #orders .empty p{font-size:13px;color:var(--muted);line-height:1.5;margin:0}
+
+/* ── barre basse ── */
+body.drc2 #drcNav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--navh) + var(--sb));padding:34px 26px var(--sb);
+  margin:0;background:var(--nav);display:flex;align-items:center;justify-content:space-around;border-radius:0;
+  box-shadow:0 -12px 30px -24px rgba(0,0,0,.65);z-index:70}
+body.drc2 #drcNav .nav-frame{display:none!important}
+body.drc2 #drcNav button{width:48px;height:48px;border-radius:14px;background:transparent!important;color:rgba(255,255,255,.68)!important;
+  display:grid;place-items:center;position:relative;font-size:0;border:0;box-shadow:none!important;padding:0}
+body.drc2 #drcNav button .ic svg{width:27px;height:27px;fill:currentColor}
+body.drc2 #drcNav button.on{color:var(--acc)!important}
+body.drc2 #drcNav button.on::after{content:"";position:absolute;left:50%;bottom:2px;transform:translateX(-50%);
+  width:16px;height:3px;border-radius:3px;background:var(--acc)}
+body.drc2 #drcNav button.fab{position:relative!important;left:auto!important;top:auto!important;transform:none!important;width:56px!important;height:56px!important;border-radius:18px!important;
+  background:var(--acc)!important;color:#fff!important;box-shadow:0 10px 22px -10px rgba(200,22,29,.95)!important;z-index:2!important;padding:0!important}
+body.drc2 #drcNav .fab svg{width:26px!important;height:26px!important;fill:#fff!important;stroke:none!important}
+body.drc2 #drcNav .fab.on::after{display:none!important}
+body.drc2 #drcNav .mid .ring{width:60px;height:60px;display:grid;place-items:center;background:transparent;margin:0;border:0}
+body.drc2 #drcNav .mid svg{width:28px!important;height:28px!important;fill:#fff!important;stroke:none!important}
+body.drc2 #drcNav .badge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;
+  background:var(--acc);color:#fff;font-size:10.5px;font-weight:700;display:none;place-items:center;border:2px solid var(--nav)}
+body.drc2 #drcNav .badge.on{display:grid}
+
+/* ── connexion : photo + carte ── */
+body.drc2 #view-login{display:block;padding:0!important;background:var(--bg);min-height:100vh}
+body.drc2 #view-login.hidden{display:none!important}
+body.drc2 #view-login .login-hero{position:relative;height:44vh;min-height:290px;max-height:450px;overflow:hidden;border-radius:0 0 36px 36px}
+body.drc2 #view-login .login-hero .hero-img{width:100%;height:100%;object-fit:cover;display:block}
+body.drc2 #view-login .login-hero .hero-shade{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,10,.06) 0%,rgba(10,10,10,.04) 52%,rgba(244,244,243,.97) 100%)}
+body.drc2 #view-login .hero-role{position:absolute;left:18px;top:calc(14px + var(--st));display:inline-flex;align-items:center;gap:7px;
+  height:32px;padding:0 14px;border-radius:999px;background:rgba(255,255,255,.94);color:var(--ink);font-size:12px;font-weight:700;
+  box-shadow:var(--shadow);letter-spacing:.02em}
+body.drc2 #view-login .hero-role i{width:8px;height:8px;border-radius:50%;background:var(--acc)}
+body.drc2 #view-login .login-wrap{position:relative;z-index:2;margin:-34px auto 0;padding:0 18px calc(28px + var(--sb));max-width:560px;background:none!important}
+body.drc2 #view-login .login-card{background:var(--card)!important;border:0!important;border-radius:28px!important;
+  box-shadow:var(--shadow)!important;padding:24px 22px 22px!important}
+body.drc2 #view-login .lg-logo{height:42px;width:auto;margin:0 0 18px;display:block}
+body.drc2 #view-login .login-kicker{display:inline-flex!important;align-items:center;gap:7px;color:var(--acc)!important;
+  font-size:10.5px!important;font-weight:800!important;letter-spacing:.14em!important;text-transform:uppercase;margin:0 0 10px}
+body.drc2 #view-login .login-kicker svg{width:16px;height:16px;fill:var(--acc)!important;stroke:none}
+body.drc2 #view-login h1{font-size:31px!important;line-height:1.08!important;letter-spacing:-.035em!important;margin:0 0 10px!important;color:var(--ink)}
+body.drc2 #view-login .login-card>p{font-size:13.5px!important;line-height:1.55;color:var(--muted)!important;margin:0 0 22px!important}
+body.drc2 #view-login .field{margin-bottom:14px}
+body.drc2 #view-login .field label{display:block;font-size:10px!important;font-weight:700!important;letter-spacing:.14em!important;
+  text-transform:uppercase;color:var(--muted)!important;margin-bottom:8px}
+body.drc2 #view-login .field input{width:100%;height:56px!important;border-radius:16px!important;background:var(--bg)!important;
+  border:1.5px solid transparent!important;padding:0 16px!important;font-size:15.5px!important;font-weight:600!important;letter-spacing:.06em;color:var(--ink)}
+body.drc2 #view-login .field input:focus{border-color:var(--acc)!important;background:#fff!important;box-shadow:0 0 0 4px var(--acc-soft)!important;outline:0}
+body.drc2 #view-login #lg-btn{height:58px!important;border-radius:999px!important;background:var(--ink)!important;color:#fff!important;
+  font-size:16px!important;font-weight:600!important;width:100%;margin-top:12px;border:0}
+body.drc2 #view-login .sec-note{margin-top:16px!important;font-size:12px!important;color:var(--muted)!important;display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+body.drc2 #view-login .sec-note svg{width:16px;height:16px;fill:#2E9E5B;flex:none;margin-top:1px}
+body.drc2 #view-login .server-note{font-size:11.5px!important;color:var(--muted)!important;margin-top:12px!important}
+body.drc2 #view-login .client-link{margin-top:18px;padding:0;background:none;border:0;font-size:12.5px;font-weight:700;
+  color:var(--acc-ink)!important;text-align:left;line-height:1.45}
+body.drc2 #view-login .msg{color:#C0392B;font-size:12px;margin-top:6px}
+
+/* ── suivi de mission dans le même langage ── */
+body.drc2 .tracking-page{background:var(--bg)}
+body.drc2 .tracking-nav{background:var(--bg);color:var(--ink);border-bottom:1px solid var(--line);
+  padding:calc(12px + var(--st)) 14px 12px;box-shadow:none}
+body.drc2 .tracking-nav h2{font-size:16px;font-weight:700;color:var(--ink)}
+body.drc2 .tracking-nav .iconbtn{width:42px;height:42px;border-radius:50%;background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+body.drc2 .tracking-nav .iconbtn svg{fill:none;stroke:var(--ink)}
+body.drc2 .tracking-nav .iconbtn .rf-ico{width:20px;height:20px;object-fit:contain}
+body.drc2 .tracking-nav .iconbtn .backico{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+body.drc2 .tracking-nav .iconbtn .refrico{width:20px;height:20px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+body.drc2 .tracking-hero{border-radius:28px;background:linear-gradient(160deg,#242120,#1A1A1A);box-shadow:var(--shadow)}
+body.drc2 .progress-card,body.drc2 .details-card,body.drc2 .driver-chat,body.drc2 .contact-driver,
+body.drc2 .map-wrap{background:var(--card)!important;border:0!important;border-radius:28px!important;box-shadow:var(--shadow)!important}
+body.drc2 .map-wrap{margin:0 14px;overflow:hidden}
+body.drc2 .tracking-action .btn,body.drc2 .contact-buttons .btn{border-radius:999px!important;font-weight:600!important}
+body.drc2 .tracking-page .btn.secondary{background:var(--card)!important;color:var(--ink)!important;box-shadow:var(--shadow)!important;border:0!important}
+body.drc2 .progress-track{height:8px;border-radius:999px;background:var(--seg)}
+body.drc2 .progress-fill{background:var(--acc);border-radius:999px}
+body.drc2 .step-dot.now{background:var(--acc);box-shadow:0 0 0 4px var(--acc-soft)}
+body.drc2 .step-dot.past{background:var(--ink)}
+body.drc2 .live-strip{background:var(--card)!important;border-radius:999px!important;box-shadow:var(--shadow)}
+body.drc2 .live-dot{background:var(--acc)!important;box-shadow:0 0 0 3px var(--acc-soft)!important}
+body.drc2 .cash-card{border-radius:24px;background:linear-gradient(150deg,#171413,#2A1216)}
+body.drc2 .proof-card{border-radius:24px;box-shadow:var(--shadow)}
+body.drc2 #toast{background:var(--ink);color:#fff;border-radius:999px;box-shadow:0 12px 30px -14px rgba(0,0,0,.5);font-weight:600}
+body.drc2 .gauge rect{transition:fill .5s ease}
+
+@media (max-width:370px){
+  body.drc2 .mprice{font-size:19px}
+  body.drc2 .mzone{font-size:18px}
+  body.drc2 #journee .jn{padding:12px 10px}
+  body.drc2 header.hd .brand img{height:38px}
+}
+@media (prefers-reduced-motion:reduce){body.drc2 *{animation:none!important;transition:none!important}}
+
+
+/* ── catégories de statut distinctes ── */
+body.drc2 .cat.tone-red .tile{background:#FBE4E5;color:#C8161D}
+body.drc2 .cat.tone-amber .tile{background:#FFF1D6;color:#B26A00}
+body.drc2 .cat.tone-green .tile{background:#E3F2E8;color:#1F8A4C}
+body.drc2 .cat.tone-red .cat-count{background:#fff;color:#C8161D;border-color:#F3C9CC}
+body.drc2 .cat.tone-amber .cat-count{background:#fff;color:#B26A00;border-color:#EBD6AE}
+body.drc2 .cat.tone-green .cat-count{background:#fff;color:#1F8A4C;border-color:#CBE5D5}
+body.drc2 .cat.tone-red.on{border-color:#C8161D;box-shadow:0 10px 26px -16px rgba(200,22,29,.9)}
+body.drc2 .cat.tone-amber.on{border-color:#E39A1A;box-shadow:0 10px 26px -16px rgba(227,154,26,.9)}
+body.drc2 .cat.tone-green.on{border-color:#1F8A4C;box-shadow:0 10px 26px -16px rgba(31,138,76,.85)}
+body.drc2 .cat.tone-red.on .tile{background:#C8161D;color:#fff}
+body.drc2 .cat.tone-amber.on .tile{background:#E39A1A;color:#fff}
+body.drc2 .cat.tone-green.on .tile{background:#1F8A4C;color:#fff}
+body.drc2 .cat.tone-red.on .cat-count{background:#C8161D;color:#fff}
+body.drc2 .cat.tone-amber.on .cat-count{background:#E39A1A;color:#fff}
+body.drc2 .cat.tone-green.on .cat-count{background:#1F8A4C;color:#fff}
+body.drc2 .cat>span:not(.tile):not(.cat-count){margin-top:2px}
+body.drc2 .cat .cat-count{font-variant-numeric:tabular-nums}
+
+/* ── barre basse : icônes alignées ── */
+body.drc2 #drcNav button{width:52px;height:52px}
+body.drc2 #drcNav button .ic svg{width:26px;height:26px}
+body.drc2 #drcNav button.on::after{width:18px}
+body.drc2 #drcNav .badge{top:0;right:0}
+
+/* ── carte de la tournée ── */
+body.drc2 #tour-map-page .tracking-content,body.drc2 #account-page .tracking-content{padding-bottom:calc(24px + var(--sb))}
+body.drc2 .tourmap-wrap{margin:14px 18px 0;border-radius:28px;overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+body.drc2 #tour-map{height:330px;width:100%;background:#E9E6E1}
+body.drc2 .tourmap-wrap .map-credit{padding:8px 12px;font-size:10px;color:var(--muted)}
+body.drc2 .tourmap-actions{margin:12px 18px 0}
+body.drc2 .tourmap-actions .pill-btn{height:54px;border-radius:999px;background:var(--ink);color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0}
+body.drc2 .tourmap-actions .pill-btn svg{width:20px;height:20px;fill:#fff}
+body.drc2 .stopcard{display:flex;align-items:center;gap:12px;margin:0 18px 10px;padding:14px 16px;background:var(--card);border-radius:22px;box-shadow:var(--shadow)}
+body.drc2 .stopcard .num{width:34px;height:34px;border-radius:50%;background:var(--acc);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center;flex:none}
+body.drc2 .stopcard .who{flex:1;min-width:0}
+body.drc2 .stopcard .who b{display:block;font-size:15px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.drc2 .stopcard .who span{display:block;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.drc2 .stopcard button{flex:none;height:40px;padding:0 16px;border-radius:999px;background:var(--bg);color:var(--ink);font-size:12.5px;font-weight:700;border:0}
+
+/* ── compte ── */
+body.drc2 .account-card{display:flex;align-items:center;gap:14px;margin:16px 18px 0;padding:18px;background:var(--card);border-radius:28px;box-shadow:var(--shadow)}
+body.drc2 .account-avatar{width:56px;height:56px;border-radius:50%;background:var(--acc);color:#fff;font-size:20px;font-weight:700;display:grid;place-items:center;flex:none}
+body.drc2 .account-card .who{min-width:0}
+body.drc2 .account-card .who b{display:block;font-size:17px;font-weight:700}
+body.drc2 .account-card .who span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+body.drc2 .account-card .who small{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);font-weight:800;margin-top:5px}
+body.drc2 .account-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 18px}
+body.drc2 .account-stats .st{background:var(--card);border-radius:20px;padding:14px 12px;box-shadow:var(--shadow);text-align:center}
+body.drc2 .account-stats .st b{display:block;font-size:19px;font-weight:700;letter-spacing:-.02em}
+body.drc2 .account-stats .st span{display:block;font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-top:3px}
+body.drc2 .account-actions{margin:0 18px;display:grid;gap:9px}
+body.drc2 .account-actions button{display:flex;align-items:center;gap:12px;height:54px;padding:0 18px;border-radius:18px;background:var(--card);color:var(--ink);font-size:14px;font-weight:600;box-shadow:var(--shadow);border:0;text-align:left}
+body.drc2 .account-actions button .ic{width:34px;height:34px;border-radius:11px;background:var(--bg);display:grid;place-items:center;flex:none}
+body.drc2 .account-actions button .ic svg{width:18px;height:18px;fill:var(--ink)}
+body.drc2 .account-actions button.danger{color:var(--acc)}
+body.drc2 .account-actions button.danger .ic{background:var(--acc-soft)}
+body.drc2 .account-actions button.danger .ic svg{fill:var(--acc)}
+body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text-align:center}
+
+</style>
 </head>
-<body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-<symbol id="scooter" viewBox="0 0 64 64"><g stroke-width="3.6"><rect x="11" y="13" width="18" height="14" rx="3"/><path d="M20 13v5"/><path d="M8 44c0-7 5-12 12-12h11l3 9h14"/><path d="M50.3 39.5 44.5 19M40 19h8.5"/><circle cx="16" cy="46" r="6.5"/><circle cx="50" cy="46" r="6.5"/><path d="M22.5 46h21"/></g></symbol>
-<symbol id="phone" viewBox="0 0 24 24"><path d="M7 3H5a2 2 0 0 0-2 2c0 8.8 7.2 16 16 16a2 2 0 0 0 2-2v-2l-4-1-2 2c-4-1.5-6.5-4-8-8l2-2-2-5z"/></symbol>
-<symbol id="map" viewBox="0 0 24 24"><path d="M12 21s7-6 7-12A7 7 0 0 0 5 9c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
-<symbol id="box" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10M8 5l8 4"/></symbol>
-<symbol id="check" viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></symbol>
-<symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v5h-5"/></symbol>
-<symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
-</defs></svg>
-<div id="splash"><div class="splash-inner"><div class="splash-mark"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="splash-brand">DAROU RAHMANE CHICKEN</div><div class="splash-role">LIVREUR</div><div class="splash-line"></div><div class="splash-sub">VOS LIVRAISONS. VOTRE TOURNÉE.</div></div></div>
-<header><div class="hd-top"><div class="brand-icon"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="brand"><b>DRC LIVREUR</b><small>ESPACE PROFESSIONNEL</small></div><div class="header-actions app-only hidden"><button class="iconbtn" onclick="loadOrders()" aria-label="Actualiser les missions"><img src="refresh.png" alt="" class="rf-ico"></button><button class="iconbtn" onclick="lock()" aria-label="Verrouiller l’application"><svg class="svg"><use href="#lock"/></svg></button></div></div><div class="service app-only hidden" id="service"><span class="service-dot"></span><span id="service-text">Connexion au service…</span></div></header>
-<main id="view-login"><section class="login-wrap"><div class="lg-brand"><img src="logo.png" alt="Darou Rahmane Chicken"><span>Espace livreur</span></div><div class="login-card"><div class="login-kicker"><svg class="svg"><use href="#scooter"/></svg> Accès livreur</div><h1>Votre tournée<br>commence ici.</h1><p>Consultez les colis confiés par le gérant, contactez les destinataires et confirmez chaque livraison.</p><div class="field" id="lg-field"><label for="lg-code">Code livreur</label><input id="lg-code" type="password" placeholder="Ex. DRC-1234-5678" autocomplete="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')login()"><div class="server-note">Code donné par le gérant (Espace gérant → Livreurs). Majuscules et tirets facultatifs.</div><div class="msg">Code incorrect ou serveur indisponible</div></div><button class="btn primary" id="lg-btn" onclick="login()">Accéder à mes missions</button><p class="sec-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.6 8 11 4.6-1.4 8-6 8-11V5l-8-3Zm-1 14-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7Z"/></svg>Connexion protégée : votre code n’est jamais enregistré sur le téléphone.</p><input id="lg-server" type="hidden"></div></section></main>
-<main id="view-app" class="hidden"><section class="tour-hero"><div class="tour-top"><div><div class="tour-label">Tableau de bord</div><h1 id="tournee-title">Ma tournée</h1></div><div class="tour-date" id="tour-date"></div></div><div class="tour-summary"><span><b id="active-total">0</b> missions actives</span><span><b id="done-total">0</b> terminées</span></div><div class="journee" id="journee"></div></section><div class="adm-stats" id="stats"></div><div class="tabs" role="tablist" aria-label="Filtrer les missions"><button id="t-depot" class="on" role="tab" onclick="switchTab('depot')">À récupérer<span class="tab-count" id="count-depot">0</span></button><button id="t-shipping" role="tab" onclick="switchTab('shipping')">En cours<span class="tab-count" id="count-shipping">0</span></button><button id="t-done" role="tab" onclick="switchTab('done')">Terminées<span class="tab-count" id="count-done">0</span></button></div><div class="list-head"><h2 id="list-title">Colis à récupérer au dépôt</h2><span id="list-count">0 mission</span></div><div id="orders" aria-live="polite"></div></main>
-<section id="mission-tracking" class="tracking-page" aria-label="Suivi de la mission">
-  <div class="tracking-nav"><button class="iconbtn" onclick="closeTracking()" aria-label="Retour">←</button><h2>Suivi de la mission</h2><button class="iconbtn" onclick="refreshTracking()" aria-label="Actualiser"><svg class="svg"><use href="#refresh"/></svg></button></div>
-  <div class="tracking-content">
-    <div class="tracking-hero" id="tracking-hero"></div>
-    <div class="map-wrap"><div id="mission-map"></div><div id="map-fallback" class="map-fallback hidden"></div><div class="map-credit">Itinéraire indicatif · OpenStreetMap contributors</div></div>
-    <button class="btn gmaps" id="gmapsNav" data-track-action="maps" style="margin:0 14px 10px;width:calc(100% - 28px)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Itinéraire Google Maps</span></button>
-    <button class="btn secondary" id="sharePos" style="margin:0 14px 14px;width:calc(100% - 28px)" onclick="toggleSharePos()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Partager ma position au client</span></button>
-    <div class="progress-card"><h3>Progression de la livraison</h3><div id="tracking-progress"></div></div>
-    <div class="contact-driver" id="tracking-contact"></div>
-    <div class="contact-buttons">
-      <button class="btn whatsapp" data-track-action="message">Message</button>
-      <button class="btn secondary" data-track-action="sms">SMS</button>
-      <button class="btn secondary" data-track-action="call">Appeler</button>
-    </div>
-    <div class="driver-chat" id="driver-chat"><h3>Conversation avec le client</h3><div class="driver-chat-messages" id="driver-chat-messages" role="log" aria-live="polite"><div class="chat-empty">Chargement…</div></div><div class="driver-chat-compose"><textarea id="driver-chat-input" maxlength="1000" rows="1" aria-label="Réponse au client" placeholder="Écrivez au client…"></textarea><button class="btn primary" onclick="sendDriverMessage()">Envoyer</button></div></div>
-    <div class="details-card"><h3>Détails de la livraison</h3><div class="details-grid" id="tracking-details"></div></div>
-    <div class="cash-card hidden" id="cashCard"></div>
-    <div class="proof-card hidden" id="proofCard"></div>
-    <div class="tracking-action" id="tracking-action"></div>
-    <div class="tracking-action map-open-btn"><button class="btn secondary" data-track-action="maps"><svg class="svg"><use href="#map"/></svg>Ouvrir dans Maps</button></div>
-  </div>
-</section>
-<div id="toast" role="status"></div>
-<script src="leaflet/leaflet.js"></script>
+<body class="drc2">
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.1').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.14').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -459,7 +705,104 @@ header .brand-icon{background:#fff!important;border-radius:14px!important;paddin
   document.addEventListener('click', function once(){ try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch(e) {} document.removeEventListener('click', once, true); }, true);
 })();
 </script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="scooter" viewBox="0 0 64 64"><g stroke-width="3.6"><rect x="11" y="13" width="18" height="14" rx="3"/><path d="M20 13v5"/><path d="M8 44c0-7 5-12 12-12h11l3 9h14"/><path d="M50.3 39.5 44.5 19M40 19h8.5"/><circle cx="16" cy="46" r="6.5"/><circle cx="50" cy="46" r="6.5"/><path d="M22.5 46h21"/></g></symbol>
+<symbol id="phone" viewBox="0 0 24 24"><path d="M7 3H5a2 2 0 0 0-2 2c0 8.8 7.2 16 16 16a2 2 0 0 0 2-2v-2l-4-1-2 2c-4-1.5-6.5-4-8-8l2-2-2-5z"/></symbol>
+<symbol id="map" viewBox="0 0 24 24"><path d="M12 21s7-6 7-12A7 7 0 0 0 5 9c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+<symbol id="box" viewBox="0 0 24 24"><path d="M4 7l8-4 8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10M8 5l8 4"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></symbol>
+<symbol id="refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v5h-5"/></symbol>
+<symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+</defs></svg>
+<header class="hd app-only hidden" id="appHeader">
+  <div class="brand"><img src="logo.png" alt="Darou Rahmane Chicken"><span class="open" id="service"><i></i><span id="service-text">Connexion au service…</span></span></div>
+  <div class="topbar">
+    <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="missionSearch" placeholder="Rechercher" autocomplete="off" enterkeyhint="search"></label>
+    <button class="ibtn" onclick="loadOrders()" aria-label="Actualiser les missions"><svg class="refrico" viewBox="0 0 24 24"><use href="#refresh"/></svg></button>
+    <button class="ibtn" onclick="lock()" aria-label="Verrouiller l’application"><svg class="lockico" viewBox="0 0 24 24"><use href="#lock"/></svg></button>
+  </div>
+</header>
+<main id="view-login">
+  <div class="login-hero">
+    <img class="hero-img" src="assets/img/hero-login.webp" alt="Cuisine Darou Rahmane Chicken">
+    <div class="hero-shade"></div>
+    <span class="hero-role"><i></i> Espace professionnel</span>
+  </div>
+  <section class="login-wrap"><div class="login-card">
+    <img class="lg-logo" src="logo.png" alt="Darou Rahmane Chicken">
+    <div class="login-kicker"><svg class="svg"><use href="#scooter"/></svg> Accès livreur</div>
+    <h1>Votre tournée<br>commence ici.</h1>
+    <p>Consultez les colis confiés par le gérant, contactez les destinataires et confirmez chaque livraison.</p>
+    <div class="field" id="lg-field"><label for="lg-code">Code livreur</label><input id="lg-code" type="password" placeholder="Ex. DRC-1234-5678" autocomplete="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')login()"><div class="server-note">Code donné par le gérant (Espace gérant → Livreurs). Majuscules et tirets facultatifs.</div><div class="msg">Code incorrect ou serveur indisponible</div></div>
+    <button class="btn primary" id="lg-btn" onclick="login()">Accéder à mes missions</button>
+    <p class="sec-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.6 8 11 4.6-1.4 8-6 8-11V5l-8-3Zm-1 14-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7Z"/></svg>Connexion protégée : votre code n’est jamais enregistré sur le téléphone.</p>
+    <button type="button" class="client-link" onclick="openClientApp()">Vous êtes client ? Ouvrir l’application Darou Rahmane Chicken →</button>
+    <input id="lg-server" type="hidden">
+  </div></section>
+</main>
+<main id="view-app" class="hidden">
+  <div class="hidden" aria-hidden="true"><h1 id="tournee-title">Ma tournée</h1><span id="tour-date"></span><b id="active-total">0</b><b id="done-total">0</b></div>
+  <section class="day"><div class="gauge" id="dayGauge"></div></section>
+  <div class="journee" id="journee"></div>
+  <div class="cats" id="tabs" role="tablist" aria-label="Filtrer les missions">
+    <button class="cat tone-red on" id="t-depot" role="tab" onclick="switchTab('depot')"><span class="tile"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M11.3 2.3a1.6 1.6 0 0 1 1.4 0l7.5 3.7c.5.3.8.8.8 1.4v9.2c0 .6-.3 1.1-.8 1.4l-7.5 3.7a1.6 1.6 0 0 1-1.4 0l-7.5-3.7A1.6 1.6 0 0 1 3 16.6V7.4c0-.6.3-1.1.8-1.4l7.5-3.7ZM12 4.2 6.2 7 12 9.8 17.8 7 12 4.2Zm-6.8 4.5v7.4l6 3v-7.4l-6-3Zm13.6 0-6 3v7.4l6-3V8.7Z"/></svg></span><span>À récupérer</span><b class="cat-count" id="count-depot">0</b></button>
+    <button class="cat tone-amber" id="t-shipping" role="tab" onclick="switchTab('shipping')"><span class="tile"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v2h2.4a2 2 0 0 1 1.7.9l2.1 3.3c.2.3.3.7.3 1.1V16a2 2 0 0 1-2 2h-.8a3.2 3.2 0 0 1-6.2 0H9.5a3.2 3.2 0 0 1-6.2 0H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm13 4v2.5h3.8L18.2 10H16Zm-9.6 5.8a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Zm10.2 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></svg></span><span>En cours</span><b class="cat-count" id="count-shipping">0</b></button>
+    <button class="cat tone-green" id="t-done" role="tab" onclick="switchTab('done')"><span class="tile"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6Zm4.6 7.5a1.1 1.1 0 0 0-1.6-1.6L10.8 12.3 9 10.5a1.1 1.1 0 1 0-1.6 1.6l2.6 2.6a1.1 1.1 0 0 0 1.6 0l5-5Z"/></svg></span><span>Terminées</span><b class="cat-count" id="count-done">0</b></button>
+  </div>
+  <div class="sec"><h2 id="list-title">Colis à récupérer</h2><span class="cnt" id="list-count">0 mission</span></div>
+  <div id="orders" aria-live="polite"></div>
+  <div id="stats" class="hidden"></div>
+</main>
+<section id="mission-tracking" class="tracking-page" aria-label="Suivi de la mission">
+  <div class="tracking-nav"><button class="iconbtn" onclick="closeTracking()" aria-label="Retour"><svg class="backico" viewBox="0 0 24 24"><path d="M14.5 5 7.5 12l7 7"/></svg></button><h2>Suivi de la mission</h2><button class="iconbtn" onclick="refreshTracking()" aria-label="Actualiser"><svg class="svg"><use href="#refresh"/></svg></button></div>
+  <div class="tracking-content">
+    <div class="tracking-hero" id="tracking-hero"></div>
+    <div class="map-wrap"><div id="mission-map"></div><div id="map-fallback" class="map-fallback hidden"></div><div class="map-credit">Itinéraire indicatif · OpenStreetMap contributors</div></div>
+    <button class="btn gmaps" id="gmapsNav" data-track-action="maps" style="margin:0 14px 10px;width:calc(100% - 28px)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Itinéraire Google Maps</span></button>
+    <div class="progress-card"><h3>Progression de la livraison</h3><div id="tracking-progress"></div></div>
+    <div class="contact-driver" id="tracking-contact"></div>
+    <div class="contact-buttons">
+      <button class="btn whatsapp" data-track-action="message">Message</button>
+      <button class="btn secondary" data-track-action="sms">SMS</button>
+      <button class="btn secondary" data-track-action="call">Appeler</button>
+    </div>
+    <div class="driver-chat" id="driver-chat"><h3>Conversation avec le client</h3><div class="driver-chat-messages" id="driver-chat-messages" role="log" aria-live="polite"><div class="chat-empty">Chargement…</div></div><div class="driver-chat-compose"><textarea id="driver-chat-input" maxlength="1000" rows="1" aria-label="Réponse au client" placeholder="Écrivez au client…"></textarea><button class="btn primary" onclick="sendDriverMessage()">Envoyer</button></div></div>
+    <div class="details-card"><h3>Détails de la livraison</h3><div class="details-grid" id="tracking-details"></div></div>
+    <div class="cash-card hidden" id="cashCard"></div>
+    <div class="proof-card hidden" id="proofCard"></div>
+    <div class="tracking-action" id="tracking-action"></div>
+    <div class="tracking-action map-open-btn"><button class="btn secondary" data-track-action="maps"><svg class="svg"><use href="#map"/></svg>Ouvrir dans Maps</button></div>
+  </div>
+</section>
+<section id="tour-map-page" class="tracking-page" aria-label="Carte de la tournée">
+  <div class="tracking-nav"><button class="iconbtn" onclick="closeTourMap()" aria-label="Retour"><svg class="backico" viewBox="0 0 24 24"><path d="M14.5 5 7.5 12l7 7"/></svg></button><h2>Carte de la tournée</h2><button class="iconbtn" onclick="renderTourMap()" aria-label="Actualiser"><svg class="refrico" viewBox="0 0 24 24"><use href="#refresh"/></svg></button></div>
+  <div class="tracking-content">
+    <div class="tourmap-wrap"><div id="tour-map"></div><div class="map-credit">Dépôt et arrêts du jour · OpenStreetMap</div></div>
+    <div class="tourmap-actions"><button class="pill-btn" onclick="tourItinerary()"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>Itinéraire de la tournée</button></div>
+    <div class="sec"><h2>Arrêts de la tournée</h2><span class="cnt" id="tour-count">0</span></div>
+    <div id="tour-stops"></div>
+  </div>
+</section>
+
+<section id="account-page" class="tracking-page" aria-label="Mon compte">
+  <div class="tracking-nav"><button class="iconbtn" onclick="closeAccount()" aria-label="Retour"><svg class="backico" viewBox="0 0 24 24"><path d="M14.5 5 7.5 12l7 7"/></svg></button><h2>Mon compte</h2></div>
+  <div class="tracking-content">
+    <div class="account-card"><div class="account-avatar" id="accInitials">L</div><div class="who"><b id="accName">Livreur DRC</b><span id="accPhone">—</span><small>Espace professionnel</small></div></div>
+    <div class="sec"><h2>Ma journée</h2></div>
+    <div class="account-stats" id="accStats"></div>
+    <div class="sec"><h2>Actions</h2></div>
+    <div class="account-actions">
+      <button onclick="loadOrders();toast('Missions actualisées')"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg></span>Actualiser mes missions</button>
+      <button onclick="openClientApp()"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg></span>Ouvrir l’application client</button>
+      <button class="danger" onclick="lock()"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 10V8a5 5 0 0 1 10 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1Zm2 0h6V8a3 3 0 0 0-6 0v2Z"/></svg></span>Verrouiller l’application</button>
+    </div>
+  </div>
+</section>
+
+<div id="toast" role="status"></div>
+<script src="leaflet/leaflet.js"></script>
 <script>
+const NATIVE = window.Android || null;
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 function validServer(v){return /^https:\/\/[^\s]+$/.test(v)||/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(v)}
 const API = () => DEFAULT_API;
@@ -490,6 +833,11 @@ if (!window.notifyNew && window.Android && window.Android.notify) {
 }
 const fmt = n => Number(n||0).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g,' ');
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* référence vers l'app client : application installée sinon version web */
+function openClientApp(){
+  try { if (NATIVE && NATIVE.openApp) { NATIVE.openApp('sn.drc.app', 'https://drc.sn/app'); return; } } catch(e) {}
+  window.open('https://drc.sn/app', '_blank', 'noopener');
+}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2600)}
 function net(state,txt){const b=document.getElementById('service');b.classList.toggle('online',state==='on');b.classList.toggle('offline',state==='off');document.getElementById('service-text').textContent=txt}
 function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms||10)}catch(e){}}
@@ -499,22 +847,69 @@ function applyProfile(d){
   if(d&&d.depot&&Number.isFinite(Number(d.depot.lat))&&Number.isFinite(Number(d.depot.lng)))DEPOT={lat:Number(d.depot.lat),lng:Number(d.depot.lng),label:String(d.depot.label||DEPOT.label)};
   if(d&&d.driver){ME=d.driver;const first=String(ME.name||'').trim().split(/\s+/)[0];document.getElementById('tournee-title').textContent=first?'Bonjour '+first:'Ma tournée'}
 }
-function lock(){closeTracking();token='';ME=null;document.getElementById('tournee-title').textContent='Ma tournée';localStorage.removeItem('drc_driver');clearInterval(timer);loadSequence++;statusSequence++;orders=[];pendingStatus.clear();document.getElementById('orders').innerHTML='';document.getElementById('driver-chat-messages').innerHTML='';showLogin();toast('Application verrouillée')}
-function showLogin(){document.getElementById('view-login').classList.remove('hidden');document.getElementById('view-app').classList.add('hidden');document.querySelectorAll('.app-only').forEach(e=>e.classList.add('hidden'));document.getElementById('lg-server').value=API()}
+function lock(){try{closeTourMap()}catch(e){};try{closeAccount()}catch(e){};closeTracking();stopAutoShare();token='';ME=null;document.getElementById('tournee-title').textContent='Ma tournée';localStorage.removeItem('drc_driver');clearInterval(timer);loadSequence++;statusSequence++;orders=[];pendingStatus.clear();document.getElementById('orders').innerHTML='';document.getElementById('driver-chat-messages').innerHTML='';showLogin();toast('Application verrouillée')}
+function showLogin(){try{window.scrollTo(0,0)}catch(e){};stopAutoShare();document.getElementById('view-login').classList.remove('hidden');document.getElementById('view-app').classList.add('hidden');document.querySelectorAll('.app-only').forEach(e=>e.classList.add('hidden'));document.getElementById('lg-server').value=API()}
 async function login(){const inp=document.getElementById('lg-code');const code=(inp.value||'').trim();const fld=document.getElementById('lg-field');if(!code){toast('Saisissez votre code livreur');shake(fld);return}const btn=document.getElementById('lg-btn');btn.classList.add('loading');btn.disabled=true;try{const r=await fetch(DEFAULT_API+'/api/staff/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,role:'driver'}),cache:'no-store'});inp.value='';if(r.status===429){const j=await r.json().catch(()=>({}));fld.classList.add('err');shake(fld);toast('Trop d’essais — réessayez dans '+Math.ceil((j.retry_after||600)/60)+' min');return}if(r.status!==200){fld.classList.add('err');shake(fld);toast(r.status===401?'Code livreur incorrect':'Serveur indisponible');return}const j=await r.json();token=j.token;localStorage.setItem('drc_driver',token);fld.classList.remove('err');enter()}catch(e){toast('Serveur injoignable — réessayez')}finally{btn.classList.remove('loading');btn.disabled=false}}
 function shake(el){if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
 async function migrateToken(){if(!token||token.startsWith('stf.'))return;try{const r=await fetch(DEFAULT_API+'/api/staff/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:token,role:'driver'}),cache:'no-store'});if(r.status===200){token=(await r.json()).token;localStorage.setItem('drc_driver',token)}else if(r.status===401){token='';localStorage.removeItem('drc_driver')}}catch(e){}}
-function enter(){document.getElementById('view-login').classList.add('hidden');document.getElementById('view-app').classList.remove('hidden');document.querySelectorAll('.app-only').forEach(e=>e.classList.remove('hidden'));document.getElementById('tour-date').innerHTML=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}).replace(',','<br>');loadOrders();clearInterval(timer);timer=setInterval(loadOrders,20000)}
+function enter(){try{window.scrollTo(0,0)}catch(e){};setTimeout(startAutoShare,700);document.getElementById('view-login').classList.add('hidden');document.getElementById('view-app').classList.remove('hidden');document.querySelectorAll('.app-only').forEach(e=>e.classList.remove('hidden'));document.getElementById('tour-date').innerHTML=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}).replace(',','<br>');loadOrders();clearInterval(timer);timer=setInterval(loadOrders,20000)}
 function itemsText(o){return (o.items||[]).map(i=>esc(i.name||'')+' ×'+Number(i.qty||1)).join('<br>')||'—'}
 function paymentMethod(o){const c=o.customer||{};return o.payment_method||(c.pay_phone?'wave':'cod')}
 function isCod(o){return paymentMethod(o)==='cod'}
 function isDelivered(o){return o.status==='delivered'}
 function isToday(o){const raw=o.delivered_at||o.updated_at||o.created_at;if(!raw)return true;const d=new Date(raw),n=new Date();return !isNaN(d)&&d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()&&d.getDate()===n.getDate()}
 function doneOrders(){return orders.filter(o=>isDelivered(o)&&isToday(o))}
-async function loadOrders(){if(pendingStatus.size)return;const seq=++loadSequence,mutationAtStart=statusSequence;try{const r=await api('/api/driver/orders');if(seq!==loadSequence||mutationAtStart!==statusSequence)return;if(r.status===401||r.status===403){lock();return}if(!r.ok)throw new Error('HTTP '+r.status);if(!r.data||!Array.isArray(r.data.orders))throw new Error('Réponse invalide');orders=r.data.orders;applyProfile(r.data);if(window.notifyNew&&!inApp())notifyNew(r.data.orders);net('on','En service · synchronisation toutes les 20 s');renderStats();autoTab();renderOrders()}catch(e){if(seq!==loadSequence||mutationAtStart!==statusSequence)return;net('off','Hors ligne · nouvelle tentative dans 20 s');if(!orders.length)document.getElementById('orders').innerHTML='<div class="empty"><div class="empty-icon"><svg class="svg"><use href="#refresh"/></svg></div><h3>Connexion impossible</h3><p>Vos missions réapparaîtront dès que le serveur sera accessible.</p></div>'}}
-function renderStats(){const depot=orders.filter(o=>['confirmed','preparing','paid'].includes(o.status||''));const ship=orders.filter(o=>(o.status||'')==='shipping');const done=doneOrders();const cash=depot.concat(ship).filter(isCod).reduce((s,o)=>s+Number(o.total||0),0);document.getElementById('active-total').textContent=depot.length+ship.length;document.getElementById('done-total').textContent=done.length;document.getElementById('count-depot').textContent=depot.length;document.getElementById('count-shipping').textContent=ship.length;document.getElementById('count-done').textContent=done.length;document.getElementById('stats').innerHTML=`<div class="adm-stat"><b>${depot.length}</b><small>Au dépôt</small></div><div class="adm-stat"><b>${ship.length}</b><small>En cours</small></div><div class="adm-stat"><b>${done.length}</b><small>Terminées</small></div><div class="adm-stat cash-stat"><small>ESPÈCES À ENCAISSER</small><b>${fmt(cash)}<span>F</span></b></div>`}
-function visible(){return orders.slice().reverse().filter(o=>{const s=o.status||'pending';if(tab==='depot')return ['confirmed','preparing','paid'].includes(s);if(tab==='shipping')return s==='shipping';if(tab==='done')return isDelivered(o)&&isToday(o);return false})}
-function renderOrders(){const list=visible(),box=document.getElementById('orders');const titles={depot:'Colis à récupérer au dépôt',shipping:'Livraisons en cours',done:'Livraisons terminées'};document.getElementById('list-title').textContent=titles[tab];document.getElementById('list-count').textContent=list.length+' mission'+(list.length>1?'s':'');const empty={depot:['box','Dépôt à jour','Aucun colis ne vous attend actuellement au dépôt.'],shipping:['scooter','Aucune course en cours','Récupérez un colis au dépôt pour démarrer une livraison.'],done:['check','Aucune livraison terminée','Vos missions confirmées apparaîtront ici.']}[tab];if(!list.length){box.innerHTML=`<div class="empty"><div class="empty-icon"><svg class="svg"><use href="#${empty[0]}"/></svg></div><h3>${empty[1]}</h3><p>${empty[2]}</p></div>`;return}box.innerHTML=list.map(o=>{const c=o.customer||{},s=o.status||'pending',id=String(o.id),busy=pendingStatus.has(id),done=isDelivered(o);const phone=String(c.phone||'').trim(),phoneHref=phone.replace(/[^\d+]/g,''),address=orderAddress(o),zone=String(c.zone||'').trim()||'Dakar';const mapUrl=mapsUrl(o);const initials=String(c.name||'Client').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();return `<article class="mission ${s==='shipping'?'shipping':done?'done':''}" data-order="${esc(id)}"><div class="mission-top"><span class="oid">MISSION ${esc(id)}</span><span class="status ${s==='shipping'?'shipping':done?'done':''}">${statusLabel(s)}</span></div><div class="zone">${esc(zone)}</div><div class="customer"><div class="avatar">${esc(initials||'CL')}</div><div><div class="customer-name">${esc(c.name||'Destinataire non renseigné')}</div><div class="customer-slot">${c.slot?'Créneau : '+esc(c.slot):'Créneau non précisé'}</div></div></div><div class="kv"><b>Adresse</b><span>${address?esc(address):'Adresse non renseignée'}${orderGps(o)?' · <a href="'+esc(mapUrl)+'" target="_blank" rel="noopener">GPS ↗</a>':''}</span></div><div class="kv"><b>Contenu</b><span>${itemsText(o)}</span></div><div class="kv"><b>Repère</b><span>${esc(c.note||'Aucun repère ajouté')}</span></div>${!done?(isCod(o)?`<div class="cash"><span>À ENCAISSER</span><b>${fmt(o.total)} F</b></div>`:`<div class="cash prepaid"><span>DÉJÀ PAYÉ · ${esc(PAY[paymentMethod(o)]||'MOBILE MONEY')}</span><b>0 F</b></div>`):`<div class="cash prepaid"><span>LIVRAISON CONFIRMÉE</span><b>✓</b></div>`}${['confirmed','preparing','paid'].includes(s)?`<button class="btn primary mission-cta" data-action="status" data-id="${esc(id)}" data-status="shipping" ${busy?'disabled':''}><svg class="svg"><use href="#box"/></svg>${busy?'Mise à jour…':'Colis récupéré au dépôt'}</button>`:''}${s==='shipping'?`<button class="btn success mission-cta" data-action="status" data-id="${esc(id)}" data-status="delivered" ${busy?'disabled':''}><svg class="svg"><use href="#check"/></svg>${busy?'Confirmation…':'Confirmer la livraison'}</button>`:''}${!done?`<div class="contact-actions"><button class="btn secondary" data-action="message" data-id="${esc(id)}" ${!phoneHref?'disabled':''}>Message</button><button class="btn secondary" data-action="call" data-id="${esc(id)}" ${!phoneHref?'disabled':''}>Appeler</button><button class="btn secondary" data-action="track" data-id="${esc(id)}"><svg class="svg"><use href="#map"/></svg>Suivi</button></div>`:''}</article>`}).join('')}
+async function loadOrders(){if(pendingStatus.size)return;const seq=++loadSequence,mutationAtStart=statusSequence;try{const r=await api('/api/driver/orders');if(seq!==loadSequence||mutationAtStart!==statusSequence)return;if(r.status===401||r.status===403){lock();return}if(!r.ok)throw new Error('HTTP '+r.status);if(!r.data||!Array.isArray(r.data.orders))throw new Error('Réponse invalide');orders=r.data.orders;applyProfile(r.data);if(window.notifyNew&&!inApp())notifyNew(r.data.orders);net('on','En service');renderStats();autoTab();renderOrders()}catch(e){if(seq!==loadSequence||mutationAtStart!==statusSequence)return;net('off','Hors ligne');if(!orders.length)document.getElementById('orders').innerHTML='<div class="empty"><img src="assets/img/cat-tout.webp" alt=""><h3>Connexion impossible</h3><p>Vos missions réapparaîtront dès que le serveur sera accessible.</p></div>'}}
+function renderStats(){
+  const depot=orders.filter(o=>['confirmed','preparing','paid'].includes(o.status||''));
+  const ship=orders.filter(o=>(o.status||'')==='shipping');
+  const done=doneOrders();
+  const cash=depot.concat(ship).filter(isCod).reduce((s,o)=>s+Number(o.total||0),0);
+  const setT=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  setT('active-total',depot.length+ship.length);setT('done-total',done.length);
+  setT('count-depot',depot.length);setT('count-shipping',ship.length);setT('count-done',done.length);
+  const total=depot.length+ship.length+done.length;
+  const g=document.getElementById('dayGauge');
+  if(g){
+    const d=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}).replace(',',' ·');
+    const goal=total?(total+' mission'+(total>1?'s':'')+' · '+done.length+' terminée'+(done.length>1?'s':'')):'Vos missions du jour apparaîtront ici';
+    g.innerHTML=gaugeHTML(total?done.length/total:0,d,fmt(cash)+' F',goal,'<svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>');
+  }
+  const st=document.getElementById('stats');
+  if(st)st.innerHTML=`<div class="adm-stat"><b>${depot.length}</b><small>Au dépôt</small></div><div class="adm-stat"><b>${ship.length}</b><small>En cours</small></div><div class="adm-stat"><b>${done.length}</b><small>Terminées</small></div><div class="adm-stat cash-stat"><small>ESPÈCES À ENCAISSER</small><b>${fmt(cash)}<span>F</span></b></div>`;
+}
+function visible(){return orders.slice().reverse().filter(o=>{const st=o.status||'pending';if(tab==='depot')return ['confirmed','preparing','paid'].includes(st);if(tab==='shipping')return st==='shipping';if(tab==='done')return isDelivered(o)&&isToday(o);return false}).filter(o=>{const q=(window.missionQuery||'').trim();if(!q)return true;const c=o.customer||{};return (String(o.id)+' '+(c.name||'')+' '+(c.zone||'')+' '+(c.address||'')).toLowerCase().includes(q)})}
+function orderImg(o){const it=(o.items||[])[0]||{};const id=Number(it.id)||1;return 'p'+(id>=1&&id<=9?id:1)+'.webp'}
+function renderOrders(){
+  const list=visible(),box=document.getElementById('orders');
+  const titles={depot:'Colis à récupérer',shipping:'Livraisons en cours',done:'Livraisons terminées'};
+  const t=document.getElementById('list-title');if(t)t.textContent=titles[tab];
+  const lc=document.getElementById('list-count');if(lc){lc.textContent=list.length+' mission'+(list.length>1?'s':'');lc.classList.toggle('zero',!list.length)}
+  const empty={depot:['cat-tout','Dépôt à jour','Aucun colis ne vous attend au dépôt pour le moment.'],
+               shipping:['cat-tout','Aucune course en cours','Récupérez un colis au dépôt pour démarrer une livraison.'],
+               done:['cat-tout','Aucune livraison terminée','Vos missions confirmées apparaîtront ici.']}[tab];
+  if(!list.length){box.innerHTML=`<div class="empty"><img src="assets/img/${empty[0]}.webp" alt=""><h3>${empty[1]}</h3><p>${empty[2]}</p></div>`;return}
+  box.innerHTML=list.map(o=>{
+    const c=o.customer||{},st=o.status||'pending',id=String(o.id),busy=pendingStatus.has(id),done=isDelivered(o);
+    const address=orderAddress(o),zone=String(c.zone||'').trim()||'Dakar';
+    const phone=String(c.phone||'').trim(),hasPhone=!!phone.replace(/[^\d+]/g,'');
+    const step=done?4:(st==='shipping'?3:(['confirmed','preparing','paid'].includes(st)?1:0));
+    const bars=[0,1,2,3].map(i=>`<i class="${i<step?'on':''}"></i>`).join('');
+    const slot=c.slot?esc(c.slot):'Créneau à confirmer';
+    const cod=isCod(o);
+    return `<article class="mcard" data-order="${esc(id)}">
+      <div class="mtop"><div class="mzone">${esc(zone)}</div><span class="mstatus ${st==='shipping'?'shipping':done?'done':''}">${statusLabel(st)}</span></div>
+      <div class="mrow"><div class="mphoto"><img src="assets/img/${orderImg(o)}" alt=""></div>
+        <div class="minfo"><b>${esc(c.name||'Destinataire')}</b><span>${slot} · ${esc(id)}</span><div class="mbars">${bars}</div></div>
+        <div class="mprice">${fmt(o.total)}<small>F</small></div></div>
+      <div class="mmeta"><span><b>Adresse</b> ${address?esc(address):'Non renseignée'}${orderGps(o)?' · <a href="'+esc(mapsUrl(o))+'" target="_blank" rel="noopener" style="color:var(--acc);font-weight:700">GPS ↗</a>':''}</span><span><b>Contenu</b> ${itemsText(o)}</span>${c.note?'<span><b>Repère</b> '+esc(c.note)+'</span>':''}</div>
+      ${done?`<div class="mcash prepaid"><span>LIVRAISON CONFIRMÉE</span><b>✓</b></div>`:cod?`<div class="mcash"><span>À ENCAISSER</span><b>${fmt(o.total)} F</b></div>`:`<div class="mcash prepaid"><span>DÉJÀ PAYÉ · ${esc(PAY[paymentMethod(o)]||'MOBILE MONEY')}</span><b>0 F</b></div>`}
+      ${['confirmed','preparing','paid'].includes(st)?`<button class="pill-btn acc" data-action="status" data-id="${esc(id)}" data-status="shipping" ${busy?'disabled':''}><svg viewBox="0 0 24 24"><path d="M3.5 7.2 12 3l8.5 4.2v9.6L12 21l-8.5-4.2V7.2Z"/><path d="m3.5 7.2 8.5 4.2 8.5-4.2M12 11.4V21"/></svg>${busy?'Mise à jour…':'Colis récupéré au dépôt'}</button>`:''}
+      ${st==='shipping'?`<button class="pill-btn acc" data-action="status" data-id="${esc(id)}" data-status="delivered" ${busy?'disabled':''}><svg viewBox="0 0 24 24"><path d="m5 12.5 4.3 4.3L19 7"/></svg>${busy?'Confirmation…':'Confirmer la livraison'}</button>`:''}
+      ${!done?`<div class="macts"><button data-action="message" data-id="${esc(id)}" ${hasPhone?'':'disabled'}><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-9l-4 3v-3H6a2 2 0 0 1-2-2Z"/></svg>Message</button><button data-action="call" data-id="${esc(id)}" ${hasPhone?'':'disabled'}><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1Z"/></svg>Appeler</button><button data-action="track" data-id="${esc(id)}"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>Suivi</button></div>`:''}
+    </article>`;
+  }).join('');
+}
 let trackingId = null, missionMap = null, routeGroup = null, trackingSeq = 0;
 let DEPOT = {lat:14.757605, lng:-17.445161, label:'Dépôt DRC · Parcelles Assainies U20'};
 let ME = null;
@@ -546,29 +941,22 @@ function openTracking(id){
   setTimeout(()=>{if(openSeq===trackingSeq&&trackingId===String(id))loadMissionMap(o)},80);
   setTimeout(()=>{if(openSeq===trackingSeq&&trackingId===String(id))startLiveNav(o)},1500);
 }
-let sharePosT = null, sharePosWatch = null;
+let autoShareT = null;
+function shareOrders(){return orders.filter(o=>['confirmed','preparing','paid','shipping'].includes(o.status||''))}
 async function pushPos(pos){
-  if (!trackingId) return;
-  try {
-    await api('/api/orders/' + encodeURIComponent(trackingId) + '/driver-position', {
-      method: 'POST',
-      body: JSON.stringify({lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy || 0)})
-    });
-  } catch (e) {}
+  const list = shareOrders();
+  if (!list.length) return;
+  const body = JSON.stringify({lat: pos.coords.latitude, lng: pos.coords.longitude, acc: Math.round(pos.coords.accuracy || 0)});
+  await Promise.all(list.map(o => api('/api/orders/' + encodeURIComponent(o.id) + '/driver-position', {method:'POST', body}).catch(() => {})));
 }
-function toggleSharePos(){
-  const b = document.getElementById('sharePos');
-  if (sharePosT) { stopSharePos(); toast('Position partagée : arrêtée'); return; }
-  if (!navigator.geolocation) { toast('Géolocalisation indisponible'); return; }
-  navigator.geolocation.getCurrentPosition(p => { pushPos(p); toast('Le client voit votre position'); }, () => toast('Autorisez la localisation'), {enableHighAccuracy:true, timeout:12000});
-  sharePosT = setInterval(() => navigator.geolocation.getCurrentPosition(pushPos, () => {}, {enableHighAccuracy:true, timeout:12000, maximumAge:10000}), 10000);
-  if (b) { b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Position partagée en direct · toucher pour arrêter</span>'; b.style.background = '#E4F6EC'; b.style.color = '#086B45'; }
+function startAutoShare(){
+  if (autoShareT || !navigator.geolocation) return;
+  const tick = () => navigator.geolocation.getCurrentPosition(pushPos, () => {}, {enableHighAccuracy:true, timeout:12000, maximumAge:10000});
+  tick();
+  autoShareT = setInterval(tick, 12000);
 }
-function stopSharePos(){
-  if (sharePosT) { clearInterval(sharePosT); sharePosT = null; }
-  const b = document.getElementById('sharePos');
-  if (b) { b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg><span>Partager ma position au client</span>'; b.style.background = ''; b.style.color = ''; }
-}
+function stopAutoShare(){ if (autoShareT) { clearInterval(autoShareT); autoShareT = null; } }
+window.appResume = function(){ if (token) startAutoShare(); };
 /* ── suivi en temps réel : ma position + itinéraire vers le client ── */
 let liveWatch = null, liveMe = null, liveClient = null, liveRoute = null, liveLastRoute = null, liveLastPush = 0, liveDest = null;
 function haversine(a, b) {
@@ -634,7 +1022,7 @@ async function drawLiveRoute(me) {
     const p = L.latLngBounds(pts); if (p.isValid()) missionMap.fitBounds(p, {padding:[36, 36], maxZoom:16, animate:false});
   } catch (e) {}
 }
-function closeTracking(){stopSharePos();stopLiveNav();trackingSeq++;trackingId=null;clearInterval(driverChatPoll);driverChatPoll=null;document.getElementById('mission-tracking').classList.remove('open');document.body.style.overflow='';if(missionMap){missionMap.remove();missionMap=null;routeGroup=null}}
+function closeTracking(){stopLiveNav();trackingSeq++;trackingId=null;clearInterval(driverChatPoll);driverChatPoll=null;document.getElementById('mission-tracking').classList.remove('open');document.body.style.overflow='';if(missionMap){missionMap.remove();missionMap=null;routeGroup=null}}
 function refreshTracking(){const id=trackingId;loadOrders().then(()=>{if(id&&trackedOrder())openTracking(id)})}
 function mapMessage(title,text){document.getElementById('mission-map').classList.add('hidden');const f=document.getElementById('map-fallback');f.classList.remove('hidden');f.innerHTML=`<div><svg class="svg"><use href="#map"/></svg><b>${esc(title)}</b><p>${esc(text)}</p></div>`}
 async function mapFetch(url){const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);try{const r=await fetch(url,{signal:c.signal,cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
@@ -683,7 +1071,7 @@ document.querySelectorAll('[data-track-action="maps"]').forEach(b=>b.addEventLis
 async function setStatus(id,status){id=String(id);if(pendingStatus.has(id))return;statusSequence++;pendingStatus.add(id);renderOrders();try{const r=await api('/api/driver/orders/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({status})});if(!r.ok){toast('Échec de la mise à jour — réessayez');return}const o=orders.find(x=>String(x.id)===id);if(o)o.status=status;buzz([12,40,12]);toast(status==='shipping'?'Colis récupéré · bonne route':'Livraison confirmée');renderStats()}catch(e){toast('Serveur injoignable · statut inchangé')}finally{pendingStatus.delete(id);renderOrders();if(trackingId===id)openTracking(id)}}
 function switchTab(t){tabTouched=true;tab=t;['depot','shipping','done'].forEach(x=>{const b=document.getElementById('t-'+x);b.classList.toggle('on',x===t);b.setAttribute('aria-selected',x===t?'true':'false')});renderOrders()}
 document.getElementById('orders').addEventListener('click',e=>{const b=e.target.closest('button[data-action]');if(!b||b.disabled)return;if(b.dataset.action==='status')setStatus(b.dataset.id,b.dataset.status);else if(b.dataset.action==='track')openTracking(b.dataset.id);else if(b.dataset.action==='message')messageCustomer(b.dataset.id);else if(b.dataset.action==='call')callCustomer(b.dataset.id);else if(b.dataset.url)location.href=b.dataset.url});
-migrateToken().then(()=>{if(token){enter()}else{showLogin()}});setTimeout(()=>document.getElementById('splash').classList.add('hide'),700);
+migrateToken().then(()=>{if(token){enter()}else{showLogin()}});
 </script>
 <!--MOTION-->
 <!-- DRC motion : animations d'entrée, pression, compteurs et jauges (commun aux 3 apps) -->
@@ -756,7 +1144,7 @@ migrateToken().then(()=>{if(token){enter()}else{showLogin()}});setTimeout(()=>do
       var k = (s.closest('[id]') || {}).id + '|' + Array.prototype.map.call(s.querySelectorAll('rect'), function(r){ return r.getAttribute('fill'); }).join(',');
       if (gseen.has(k)) return; gseen.add(k); s.classList.add('m-seg');
     });
-    root.querySelectorAll('.gcenter .big, .stat b, .adm-stat b, .tot b, .grand b').forEach(function(b){ if (!b.__busy) countUp(b); });
+    root.querySelectorAll('.stat b, .adm-stat b, .tot b, .grand b').forEach(function(b){ if (!b.__busy) countUp(b); });
   }
   var mo = new MutationObserver(function(muts){
     var roots = new Set();
@@ -779,64 +1167,25 @@ migrateToken().then(()=>{if(token){enter()}else{showLogin()}});setTimeout(()=>do
 <!--/MOTION-->
 
 <div id="drcNav" class="app-only hidden">
-  <span class="nav-frame" aria-hidden="true"></span>
-  <button data-tab="depot" class="on" aria-label="Au dépôt"><span class="ic"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M11.3 2.3a1.6 1.6 0 0 1 1.4 0l7.5 3.7c.5.3.8.8.8 1.4v9.2c0 .6-.3 1.1-.8 1.4l-7.5 3.7a1.6 1.6 0 0 1-1.4 0l-7.5-3.7A1.6 1.6 0 0 1 3 16.6V7.4c0-.6.3-1.1.8-1.4l7.5-3.7ZM12 4.2 6.2 7 12 9.8 17.8 7 12 4.2Zm-6.8 4.5v7.4l6 3v-7.4l-6-3Zm13.6 0-6 3v7.4l6-3V8.7Z"/></svg></span>Dépôt</button>
-  <button data-tab="shipping" aria-label="En cours"><span class="ic"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v2h2.4a2 2 0 0 1 1.7.9l2.1 3.3c.2.3.3.7.3 1.1V16a2 2 0 0 1-2 2h-.8a3.2 3.2 0 0 1-6.2 0H9.5a3.2 3.2 0 0 1-6.2 0H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm13 4v2.5h3.8L18.2 10H16Zm-9.6 5.8a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Zm10.2 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></svg></span>En cours</button>
-  <button class="mid" id="drcNavShare" data-tab="share" aria-label="Partager ma position"><span class="ring"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2.2a7.3 7.3 0 0 0-7.3 7.3c0 5.2 6.1 11.4 6.4 11.7a1.3 1.3 0 0 0 1.8 0c.3-.3 6.4-6.5 6.4-11.7A7.3 7.3 0 0 0 12 2.2Zm0 4.6a2.7 2.7 0 1 1 0 5.4 2.7 2.7 0 0 1 0-5.4Z"/></svg></span></button>
-  <button data-tab="done" aria-label="Terminées"><span class="ic"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2.2a9.8 9.8 0 1 0 0 19.6 9.8 9.8 0 0 0 0-19.6Zm4.6 7.5a1.1 1.1 0 0 0-1.6-1.6L10.8 12.3 9 10.5a1.1 1.1 0 1 0-1.6 1.6l2.6 2.6a1.1 1.1 0 0 0 1.6 0l5-5Z"/></svg></span>Terminées</button>
-  <button data-tab="map" aria-label="Carte"><span class="ic"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M9 3.2 3.6 5.6A1 1 0 0 0 3 6.5v13.3a.8.8 0 0 0 1.1.7L9 18.4l6 2.4 5.4-2.4a1 1 0 0 0 .6-.9V4.2a.8.8 0 0 0-1.1-.7L15 5.6 9 3.2Zm.8 2.2v11.4l4.4 1.8V7.2L9.8 5.4Z"/></svg></span>Carte</button>
+  <button data-nav="home" class="on" aria-label="Accueil"><span class="ic"><svg viewBox="0 0 24 24"><path d="M10.3 3.1a2.6 2.6 0 0 1 3.4 0l6.4 5.5c.6.5.9 1.2.9 2V19a2.5 2.5 0 0 1-2.5 2.5H15a1 1 0 0 1-1-1v-4.2a2 2 0 0 0-4 0v4.2a1 1 0 0 1-1 1H5.5A2.5 2.5 0 0 1 3 19v-8.4c0-.8.3-1.5.9-2Z"/></svg></span></button>
+  <button data-nav="map" aria-label="Carte"><span class="ic"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M9 3.2 3.6 5.6A1 1 0 0 0 3 6.5v13.3a.8.8 0 0 0 1.1.7L9 18.4l6 2.4 5.4-2.4a1 1 0 0 0 .6-.9V4.2a.8.8 0 0 0-1.1-.7L15 5.6 9 3.2Zm.8 2.2v11.4l4.4 1.8V7.2L9.8 5.4Z"/></svg></span></button>
+  <button data-nav="account" aria-label="Mon compte"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/></svg></span></button>
 </div>
 <script>
-/* barre basse : pilote les onglets et fait glisser le cadre rouge sur l'icône touchée */
 (function(){
-  const nav = document.getElementById('drcNav');
-  const frame = nav.querySelector('.nav-frame');
-  function moveFrame(animate) {
-    const on = nav.querySelector('button.on') || nav.querySelector('button');
-    if (!on || !on.offsetWidth || !frame) return;
-    if (animate === false) frame.style.transition = 'none';
-    const x = on.offsetLeft + (on.offsetWidth - frame.offsetWidth) / 2;
-    const y = on.offsetTop + (on.offsetHeight - frame.offsetHeight) / 2;
-    frame.style.transform = 'translate3d(' + Math.round(x) + 'px,' + Math.round(y) + 'px,0)';
-    if (animate === false) requestAnimationFrame(() => { frame.style.transition = ''; });
-  }
-  const mark = t => {
-    [...nav.querySelectorAll('button')].forEach(b => b.classList.toggle('on', b.dataset.tab === t));
-    moveFrame(true);
-  };
-  nav.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
-    const t = b.dataset.tab;
-    if (t === 'depot' || t === 'shipping' || t === 'done') {
-      const el = document.getElementById('t-' + t); if (el) el.click();
-      mark(t); try { buzz(8); } catch(e){}
-    } else if (t === 'share') {
-      mark('share');
-      const s = document.getElementById('sharePos');
-      if (s && s.offsetParent !== null) s.click();
-      else { try { toast('Ouvrez une mission pour partager votre position'); } catch(e){} }
-      try { buzz(12); } catch(e){}
-    } else {
-      mark('map');
-      const ship = (typeof orders !== 'undefined' ? orders : []).find(o => (o.status||'') === 'shipping');
-      if (ship && typeof openTracking === 'function') openTracking(ship.id);
-      else { try { toast('Aucune livraison en cours'); } catch(e){} }
-    }
+  const nav=document.getElementById('drcNav');
+  const mark=t=>[...nav.querySelectorAll('button[data-nav]')].forEach(b=>b.classList.toggle('on',b.dataset.nav===t));
+  window.drcNavMark=mark;
+  function closeSheets(){try{closeTourMap()}catch(e){};try{closeAccount()}catch(e){}}
+  nav.querySelectorAll('button[data-nav]').forEach(b=>b.addEventListener('click',()=>{
+    const t=b.dataset.nav;
+    if(t==='home'){closeSheets();try{closeTracking()}catch(e){};window.scrollTo({top:0,behavior:'smooth'});mark('home');}
+    else if(t==='map'){openTourMap();mark('map');}
+    else if(t==='account'){openAccount();mark('account');}
+    try{buzz(8)}catch(e){}
   }));
-  ['depot','shipping','done'].forEach(k => {
-    const el = document.getElementById('t-' + k);
-    if (el) el.addEventListener('click', () => mark(k));
-  });
-  const obs = new MutationObserver(() => {
-    const app = document.getElementById('view-app');
-    const on = app && !app.classList.contains('hidden');
-    nav.classList.toggle('hidden', !on);
-    if (on) setTimeout(() => moveFrame(false), 30);
-  });
-  const app = document.getElementById('view-app');
-  if (app) obs.observe(app, { attributes: true, attributeFilter: ['class'] });
-  if (window.ResizeObserver) new ResizeObserver(() => moveFrame(false)).observe(nav);
-  window.addEventListener('resize', () => moveFrame(false));
-  setTimeout(() => moveFrame(false), 60);
+  const app=document.getElementById('view-app');
+  if(app)new MutationObserver(()=>{const on=!app.classList.contains('hidden');nav.classList.toggle('hidden',!on);}).observe(app,{attributes:true,attributeFilter:['class']});
 })();
 </script>
 
@@ -873,10 +1222,10 @@ document.addEventListener('click', e => {
     const cash = actives.filter(o => (o.payment_method||'cod') === 'cod').reduce((s,o)=>s+Number(o.total||0),0);
     /* prochaine échéance : la mission en cours, sinon la première à récupérer */
     const next = orders.find(o => (o.status||'')==='shipping') || actives[0];
-    const echeance = next ? (next.slot || next.creneau || (next.delivery_slot || 'Express 2 h')) : '—';
+    const echeance = next ? String(next.slot || next.creneau || next.delivery_slot || 'Express 2h').split('(')[0].replace(/aujourd.?hui/i,'').trim() : '—';
     box.innerHTML =
-      '<div class="jn"><b>' + restantes + '</b><small>courses à faire</small></div>' +
-      '<div class="jn"><b>' + money(cash) + '</b><small>espèces à remettre</small></div>' +
+      '<div class="jn"><b>' + restantes + '</b><small>à faire</small></div>' +
+      '<div class="jn"><b>' + money(cash) + '</b><small>à remettre</small></div>' +
       '<div class="jn"><b>' + String(echeance).slice(0,14) + '</b><small>prochaine</small></div>' +
       '<button class="jr" id="jnRoute"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>Itinéraire de la tournée</button>';
     const btn = document.getElementById('jnRoute');
@@ -1012,6 +1361,90 @@ document.addEventListener('click', e => {
   setTimeout(() => { paintJournee(); hookTracking(); }, 1600);
   window.__journee = { paintJournee, paintTrackingExtras };
 })();
+</script>
+<script>
+function gaugeSVG(ratio,n=11){
+  const cx=200,cy=196,R=150,w=48,h=64,start=196,end=-16,step=(start-end)/(n-1);
+  const on=Math.round(Math.max(0,Math.min(1,ratio))*n);let out='';
+  for(let i=0;i<n;i++){const a=(start-i*step)*Math.PI/180,x=cx+R*Math.cos(a),y=cy-R*Math.sin(a),rot=90-(start-i*step);
+    out+=`<rect x="${(x-w/2).toFixed(1)}" y="${(y-h/2).toFixed(1)}" width="${w}" height="${h}" rx="17" fill="${i<on?'var(--acc)':'var(--seg)'}" transform="rotate(${rot.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})" style="transition-delay:${i*35}ms"/>`;}
+  return `<svg viewBox="0 10 400 262" aria-hidden="true">${out}</svg>`;
+}
+function gaugeHTML(ratio,d,big,goal,icon){
+  return gaugeSVG(ratio)+`<div class="gcenter"><div class="ic">${(icon||'').replace('<svg','<svg class="ic"')}</div><div class="d">${d}</div><div class="big">${big}</div><div class="goal">${goal}</div></div>`;
+}
+(function(){
+  window.missionQuery='';
+  const inp=document.getElementById('missionSearch');
+  if(inp)inp.addEventListener('input',()=>{window.missionQuery=inp.value.trim().toLowerCase();renderOrders()});
+})();
+</script>
+<script>
+let tourMap=null;
+function tourStops(){return orders.filter(o=>['confirmed','preparing','paid','shipping'].includes(o.status||'')&&orderGps(o))}
+function openTourMap(){
+  try{closeTracking()}catch(e){};closeAccount();
+  document.getElementById('tour-map-page').classList.add('open');document.body.style.overflow='hidden';
+  setTimeout(renderTourMap,30);
+}
+function closeTourMap(){
+  try{window.drcNavMark&&window.drcNavMark('home')}catch(e){}
+  const p=document.getElementById('tour-map-page');if(p)p.classList.remove('open');
+  if(tourMap){tourMap.remove();tourMap=null}
+  if(!document.querySelector('.tracking-page.open'))document.body.style.overflow='';
+}
+function renderTourMap(){
+  const stops=tourStops(),box=document.getElementById('tour-stops');
+  document.getElementById('tour-count').textContent=stops.length+(stops.length>1?' arrêts':' arrêt');
+  box.innerHTML=stops.length?stops.map((o,i)=>{const c=o.customer||{},label=orderAddress(o)||String(c.zone||'').trim()||'Dakar';
+    return `<div class="stopcard"><span class="num">${i+1}</span><div class="who"><b>${esc(label)}</b><span>${esc(c.name||'Destinataire')} · ${esc(o.id)}</span></div><button onclick="openTracking('${esc(o.id)}')">Suivi</button></div>`}).join('')
+    :`<div class="empty" style="margin:0 18px"><img src="assets/img/cat-tout.webp" alt=""><h3>Aucun arrêt géolocalisé</h3><p>Les missions du jour avec une position GPS apparaîtront sur la carte.</p></div>`;
+  setTimeout(()=>{
+    if(tourMap){tourMap.remove();tourMap=null}
+    const el=document.getElementById('tour-map');if(!el)return;
+    tourMap=L.map('tour-map',{preferCanvas:true,attributionControl:false,zoomControl:true}).setView([DEPOT.lat,DEPOT.lng],12);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,updateWhenIdle:true,keepBuffer:2,crossOrigin:true}).addTo(tourMap);
+    const pts=[[DEPOT.lat,DEPOT.lng]];
+    L.circleMarker([DEPOT.lat,DEPOT.lng],{radius:10,color:'#fff',weight:3,fillColor:'#C8161D',fillOpacity:1}).addTo(tourMap).bindTooltip('Dépôt DRC');
+    stops.forEach(o=>{const g=orderGps(o);pts.push([g.lat,g.lng]);L.circleMarker([g.lat,g.lng],{radius:8,color:'#fff',weight:3,fillColor:'#1A1A1A',fillOpacity:1}).addTo(tourMap).bindTooltip(esc((o.customer&&o.customer.name)||o.id))});
+    if(pts.length>1)tourMap.fitBounds(pts,{padding:[36,36]});
+  },80);
+}
+function tourItinerary(){
+  const stops=orders.filter(o=>['confirmed','preparing','paid','shipping'].includes(o.status||'')).map(o=>orderGps(o)).filter(Boolean);
+  if(!stops.length){toast('Aucun arrêt à visiter');return}
+  const origin=DEPOT.lat+','+DEPOT.lng,dest=stops[stops.length-1].lat+','+stops[stops.length-1].lng;
+  const mid=stops.slice(0,-1).map(p=>p.lat+','+p.lng).join('|');
+  location.href='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(origin)+'&destination='+encodeURIComponent(dest)+(mid?'&waypoints='+encodeURIComponent(mid):'')+'&travelmode=driving';
+}
+function openAccount(){
+  try{closeTracking()}catch(e){};closeTourMap();
+  const name=(ME&&ME.name)||'Livreur DRC',phone=(ME&&ME.phone)||'—';
+  document.getElementById('accName').textContent=name;
+  document.getElementById('accPhone').textContent=phone;
+  document.getElementById('accInitials').textContent=(name.trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('')||'L').toUpperCase();
+  const depot=orders.filter(o=>['confirmed','preparing','paid'].includes(o.status||''));
+  const ship=orders.filter(o=>(o.status||'')==='shipping');
+  const done=doneOrders();
+  const cash=depot.concat(ship).filter(isCod).reduce((s,o)=>s+Number(o.total||0),0);
+  document.getElementById('accStats').innerHTML=`<div class="st"><b>${depot.length+ship.length}</b><span>actives</span></div><div class="st"><b>${done.length}</b><span>terminées</span></div><div class="st"><b>${fmt(cash)} F</b><span>à remettre</span></div>`;
+  document.getElementById('account-page').classList.add('open');document.body.style.overflow='hidden';
+}
+function closeAccount(){
+  try{window.drcNavMark&&window.drcNavMark('home')}catch(e){}
+  const p=document.getElementById('account-page');if(p)p.classList.remove('open');
+  if(!document.querySelector('.tracking-page.open'))document.body.style.overflow='';
+}
+document.getElementById('account-page').addEventListener('click',e=>{if(e.target.id==='account-page')closeAccount()});
+window.appBack=function(){
+  var acc=document.getElementById('account-page');
+  if(acc&&acc.classList.contains('open')){closeAccount();return true}
+  var map=document.getElementById('tour-map-page');
+  if(map&&map.classList.contains('open')){closeTourMap();return true}
+  var tr=document.getElementById('mission-tracking');
+  if(tr&&tr.classList.contains('open')){try{closeTracking()}catch(e){};return true}
+  return false;
+};
 </script>
 </body>
 </html>

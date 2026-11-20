@@ -3,7 +3,7 @@
 <head>
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
 <meta name="googlebot" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://hermes11.vps.webdock.cloud/drc-api https://routing.openstreetmap.de https://nominatim.openstreetmap.org; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://hermes11.vps.webdock.cloud https://routing.openstreetmap.de https://nominatim.openstreetmap.org; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1A1A1A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.0';
+window.DRC_WEB = '4.5';
 </script>
 
 <meta charset="utf-8">
@@ -200,18 +200,32 @@ details.adv .fld{margin-top:12px}
 body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea{-webkit-user-select:text;user-select:text}
 
-#vCompta .lg-hero{position:relative;margin:4px 0 0;padding:20px 20px 18px;border-radius:var(--r);color:#fff;overflow:hidden;
-  background:linear-gradient(135deg,#1A1A1A,#26211F 60%,#33161A);box-shadow:0 14px 34px rgba(26,26,26,.22)}
-#vCompta .lg-hero::after{content:"";position:absolute;right:-60px;top:-60px;width:210px;height:210px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,22,29,.45),rgba(200,22,29,0) 65%);pointer-events:none}
-#vCompta .lg-hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:10.5px;letter-spacing:.12em;
+#vCompta .lg-hero{position:relative;margin:4px 0 0;padding:20px 20px 16px;border-radius:28px;color:#fff;overflow:hidden;
+  background:
+    radial-gradient(120% 150% at 92% -20%, rgba(200,22,29,.55) 0%, rgba(200,22,29,0) 58%),
+    radial-gradient(90% 120% at -15% 115%, rgba(200,22,29,.22) 0%, rgba(200,22,29,0) 60%),
+    linear-gradient(135deg,#141312 0%,#211C1A 52%,#341418 100%);
+  box-shadow:0 24px 44px -26px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.06)}
+#vCompta .lg-hero::after{content:"";position:absolute;right:-70px;top:-80px;width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,90,96,.28),rgba(255,90,96,0) 68%);pointer-events:none}
+#vCompta .lg-wm{position:absolute;right:-24px;bottom:-28px;width:168px;height:168px;fill:#fff;opacity:.05;transform:rotate(-14deg);pointer-events:none}
+#vCompta .lg-hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:10px;letter-spacing:.14em;
   text-transform:uppercase;font-weight:800;color:#C9C4C0;position:relative;z-index:1}
-#vCompta .lg-period{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);border-radius:999px;
-  padding:5px 11px;letter-spacing:.04em;white-space:nowrap}
-#vCompta .lg-hero b{display:block;font-size:36px;line-height:1.1;font-weight:800;letter-spacing:-.04em;margin:10px 0 8px;
-  position:relative;z-index:1;font-variant-numeric:tabular-nums}
-#vCompta .lg-hero-sub{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;font-weight:700;
-  color:#CFCAC6;position:relative;z-index:1;font-variant-numeric:tabular-nums}
+#vCompta .lg-eyebrow{display:inline-flex;align-items:center;gap:7px}
+#vCompta .lg-eyebrow .lg-mini{width:15px;height:15px;fill:#FF6B70;opacity:.95;flex:none}
+#vCompta .lg-period{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:999px;
+  padding:6px 12px;letter-spacing:.04em;white-space:nowrap}
+#vCompta .lg-amount{display:flex;align-items:baseline;gap:6px;margin:14px 0 0;position:relative;z-index:1}
+#vCompta .lg-amount b{font-size:42px;line-height:1;font-weight:800;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+#vCompta .lg-amount small{font-size:18px;font-weight:700;color:#CFCAC6}
+#vCompta .lg-spark{margin:8px -2px 0;height:56px;position:relative;z-index:1}
+#vCompta .lg-spark svg{width:100%;height:100%;display:block;overflow:visible}
+#vCompta .lg-hero-foot{display:flex;align-items:center;gap:16px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);
+  position:relative;z-index:1}
+#vCompta .lg-hstat b{font-size:17px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+#vCompta .lg-hstat small{display:block;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:#B9B2AE;font-weight:700;margin-top:3px}
+#vCompta .lg-hdiv{width:1px;height:28px;background:rgba(255,255,255,.14)}
 
 /* Filtres de période : 3 colonnes égales parfaitement alignées sur la largeur */
 #vCompta .lg-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 0}
@@ -327,7 +341,7 @@ body{font-family:PJS,system-ui,sans-serif}
 /* écran de connexion : le logo dans une plaque sombre, halo rouge, et une pastille de rôle */
 .login .brand{gap:14px!important;margin-bottom:30px!important}
 /* le logo officiel sur une plaque blanche, proportions respectées (le PNG est large : 434×223) */
-.login .brand img{width:74px!important;height:74px!important;padding:14px;object-fit:contain;
+.login .brand img{width:104px!important;height:66px!important;padding:9px 11px;object-fit:contain;
   border-radius:20px;background:#fff;
   box-shadow:0 14px 30px -16px rgba(0,0,0,.45), 0 0 0 1px rgba(26,26,26,.05);
   position:relative;z-index:1}
@@ -351,8 +365,8 @@ body{font-family:PJS,system-ui,sans-serif}
 <style id="polish-all">
 /* 1. Tuile du logo en haut à gauche : fond blanc propre, proportions respectées */
 .topbar{padding:2px 2px 0;align-items:center}
-.logoTile{width:42px!important;height:42px!important;border-radius:14px!important;background:#fff!important;
-  box-shadow:var(--shadow)!important;padding:5px!important;display:grid!important;place-items:center!important}
+.logoTile{width:66px!important;height:42px!important;border-radius:14px!important;background:#fff!important;
+  box-shadow:var(--shadow)!important;padding:5px 7px!important;display:grid!important;place-items:center!important}
 .logoTile::before,.logoTile::after{display:none!important}
 .logoTile img{width:100%!important;height:100%!important;object-fit:contain!important;filter:none!important}
 
@@ -381,6 +395,36 @@ body{font-family:PJS,system-ui,sans-serif}
 </style>
 </head>
 <body>
+<script>
+/* version web : notifications du navigateur à la place du pont Android */
+(function(){
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.5').catch(function(){});
+  function show(t, b){
+    try {
+      /* dans l'app (onglet visible et au premier plan) : pas de notification système */
+      if (!document.hidden && document.hasFocus()) return;
+      if (!('Notification' in window)) return;
+      var go = function(){ navigator.serviceWorker.ready.then(function(r){ r.showNotification(t, {body:b, icon:'icons/icon-192.png', badge:'icons/icon-192.png', vibrate:[60,40,60]}); }); };
+      if (Notification.permission === 'granted') go();
+      else if (Notification.permission === 'default') Notification.requestPermission().then(function(p){ if (p === 'granted') go(); });
+    } catch(e) {}
+  }
+  if (!window.Android) window.Android = {
+    notify: show,
+    vibrate: function(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch(e) {} },
+    copy: function(t){ try { navigator.clipboard.writeText(t); } catch(e) {} }
+  };
+  var seen = null;
+  if (!window.notifyNew) window.notifyNew = function(list){
+    try {
+      var ids = (list || []).map(function(o){ return String(o.id); });
+      if (seen) ids.filter(function(i){ return seen.indexOf(i) < 0; }).forEach(function(i){ show('Nouvelle mission', 'Commande ' + i + ' vous est attribuée'); });
+      seen = ids;
+    } catch(e) {}
+  };
+  document.addEventListener('click', function once(){ try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch(e) {} document.removeEventListener('click', once, true); }, true);
+})();
+</script>
 
 <!-- connexion -->
 <div class="login" id="login">
@@ -412,11 +456,6 @@ body{font-family:PJS,system-ui,sans-serif}
       <div id="ordersList"></div>
     </section>
 
-    <section class="view" data-view="pay" id="vPay">
-      <div class="topbar"><div style="width:40px"></div><h1>Encaissements</h1><button class="ibtn" id="pRefresh" aria-label="Actualiser"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
-      <div id="payList"></div>
-    </section>
-
     <section class="view" data-view="products" id="vProducts">
       <div class="topbar"><div style="width:40px"></div><h1>Produits</h1><button class="ibtn" id="prRefresh" aria-label="Actualiser"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
       <p class="hint" style="text-align:left;margin:0 2px 12px">Le prix enregistré ici est celui facturé au client.</p>
@@ -429,9 +468,18 @@ body{font-family:PJS,system-ui,sans-serif}
         <button class="ibtn" id="bLedger" aria-label="Recalculer"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
 
       <div class="lg-hero">
-        <div class="lg-hero-top"><span>Encaissé sur la période</span><span class="lg-period" id="lgPeriod">7 jours</span></div>
-        <b id="lgTotal">0 F</b>
-        <div class="lg-hero-sub"><span id="lgOrders">0 commande</span><span id="lgAvg">panier 0 F</span></div>
+        <svg class="lg-wm" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM5 9v2a2 2 0 0 0 2-2Zm12 0a2 2 0 0 0 2 2V9ZM5 13v2h2a2 2 0 0 0-2-2Zm14 0a2 2 0 0 0-2 2h2Z"/></svg>
+        <div class="lg-hero-top">
+          <span class="lg-eyebrow"><svg class="lg-mini" viewBox="0 0 24 24"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-7 0v2a2 2 0 0 0 2-2Zm12 0a2 2 0 0 0 2 2V9ZM5 13v2h2a2 2 0 0 0-2-2Zm14 0a2 2 0 0 0-2 2h2Z"/></svg>Encaissé sur la période</span>
+          <span class="lg-period" id="lgPeriod">7 jours</span>
+        </div>
+        <div class="lg-amount"><b id="lgTotal">0</b><small>F</small></div>
+        <div class="lg-spark" id="lgSpark" aria-hidden="true"></div>
+        <div class="lg-hero-foot">
+          <div class="lg-hstat"><b id="lgOrders">0</b><small>commandes</small></div>
+          <span class="lg-hdiv"></span>
+          <div class="lg-hstat"><b id="lgAvg">0 F</b><small>panier moyen</small></div>
+        </div>
       </div>
 
       <div class="lg-chips" id="lgChips"></div>
@@ -457,46 +505,15 @@ body{font-family:PJS,system-ui,sans-serif}
   <nav class="nav">
     <button data-go="home" class="on" aria-label="Tableau de bord"><svg viewBox="0 0 24 24"><path d="M10.3 3.1a2.6 2.6 0 0 1 3.4 0l6.4 5.5c.6.5.9 1.2.9 2V19a2.5 2.5 0 0 1-2.5 2.5H15a1 1 0 0 1-1-1v-4.2a2 2 0 0 0-4 0v4.2a1 1 0 0 1-1 1H5.5A2.5 2.5 0 0 1 3 19v-8.4c0-.8.3-1.5.9-2Z"/></svg></button>
     <button data-go="orders" aria-label="Commandes"><svg viewBox="0 0 24 24"><path d="M6 2h12a2 2 0 0 1 2 2v17.2a1 1 0 0 1-1.5.9L12 19.6l-6.5 2.5A1 1 0 0 1 4 21.2V4a2 2 0 0 1 2-2Zm2.5 5.5h7V6h-7Zm0 4h7V10h-7Zm0 4h4.5V14H8.5Z"/></svg></button>
-    <button data-go="pay" class="scan" aria-label="Encaissements"><svg viewBox="0 0 24 24"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM5 9v2a2 2 0 0 0 2-2Zm12 0a2 2 0 0 0 2 2V9ZM5 13v2h2a2 2 0 0 0-2-2Zm14 0a2 2 0 0 0-2 2h2Z"/></svg><span class="badge" id="payBadge">0</span></button>
-    <button data-go="compta" aria-label="Registre de compte"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M6 2h9.6L20 6.4V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm2 6.2h8v1.7H8V8.2Zm0 3.9h8v1.7H8v-1.7Zm0 3.9h5.2v1.7H8V16Z"/></svg></button>
+    <button data-go="compta" aria-label="Registre de compte"><svg viewBox="0 0 24 24"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM5 9v2a2 2 0 0 0 2-2Zm12 0a2 2 0 0 0 2 2V9ZM5 13v2h2a2 2 0 0 0-2-2Zm14 0a2 2 0 0 0-2 2h2Z"/></svg></button>
     <button data-go="products" aria-label="Produits"><svg viewBox="0 0 24 24"><path d="M7 4a1 1 0 0 1 1 1v1h8V5a1 1 0 1 1 2 0v1h1.3a1.7 1.7 0 0 1 1.7 1.9l-1.1 10.4a3 3 0 0 1-3 2.7H7.1a3 3 0 0 1-3-2.7L3 7.9A1.7 1.7 0 0 1 4.7 6H6V5a1 1 0 0 1 1-1Z"/></svg></button>
-    <button data-go="settings" aria-label="Réglages"><svg viewBox="0 0 24 24"><path d="M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2Zm8.9 4.6-.1-1 2-1.6-2-3.4-2.3.9a8 8 0 0 0-1.7-1l-.3-2.4h-4l-.3 2.4c-.6.3-1.2.6-1.7 1l-2.3-.9-2 3.4 2 1.6a8 8 0 0 0 0 2l-2 1.6 2 3.4 2.3-.9c.5.4 1.1.7 1.7 1l.3 2.4h4l.3-2.4c.6-.3 1.2-.6 1.7-1l2.3.9 2-3.4-2-1.6Z"/></svg></button>
+    <button data-go="settings" aria-label="Réglages"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 0 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58ZM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2Z"/></svg></button>
   </nav>
 </div>
 
 <section class="view" data-view="detail" id="vDetail" style="display:none"></section>
 <div class="toast" id="toast"></div>
 
-<script>
-/* version web : notifications du navigateur à la place du pont Android */
-(function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.0').catch(function(){});
-  function show(t, b){
-    try {
-      /* dans l'app (onglet visible et au premier plan) : pas de notification système */
-      if (!document.hidden && document.hasFocus()) return;
-      if (!('Notification' in window)) return;
-      var go = function(){ navigator.serviceWorker.ready.then(function(r){ r.showNotification(t, {body:b, icon:'icons/icon-192.png', badge:'icons/icon-192.png', vibrate:[60,40,60]}); }); };
-      if (Notification.permission === 'granted') go();
-      else if (Notification.permission === 'default') Notification.requestPermission().then(function(p){ if (p === 'granted') go(); });
-    } catch(e) {}
-  }
-  if (!window.Android) window.Android = {
-    notify: show,
-    vibrate: function(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch(e) {} },
-    copy: function(t){ try { navigator.clipboard.writeText(t); } catch(e) {} }
-  };
-  var seen = null;
-  if (!window.notifyNew) window.notifyNew = function(list){
-    try {
-      var ids = (list || []).map(function(o){ return String(o.id); });
-      if (seen) ids.filter(function(i){ return seen.indexOf(i) < 0; }).forEach(function(i){ show('Nouvelle mission', 'Commande ' + i + ' vous est attribuée'); });
-      seen = ids;
-    } catch(e) {}
-  };
-  document.addEventListener('click', function once(){ try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch(e) {} document.removeEventListener('click', once, true); }, true);
-})();
-</script>
 <script>
 'use strict';
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
@@ -609,7 +626,6 @@ function go(v){
   $('#vDetail').classList.remove('on');
   const el = document.querySelector('.view[data-view="' + v + '"]'); if (el) el.scrollTop = 0;
   if (v === 'settings') paintSettings();
-  if (v === 'pay') paintPay();
   if (v === 'products') paintProducts();
   if (v === 'orders') paintOrders();
   if (v === 'compta' && window.__ledger) window.__ledger.paint();
@@ -714,6 +730,11 @@ function closeDetail(){
   $('#app').style.display = 'flex'; detailId = null;
 }
 function openExt(u){ if (NATIVE && NATIVE.openExternal) NATIVE.openExternal(u); else window.open(u, '_blank'); }
+/* référence vers l'app client : on ouvre l'application installée, sinon sa version web */
+function openClientApp(){
+  if (NATIVE && NATIVE.openApp) { NATIVE.openApp('sn.drc.app', 'https://drc.sn/app'); return; }
+  openExt('https://drc.sn/app');
+}
 
 /* ── jauge ── */
 function gaugeSVG(ratio, n = 11){
@@ -740,8 +761,6 @@ async function refreshStats(){
       <div class="stat ${STATS.payments_to_review ? 'warn' : ''}"><b>${STATS.payments_to_review || 0}</b><span>paiements à vérifier</span></div>
       <div class="stat ${STATS.to_assign ? 'warn' : ''}"><b>${STATS.to_assign || 0}</b><span>à attribuer</span></div>
       <div class="stat ${STATS.low_stock ? 'bad' : ''}"><b>${STATS.low_stock || 0}</b><span>stocks bas</span></div>`;
-    $('#payBadge').textContent = STATS.payments_to_review || 0;
-    $('#payBadge').classList.toggle('on', (STATS.payments_to_review || 0) > 0);
   } catch(e) {}
 }
 async function refreshSettings(){
@@ -816,35 +835,6 @@ function paintLast(){
 }
 $('#allOrders').onclick = () => go('orders');
 
-/* ── encaissements ── */
-async function paintPay(){
-  const list = ORDERS.filter(o => o.payment_method !== 'cod' && (o.payment_status || '') !== 'paid' && !['cancelled','delivered'].includes(o.status))
-    .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
-  const box = $('#payList');
-  if (!list.length) { box.innerHTML = `<div class="card empty"><b>Tout est encaissé</b>Aucun paiement en attente de vérification.</div>`; return; }
-  box.innerHTML = list.map(o => {
-    const c = o.customer || {}, cl = o.payment_claim;
-    return `<div class="card" style="padding:16px 18px;margin-bottom:10px">
-      <div class="row"><span class="v" style="font-weight:600">${esc(c.name || o.id)} · ${esc(o.id.replace(/^DRC-\d{4}-/, 'N° '))}</span><b style="font-size:17px">${fcfa(o.total)}</b></div>
-      <div class="row" style="margin-top:6px"><span class="k">Moyen</span><span class="v">${PAY[o.payment_method]}${c.pay_phone ? ' · ' + esc(c.pay_phone) : ''}</span></div>
-      ${cl ? `<div class="row"><span class="k">Déclaré</span><span class="v">${frTime(cl.at)}${cl.pay_phone ? ' · depuis ' + esc(cl.pay_phone) : ''}${cl.txn ? ' · réf ' + esc(cl.txn) : ''}</span></div>` : '<div class="hint" style="text-align:left;margin:4px 0 0">Le client n’a pas encore déclaré son paiement.</div>'}
-      <div class="acts">
-        <button data-ok="${esc(o.id)}" style="background:var(--ok-soft);color:var(--ok);font-weight:700">Reçu</button>
-        <button data-no="${esc(o.id)}" style="background:var(--bad-soft);color:var(--bad);font-weight:700">Refuser</button>
-      </div></div>`;
-  }).join('');
-  box.querySelectorAll('[data-ok]').forEach(b => b.onclick = async () => {
-    if (b.dataset.arm !== '1') { b.dataset.arm = '1'; b.textContent = 'Confirmer ?'; setTimeout(() => { b.dataset.arm = ''; b.textContent = 'Reçu'; }, 3500); return; }
-    try { await api('/api/admin/orders/' + encodeURIComponent(b.dataset.ok) + '/payment', {method:'POST', body:{action:'confirm'}}); toast('Encaissé'); vib(30); await refreshOrders(); await refreshStats(); paintPay(); }
-    catch(e) { toast(e.message === 'already_paid' ? 'Déjà encaissé' : 'Impossible'); }
-  });
-  box.querySelectorAll('[data-no]').forEach(b => b.onclick = async () => {
-    if (b.dataset.arm !== '1') { b.dataset.arm = '1'; b.textContent = 'Confirmer ?'; setTimeout(() => { b.dataset.arm = ''; b.textContent = 'Refuser'; }, 3500); return; }
-    try { await api('/api/admin/orders/' + encodeURIComponent(b.dataset.no) + '/payment', {method:'POST', body:{action:'refuse', reason:'Paiement non reçu'}}); toast('Refusé'); await refreshOrders(); await refreshStats(); paintPay(); }
-    catch(e) { toast('Impossible'); }
-  });
-}
-
 /* ── produits ── */
 async function refreshProducts(){
   try { const j = await api('/api/admin/products'); PRODUCTS = j.products || []; paintProducts(); } catch(e) {}
@@ -912,6 +902,7 @@ function paintSettings(){
       ${d.active === false ? '<span class="off">inactif</span>' : `<button data-code="${esc(d.id)}" style="font-size:12px;font-weight:700;color:var(--acc-ink)">Copier le code</button>`}</div>`).join('') || '<div class="empty">Aucun livreur</div>'}</div>
     <div class="sec"><h2>Comptes & sauvegarde</h2></div>
     <div class="card menu">
+      <button class="mi" id="mClient"><span class="ic">${ICON.phone}</span><div>Application client<small>Ouvrir Darou Rahmane Chicken — la boutique</small></div>${ICON.chev}</button>
       <button class="mi" id="mUsers"><span class="ic">${ICON.users}</span><div>Clients<small>Comptes, points, commandes</small></div>${ICON.chev}</button>
       <button class="mi" id="mBackup"><span class="ic">${ICON.box}</span><div>Sauvegarder la base<small>Fichier JSON téléchargé</small></div>${ICON.chev}</button>
       <button class="mi" id="mRevoke"><span class="ic">${ICON.out}</span><div>Déconnecter tous les appareils<small style="display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:2px">Gérant et livreurs devront ressaisir leur code</small></div>${ICON.chev}</button>
@@ -941,6 +932,7 @@ function paintSettings(){
     try { const j = await api('/api/admin/settings', {method:'PATCH', body}); SETTINGS = j.settings; toast('Réglages enregistrés'); await refreshSettings(); }
     catch(e) { toast('Réglages non enregistrés'); }
   };
+  $('#mClient').onclick = () => openClientApp();
   $('#mUsers').onclick = () => openExt(API().replace('/api', '') + '/x');
   $('#mBackup').onclick = async () => {
     try { const j = await api('/api/admin/backup'); const t = JSON.stringify(j); if (NATIVE && NATIVE.saveFile) NATIVE.saveFile('drc-sauvegarde-' + new Date().toISOString().slice(0,10) + '.json', t); else { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([t], {type:'application/json'})); a.download = 'drc-sauvegarde.json'; a.click(); } toast('Sauvegarde prête'); }
@@ -957,7 +949,7 @@ function paintSettings(){
 /* ── rafraîchissement + notifications ── */
 async function refreshAll(){
   await Promise.all([refreshStats(), refreshOrders(), refreshProducts(), refreshDrivers(), refreshSettings()]);
-  paintLast(); paintPay();
+  paintLast();
 }
 async function pulse(){
   try {
@@ -979,7 +971,7 @@ async function pulse(){
       toast('🔒 ' + sec.failed_24h + ' tentatives de code refusées en 24 h');
     }
     /* les données sont rechargées à chaque battement : la liste ne peut plus rester figée */
-    await refreshOrders(); await refreshStats(); paintPay();
+    await refreshOrders(); await refreshStats();
     setLive(true);
   } catch(e) { setLive(false); }
 }
@@ -995,7 +987,6 @@ function startPoll(){
 }
 $('#bRefresh').onclick = () => { vib(); refreshAll().then(() => toast('À jour')); };
 $('#oRefresh').onclick = () => { vib(); refreshOrders().then(() => toast('À jour')); };
-$('#pRefresh').onclick = () => { vib(); refreshOrders().then(() => { paintPay(); toast('À jour'); }); };
 $('#prRefresh').onclick = () => { vib(); refreshProducts().then(() => toast('À jour')); };
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') pulse(); });
 
@@ -1171,14 +1162,30 @@ async function migrateToken(){
     return d.toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' }).replace('.', '');
   };
 
+  function sparkPath(vals){
+    if (!vals || !vals.length) return '';
+    const w = 320, h = 64, pad = 6, n = vals.length;
+    const max = Math.max(1, ...vals);
+    const px = i => n === 1 ? w / 2 : pad + i * (w - 2 * pad) / (n - 1);
+    const py = v => h - pad - (v / max) * (h - 2 * pad);
+    const pts = vals.map((v, i) => [px(i), py(v)]);
+    const line = pts.map((pt, i) => (i ? 'L' : 'M') + pt[0].toFixed(1) + ' ' + pt[1].toFixed(1)).join(' ');
+    const area = line + ' L ' + px(n - 1).toFixed(1) + ' ' + (h - pad) + ' L ' + px(0).toFixed(1) + ' ' + (h - pad) + ' Z';
+    const last = pts[pts.length - 1];
+    return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="lgArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF5A60" stop-opacity=".55"/><stop offset="1" stop-color="#FF5A60" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#lgArea)"/><path d="${line}" fill="none" stroke="#FF6B70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3.6" fill="#fff"/></svg>`;
+  }
+
   function paint(){
     const list = inWindow(), T = totals(list);
     const $ = s => document.querySelector(s);
     if (!$('#lgTotal')) return;
     $('#lgPeriod').textContent = days === 1 ? "Aujourd'hui" : days + ' jours';
-    $('#lgTotal').textContent = money(T.revenue);
-    $('#lgOrders').textContent = T.orders + (T.orders > 1 ? ' commandes' : ' commande');
-    $('#lgAvg').textContent = 'panier ' + money(T.avg);
+    $('#lgTotal').textContent = money(T.revenue).replace(/\s*F$/, '');
+    $('#lgOrders').textContent = T.orders;
+    $('#lgAvg').textContent = money(T.avg);
+    const sparkKeys = Object.keys(T.perDay).sort().slice(-7);
+    const spark = document.getElementById('lgSpark');
+    if (spark) spark.innerHTML = sparkPath(sparkKeys.map(k => T.perDay[k].revenue || 0));
     $('#lgChips').innerHTML = [['1', "Aujourd'hui"], ['7', '7 jours'], ['30', '30 jours']]
       .map(([d, l]) => `<button data-d="${d}" class="${String(days) === d ? 'on' : ''}">${l}</button>`).join('');
     $('#lgChips').querySelectorAll('[data-d]').forEach(b => b.onclick = () => { days = Number(b.dataset.d); paint(); });
