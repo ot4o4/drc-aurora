@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '2.0';
+window.DRC_WEB = '2.2';
 </script>
 
 <meta charset="utf-8">
@@ -164,9 +164,11 @@ header{background:var(--navy);box-shadow:0 6px 20px -12px rgba(0,0,0,.5)}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.0').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.2').catch(function(){});
   function show(t, b){
     try {
+      /* dans l'app (onglet visible et au premier plan) : pas de notification système */
+      if (document.visibilityState === 'visible' && document.hasFocus()) return;
       if (!('Notification' in window)) return;
       var go = function(){ navigator.serviceWorker.ready.then(function(r){ r.showNotification(t, {body:b, icon:'icons/icon-192.png', badge:'icons/icon-192.png', vibrate:[60,40,60]}); }); };
       if (Notification.permission === 'granted') go();
@@ -199,6 +201,20 @@ function autoTab(){if(tabTouched)return;const st=o=>o.status||'pending';const de
 let orders = [], tab = 'depot', timer = null, loadSequence = 0, statusSequence = 0;
 const pendingStatus = new Set();
 const PAY = {wave:'Wave',orange_money:'Orange Money',cod:'Espèces'};
+/* Notification seulement hors de l'app : à l'écran, la mission apparaît déjà dans la liste. */
+const inApp = () => { try { return document.visibilityState === 'visible' && document.hasFocus(); } catch(e) { return true; } };
+/* Dans l'APK il n'y a pas de passerelle web : on branche notifyNew sur le pont Android,
+   toujours avec la même règle (rien quand le livreur regarde l'écran). */
+if (!window.notifyNew && window.Android && window.Android.notify) {
+  let seenIds = null;
+  window.notifyNew = function(list){
+    try {
+      const ids = (list || []).map(o => String(o.id));
+      if (seenIds) ids.filter(i => seenIds.indexOf(i) < 0).forEach(i => window.Android.notify('Nouvelle mission', 'Commande ' + i + ' vous est attribuée'));
+      seenIds = ids;
+    } catch(e) {}
+  };
+}
 const fmt = n => Number(n||0).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g,' ');
 const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2600)}
@@ -222,7 +238,7 @@ function isCod(o){return paymentMethod(o)==='cod'}
 function isDelivered(o){return o.status==='delivered'}
 function isToday(o){const raw=o.delivered_at||o.updated_at||o.created_at;if(!raw)return true;const d=new Date(raw),n=new Date();return !isNaN(d)&&d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()&&d.getDate()===n.getDate()}
 function doneOrders(){return orders.filter(o=>isDelivered(o)&&isToday(o))}
-async function loadOrders(){if(pendingStatus.size)return;const seq=++loadSequence,mutationAtStart=statusSequence;try{const r=await api('/api/driver/orders');if(seq!==loadSequence||mutationAtStart!==statusSequence)return;if(r.status===401||r.status===403){lock();return}if(!r.ok)throw new Error('HTTP '+r.status);if(!r.data||!Array.isArray(r.data.orders))throw new Error('Réponse invalide');orders=r.data.orders;applyProfile(r.data);if(window.notifyNew)notifyNew(r.data.orders);net('on','En service · synchronisation toutes les 20 s');renderStats();autoTab();renderOrders()}catch(e){if(seq!==loadSequence||mutationAtStart!==statusSequence)return;net('off','Hors ligne · nouvelle tentative dans 20 s');if(!orders.length)document.getElementById('orders').innerHTML='<div class="empty"><div class="empty-icon"><svg class="svg"><use href="#refresh"/></svg></div><h3>Connexion impossible</h3><p>Vos missions réapparaîtront dès que le serveur sera accessible.</p></div>'}}
+async function loadOrders(){if(pendingStatus.size)return;const seq=++loadSequence,mutationAtStart=statusSequence;try{const r=await api('/api/driver/orders');if(seq!==loadSequence||mutationAtStart!==statusSequence)return;if(r.status===401||r.status===403){lock();return}if(!r.ok)throw new Error('HTTP '+r.status);if(!r.data||!Array.isArray(r.data.orders))throw new Error('Réponse invalide');orders=r.data.orders;applyProfile(r.data);if(window.notifyNew&&!inApp())notifyNew(r.data.orders);net('on','En service · synchronisation toutes les 20 s');renderStats();autoTab();renderOrders()}catch(e){if(seq!==loadSequence||mutationAtStart!==statusSequence)return;net('off','Hors ligne · nouvelle tentative dans 20 s');if(!orders.length)document.getElementById('orders').innerHTML='<div class="empty"><div class="empty-icon"><svg class="svg"><use href="#refresh"/></svg></div><h3>Connexion impossible</h3><p>Vos missions réapparaîtront dès que le serveur sera accessible.</p></div>'}}
 function renderStats(){const depot=orders.filter(o=>['confirmed','preparing','paid'].includes(o.status||''));const ship=orders.filter(o=>(o.status||'')==='shipping');const done=doneOrders();const cash=depot.concat(ship).filter(isCod).reduce((s,o)=>s+Number(o.total||0),0);document.getElementById('active-total').textContent=depot.length+ship.length;document.getElementById('done-total').textContent=done.length;document.getElementById('count-depot').textContent=depot.length;document.getElementById('count-shipping').textContent=ship.length;document.getElementById('count-done').textContent=done.length;document.getElementById('stats').innerHTML=`<div class="adm-stat"><b>${depot.length}</b><small>Au dépôt</small></div><div class="adm-stat"><b>${ship.length}</b><small>En cours</small></div><div class="adm-stat"><b>${done.length}</b><small>Terminées</small></div><div class="adm-stat cash-stat"><small>ESPÈCES À ENCAISSER</small><b>${fmt(cash)}<span>F</span></b></div>`}
 function visible(){return orders.slice().reverse().filter(o=>{const s=o.status||'pending';if(tab==='depot')return ['confirmed','preparing','paid'].includes(s);if(tab==='shipping')return s==='shipping';if(tab==='done')return isDelivered(o)&&isToday(o);return false})}
 function renderOrders(){const list=visible(),box=document.getElementById('orders');const titles={depot:'Colis à récupérer au dépôt',shipping:'Livraisons en cours',done:'Livraisons terminées'};document.getElementById('list-title').textContent=titles[tab];document.getElementById('list-count').textContent=list.length+' mission'+(list.length>1?'s':'');const empty={depot:['box','Dépôt à jour','Aucun colis ne vous attend actuellement au dépôt.'],shipping:['scooter','Aucune course en cours','Récupérez un colis au dépôt pour démarrer une livraison.'],done:['check','Aucune livraison terminée','Vos missions confirmées apparaîtront ici.']}[tab];if(!list.length){box.innerHTML=`<div class="empty"><div class="empty-icon"><svg class="svg"><use href="#${empty[0]}"/></svg></div><h3>${empty[1]}</h3><p>${empty[2]}</p></div>`;return}box.innerHTML=list.map(o=>{const c=o.customer||{},s=o.status||'pending',id=String(o.id),busy=pendingStatus.has(id),done=isDelivered(o);const phone=String(c.phone||'').trim(),phoneHref=phone.replace(/[^\d+]/g,''),address=orderAddress(o),zone=String(c.zone||'').trim()||'Dakar';const mapUrl=mapsUrl(o);const initials=String(c.name||'Client').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();return `<article class="mission ${s==='shipping'?'shipping':done?'done':''}" data-order="${esc(id)}"><div class="mission-top"><span class="oid">MISSION ${esc(id)}</span><span class="status ${s==='shipping'?'shipping':done?'done':''}">${statusLabel(s)}</span></div><div class="zone">${esc(zone)}</div><div class="customer"><div class="avatar">${esc(initials||'CL')}</div><div><div class="customer-name">${esc(c.name||'Destinataire non renseigné')}</div><div class="customer-slot">${c.slot?'Créneau : '+esc(c.slot):'Créneau non précisé'}</div></div></div><div class="kv"><b>Adresse</b><span>${address?esc(address):'Adresse non renseignée'}${orderGps(o)?' · <a href="'+esc(mapUrl)+'" target="_blank" rel="noopener">GPS ↗</a>':''}</span></div><div class="kv"><b>Contenu</b><span>${itemsText(o)}</span></div><div class="kv"><b>Repère</b><span>${esc(c.note||'Aucun repère ajouté')}</span></div>${!done?(isCod(o)?`<div class="cash"><span>À ENCAISSER</span><b>${fmt(o.total)} F</b></div>`:`<div class="cash prepaid"><span>DÉJÀ PAYÉ · ${esc(PAY[paymentMethod(o)]||'MOBILE MONEY')}</span><b>0 F</b></div>`):`<div class="cash prepaid"><span>LIVRAISON CONFIRMÉE</span><b>✓</b></div>`}${['confirmed','preparing','paid'].includes(s)?`<button class="btn primary mission-cta" data-action="status" data-id="${esc(id)}" data-status="shipping" ${busy?'disabled':''}><svg class="svg"><use href="#box"/></svg>${busy?'Mise à jour…':'Colis récupéré au dépôt'}</button>`:''}${s==='shipping'?`<button class="btn success mission-cta" data-action="status" data-id="${esc(id)}" data-status="delivered" ${busy?'disabled':''}><svg class="svg"><use href="#check"/></svg>${busy?'Confirmation…':'Confirmer la livraison'}</button>`:''}${!done?`<div class="contact-actions"><button class="btn secondary" data-action="message" data-id="${esc(id)}" ${!phoneHref?'disabled':''}>Message</button><button class="btn secondary" data-action="call" data-id="${esc(id)}" ${!phoneHref?'disabled':''}>Appeler</button><button class="btn secondary" data-action="track" data-id="${esc(id)}"><svg class="svg"><use href="#map"/></svg>Suivi</button></div>`:''}</article>`}).join('')}
