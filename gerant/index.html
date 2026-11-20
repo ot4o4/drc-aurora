@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '2.4';
+window.DRC_WEB = '2.9';
 </script>
 
 <meta charset="utf-8">
@@ -194,6 +194,127 @@ details.adv .fld{margin-top:12px}
 .hint{font-size:12.5px;color:var(--muted);text-align:center;margin:10px 6px 0;line-height:1.45}
 @media (min-width:561px){body{background:#d6d6d5}}
 </style>
+
+<style id="compta">
+/* ---------- Registre de compte ---------- */
+#vCompta .lg-hero{position:relative;margin:14px 14px 0;padding:20px;border-radius:26px;color:#fff;overflow:hidden;
+  background:linear-gradient(135deg,#1A1A1A,#26211F 60%,#33161A);box-shadow:0 14px 34px rgba(26,26,26,.22)}
+#vCompta .lg-hero::after{content:"";position:absolute;right:-60px;top:-60px;width:210px;height:210px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,22,29,.45),rgba(200,22,29,0) 65%)}
+#vCompta .lg-hero-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:800;color:#C9C4C0;position:relative;z-index:1}
+#vCompta .lg-period{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px 10px;letter-spacing:.02em}
+#vCompta .lg-hero b{display:block;font-size:38px;font-weight:800;letter-spacing:-.04em;margin:10px 0 6px;position:relative;z-index:1}
+#vCompta .lg-hero-sub{display:flex;gap:14px;font-size:11.5px;font-weight:700;color:#CFCAC6;position:relative;z-index:1}
+#vCompta .lg-chips{display:flex;gap:8px;margin:14px 14px 0;flex-wrap:wrap}
+#vCompta .lg-chips button{border-radius:999px;padding:8px 14px;font-size:12px;font-weight:800;background:#fff;
+  border:1px solid var(--line);color:var(--muted)}
+#vCompta .lg-chips button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+#vCompta .lg-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 14px 0}
+#vCompta .lg-kpi{background:#fff;border:1px solid var(--line);border-radius:20px;padding:13px 14px}
+#vCompta .lg-kpi span{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--muted)}
+#vCompta .lg-kpi b{display:block;font-size:20px;font-weight:800;letter-spacing:-.03em;margin-top:5px}
+#vCompta .lg-kpi.acc b{color:var(--acc)}
+#vCompta .lg-h2{font-size:15px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+#vCompta .lg-day{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+#vCompta .lg-day:last-child{border-bottom:0}
+#vCompta .lg-day i{font-style:normal;font-size:11px;font-weight:800;color:var(--muted);width:58px;flex:none}
+#vCompta .lg-bar{flex:1;height:9px;border-radius:999px;background:#EFEDEA;overflow:hidden}
+#vCompta .lg-bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--acc),#E4444A)}
+#vCompta .lg-day b{font-size:12px;font-weight:800;width:82px;text-align:right;font-variant-numeric:tabular-nums}
+#vCompta .lg-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+#vCompta .lg-row:last-child{border-bottom:0}
+#vCompta .lg-row .id{font-weight:800;letter-spacing:-.01em}
+#vCompta .lg-row .who{color:var(--muted);font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#vCompta .lg-row .m{font-weight:800;font-variant-numeric:tabular-nums}
+#vCompta .lg-row .pm{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:999px;
+  background:#F1EFEC;color:#5E5A57}
+#vCompta .lg-row.paid .pm{background:#E5F5EE;color:#1F8A4C}
+#vCompta .lg-row.due .pm{background:#FBE4E5;color:#A30F16}
+#vCompta .lg-agent{background:#fff}
+#vCompta .lg-note{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+#vCompta .lg-chat{display:flex;flex-direction:column;gap:8px;max-height:250px;overflow:auto}
+#vCompta .lg-msg{max-width:88%;padding:10px 12px;border-radius:16px;font-size:12.5px;line-height:1.45;font-weight:600}
+#vCompta .lg-msg.me{align-self:flex-end;background:var(--acc);color:#fff;border-bottom-right-radius:6px}
+#vCompta .lg-msg.bot{align-self:flex-start;background:#F4F2EF;color:#26211F;border-bottom-left-radius:6px}
+#vCompta .lg-msg.bot b{color:var(--acc)}
+#vCompta .lg-compose{display:flex;gap:8px;margin-top:10px}
+#vCompta .lg-compose input{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:14px;padding:12px;font-size:13px;font-weight:600;background:#FBFAF8}
+#vCompta .lg-compose input:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 4px rgba(200,22,29,.10)}
+#vCompta .lg-send{border-radius:14px;background:var(--acc);color:#fff;font-weight:800;font-size:13px;padding:0 16px}
+#vCompta .lg-suggest{margin-top:10px}
+#vCompta .lg-suggest button{font-size:11px;padding:6px 11px}
+</style>
+
+
+<style id="client-style">
+/* ===== Alignement exact sur le système visuel de l'app client (1.7.1) ===== */
+:root{
+  --r:28px;
+  --shadow:0 10px 30px -18px rgba(60,40,20,.28);
+  --nav:#1F1F1F; --btn:#1A1A1A;
+}
+.card,.hero,.panel{border-radius:var(--r)!important;box-shadow:var(--shadow)!important}
+body{font-family:PJS,system-ui,sans-serif}
+
+/* barre basse : géométrie du client */
+.nav{height:calc(86px + var(--sb))!important;padding:0 18px var(--sb)!important;padding-top:34px!important;margin-top:-34px!important}
+.nav button{width:48px!important;height:48px!important}
+.nav button svg{width:30px!important;height:30px!important;fill:currentColor!important;stroke:none!important}
+.nav button.on{color:var(--acc)!important}
+.nav .scan{width:60px!important;height:60px!important;border-radius:19px!important;background:var(--acc)!important;
+  box-shadow:0 6px 14px -6px rgba(0,0,0,.45)!important}
+.nav .scan svg{width:28px!important;height:28px!important;fill:#fff!important}
+.nav .badge{background:var(--bg)!important;color:var(--ink)!important;border:2px solid var(--nav)!important}
+
+/* pastilles de filtre */
+.chip{height:40px!important;padding:0 16px!important;border-radius:999px!important;font-size:13.5px!important;font-weight:600!important;
+  background:var(--bg)!important;color:var(--ink2)!important;border:0!important}
+.chip.on{background:var(--btn)!important;color:#fff!important}
+
+/* boutons pleine largeur */
+.pill{height:58px!important;border-radius:999px!important;font-size:16px!important;font-weight:600!important;background:var(--btn)!important;color:#fff!important}
+.pill.acc{background:var(--acc)!important}
+.pill.ghost{background:var(--bg)!important;color:var(--ink)!important}
+
+/* en-tête de vue */
+.topbar{margin-bottom:18px!important}
+.topbar h1{font-size:17px!important;font-weight:700!important;letter-spacing:-.02em!important}
+.ibtn{width:40px!important;height:40px!important;border-radius:50%!important;background:var(--card)!important;box-shadow:var(--shadow)!important}
+.ibtn svg{width:20px;height:20px}
+
+/* tuiles de chiffres */
+.stat,.stat-card{border-radius:22px!important;box-shadow:var(--shadow)!important}
+</style>
+
+
+<style id="logo-swag">
+/* ===== Logo et son écrin ===== */
+.logoTile{position:relative;width:44px;height:44px;flex:none;border-radius:15px;overflow:hidden;
+  background:linear-gradient(150deg,#2A2624 0%,#171413 55%,#2C1215 100%);
+  box-shadow:0 10px 24px -12px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.10), inset 0 0 0 1px rgba(255,255,255,.05);
+  display:grid;place-items:center}
+.logoTile::before{content:"";position:absolute;inset:-40%;background:radial-gradient(circle at 70% 20%,rgba(200,22,29,.55),rgba(200,22,29,0) 60%)}
+.logoTile img{position:relative;width:30px;height:30px;object-fit:contain;filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
+.logoTile::after{content:"";position:absolute;left:8px;right:8px;bottom:6px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.9}
+
+/* écran de connexion : le logo dans une plaque sombre, halo rouge, et une pastille de rôle */
+.login .brand{gap:14px!important;margin-bottom:30px!important}
+.login .brand img{width:58px!important;height:58px!important;padding:11px;object-fit:contain;
+  border-radius:19px;background:linear-gradient(150deg,#2A2624,#171413 58%,#2C1215);
+  box-shadow:0 16px 34px -16px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.12), inset 0 0 0 1px rgba(255,255,255,.05);
+  position:relative;z-index:1}
+.login .brand{position:relative}
+.login .brand::before{content:"";position:absolute;left:-14px;top:-14px;width:110px;height:110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,22,29,.30),rgba(200,22,29,0) 62%);pointer-events:none}
+.login .brand span{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 13px;border-radius:999px;
+  background:#1A1A1A;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  box-shadow:0 8px 18px -10px rgba(0,0,0,.6)}
+.login .brand span::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--acc);
+  box-shadow:0 0 0 3px rgba(200,22,29,.20)}
+</style>
+
 </head>
 <body>
 
@@ -203,6 +324,7 @@ details.adv .fld{margin-top:12px}
   <h1>Pilotez la boutique.</h1>
   <p>Commandes, encaissements, produits et livreurs — tout depuis ce téléphone.</p>
   <div class="fld" id="fCode"><label>Code gérant</label><input id="iCode" type="password" placeholder="••••••••" autocomplete="off"><div class="msg">Code incorrect</div></div>
+    <div class="fld hidden" id="fOtp"><label>Code authenticator</label><input id="iOtp" type="tel" inputmode="numeric" maxlength="6" placeholder="123 456" autocomplete="one-time-code"><div class="msg">Code à 6 chiffres</div></div>
   <button class="pill" id="goLogin">Entrer</button>
   <p class="sec-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.6 8 11 4.6-1.4 8-6 8-11V5l-8-3Zm-1 14-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7Z"/></svg>Connexion protégée : votre code n’est jamais enregistré sur l’appareil.</p>
   <input id="iServer" type="hidden">
@@ -211,7 +333,7 @@ details.adv .fld{margin-top:12px}
 <div class="app" id="app">
   <div class="stage" id="stage">
     <section class="view on" data-view="home" id="vHome">
-      <div class="topbar"><div style="width:50px"></div><h1>Tableau de bord<span class="liveDot" id="liveDot" title="En direct avec le serveur"></span></h1><button class="ibtn" id="bRefresh" aria-label="Actualiser"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 7.4 5H17a1 1 0 0 0 0 2h4a1 1 0 0 0 1-1V6a1 1 0 0 0-2 0v1.4A10 10 0 1 0 22 12a1 1 0 0 0-2 0 8 8 0 1 1-8-8Z"/></svg></button></div>
+      <div class="topbar"><div class="logoTile"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div><h1>Tableau de bord<span class="liveDot" id="liveDot" title="En direct avec le serveur"></span></h1><button class="ibtn" id="bRefresh" aria-label="Actualiser"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v5h-5"/></svg></button></div>
       <div class="gauge" id="dashGauge"></div>
       <div class="stats" id="dashStats"></div>
       <div class="card switch"><div><b>Boutique ouverte</b><span id="shopSub">Les clients peuvent commander</span></div><button class="tg on" id="shopTg" aria-label="Ouvrir ou fermer la boutique"><i></i></button></div>
@@ -237,12 +359,42 @@ details.adv .fld{margin-top:12px}
       <div class="products" id="prodList"></div>
     </section>
 
+
+    <section class="view" data-view="compta" id="vCompta">
+      <div class="topbar"><div style="width:50px"></div><h1>Registre de compte<span class="liveDot" id="lgDot"></span></h1>
+        <button class="ibtn" id="bLedger" aria-label="Recalculer"><svg viewBox="0 0 24 24" class="s"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 4v5h-5"/></svg></button></div>
+
+      <div class="lg-hero">
+        <div class="lg-hero-top"><span>Encaissé sur la période</span><span class="lg-period" id="lgPeriod">7 jours</span></div>
+        <b id="lgTotal">0 F</b>
+        <div class="lg-hero-sub"><span id="lgOrders">0 commande</span><span id="lgAvg">panier 0 F</span></div>
+      </div>
+
+      <div class="lg-chips" id="lgChips"></div>
+      <div class="lg-kpis" id="lgKpis"></div>
+
+      <div class="card"><h2 class="lg-h2">Jour par jour</h2><div id="lgDays"></div></div>
+      <div class="card"><h2 class="lg-h2">Mouvements</h2><div id="lgRows"></div></div>
+
+      <div class="card lg-agent">
+        <h2 class="lg-h2">Agent comptable</h2>
+        <p class="lg-note">Posez une question sur vos chiffres : « combien d'espèces cette semaine ? », « quel est mon meilleur jour ? ». Il calcule et peut vous répondre à voix haute.</p>
+        <div id="lgChat" class="lg-chat"></div>
+        <div class="lg-compose">
+          <input id="lgAsk" placeholder="Votre question…" autocomplete="off">
+          <button id="lgSend" class="lg-send">Demander</button>
+        </div>
+        <div class="lg-chips lg-suggest" id="lgSuggest"></div>
+      </div>
+      <div style="height:96px"></div>
+    </section>
     <section class="view" data-view="settings" id="vSettings"></section>
   </div>
   <nav class="nav">
     <button data-go="home" class="on" aria-label="Tableau de bord"><svg viewBox="0 0 24 24"><path d="M10.3 3.1a2.6 2.6 0 0 1 3.4 0l6.4 5.5c.6.5.9 1.2.9 2V19a2.5 2.5 0 0 1-2.5 2.5H15a1 1 0 0 1-1-1v-4.2a2 2 0 0 0-4 0v4.2a1 1 0 0 1-1 1H5.5A2.5 2.5 0 0 1 3 19v-8.4c0-.8.3-1.5.9-2Z"/></svg></button>
     <button data-go="orders" aria-label="Commandes"><svg viewBox="0 0 24 24"><path d="M6 2h12a2 2 0 0 1 2 2v17.2a1 1 0 0 1-1.5.9L12 19.6l-6.5 2.5A1 1 0 0 1 4 21.2V4a2 2 0 0 1 2-2Zm2.5 5.5h7V6h-7Zm0 4h7V10h-7Zm0 4h4.5V14H8.5Z"/></svg></button>
     <button data-go="pay" class="scan" aria-label="Encaissements"><svg viewBox="0 0 24 24"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM5 9v2a2 2 0 0 0 2-2Zm12 0a2 2 0 0 0 2 2V9ZM5 13v2h2a2 2 0 0 0-2-2Zm14 0a2 2 0 0 0-2 2h2Z"/></svg><span class="badge" id="payBadge">0</span></button>
+    <button data-go="compta" aria-label="Registre de compte"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm3 5h8M8 12h8M8 16h5"/></svg></button>
     <button data-go="products" aria-label="Produits"><svg viewBox="0 0 24 24"><path d="M7 4a1 1 0 0 1 1 1v1h8V5a1 1 0 1 1 2 0v1h1.3a1.7 1.7 0 0 1 1.7 1.9l-1.1 10.4a3 3 0 0 1-3 2.7H7.1a3 3 0 0 1-3-2.7L3 7.9A1.7 1.7 0 0 1 4.7 6H6V5a1 1 0 0 1 1-1Z"/></svg></button>
     <button data-go="settings" aria-label="Réglages"><svg viewBox="0 0 24 24"><path d="M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2Zm8.9 4.6-.1-1 2-1.6-2-3.4-2.3.9a8 8 0 0 0-1.7-1l-.3-2.4h-4l-.3 2.4c-.6.3-1.2.6-1.7 1l-2.3-.9-2 3.4 2 1.6a8 8 0 0 0 0 2l-2 1.6 2 3.4 2.3-.9c.5.4 1.1.7 1.7 1l.3 2.4h4l.3-2.4c.6-.3 1.2-.6 1.7-1l2.3.9 2-3.4-2-1.6Z"/></svg></button>
   </nav>
@@ -254,7 +406,7 @@ details.adv .fld{margin-top:12px}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.4').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.9').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -348,11 +500,23 @@ async function doLogin(){
   const b = $('#goLogin'); b.disabled = true; b.innerHTML = '<span class="spin"></span>';
   try {
     $('#fCode').classList.remove('err');
-    const r = await fetch(DEFAULT_API + '/api/staff/session', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({code, role:'admin'}), cache:'no-store'}).catch(() => null);
+    const otp = (($('#iOtp') && $('#iOtp').value) || '').replace(/\D/g, '');
+    const r = await fetch(DEFAULT_API + '/api/staff/session', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({code, role:'admin', otp}), cache:'no-store'}).catch(() => null);
     $('#iCode').value = '';
     if (!r) { const x = new Error('network'); x.status = 0; throw x; }
     if (r.status === 429) { const j = await r.json().catch(() => ({})); toast('Trop d’essais — réessayez dans ' + Math.ceil((j.retry_after || 600) / 60) + ' min'); shake($('#fCode')); return; }
-    if (r.status !== 200) { const x = new Error('unauthorized'); x.status = 401; throw x; }
+    if (r.status !== 200) {
+      const j = await r.json().catch(() => ({}));
+      if (j.error === 'otp_required' || j.error === 'otp_invalid') {
+        $('#fOtp').classList.remove('hidden');
+        if (j.error === 'otp_invalid') { $('#fOtp').classList.add('err'); shake($('#fOtp')); }
+        $('#iOtp').focus();
+        toast('Entrez le code à 6 chiffres de votre authenticator');
+        $('#iCode').value = code;
+        return;
+      }
+      const x = new Error('unauthorized'); x.status = 401; throw x;
+    }
     const j = await r.json();
     token = j.token;
     localStorage.setItem('drc_g_tok', token);
@@ -892,5 +1056,247 @@ async function migrateToken(){
 })();
 </script>
 <!--/MOTION-->
+
+<script>
+/* ───────────────── Registre de compte + agent ───────────────── */
+(function(){
+  const money = n => Math.round(Number(n) || 0).toLocaleString('fr-FR').replace(/\u202f|\u00a0/g, ' ') + ' F';
+  const startOfDay = (d) => { const x = new Date(d); x.setHours(0,0,0,0); return x.getTime(); };
+  let days = 7, chat = [];
+
+  const inWindow = () => {
+    const now = Date.now();
+    const from = days === 1 ? startOfDay(now) : now - days * 864e5;
+    return (typeof ORDERS !== 'undefined' ? ORDERS : [])
+      .filter(o => { const ts = new Date(o.created_at || 0).getTime(); return ts >= from; })
+      .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
+  };
+
+  const totals = (list) => {
+    const paid = list.filter(o => o.status !== 'cancelled');
+    const by = { wave: 0, orange_money: 0, cod: 0 };
+    let revenue = 0, due = 0, fees = 0;
+    paid.forEach(o => {
+      const t = Number(o.total) || 0;
+      revenue += t;
+      fees += Number(o.delivery_fee) || 0;
+      const m = o.payment_method || (o.customer && o.customer.pay_phone ? 'wave' : 'cod');
+      by[m === 'orange_money' ? 'orange_money' : (m === 'wave' ? 'wave' : 'cod')] += t;
+      const isPaid = o.payment_status === 'paid' || o.status === 'delivered' && m !== 'cod';
+      if (!isPaid && m === 'cod') due += t;
+    });
+    const perDay = {};
+    paid.forEach(o => {
+      const k = String(o.created_at || '').slice(0, 10);
+      if (!k) return;
+      perDay[k] = perDay[k] || { revenue: 0, orders: 0 };
+      perDay[k].revenue += Number(o.total) || 0;
+      perDay[k].orders++;
+    });
+    return { list: paid, revenue, due, fees, by, perDay,
+             orders: paid.length, cancelled: list.length - paid.length,
+             avg: paid.length ? revenue / paid.length : 0 };
+  };
+
+  const dayLabel = (k) => {
+    const d = new Date(k + 'T12:00:00');
+    return d.toLocaleDateString('fr-FR', { weekday: 'short', day: '2-digit', month: 'short' }).replace('.', '');
+  };
+
+  function paint(){
+    const list = inWindow(), T = totals(list);
+    const $ = s => document.querySelector(s);
+    if (!$('#lgTotal')) return;
+    $('#lgPeriod').textContent = days === 1 ? "Aujourd'hui" : days + ' jours';
+    $('#lgTotal').textContent = money(T.revenue);
+    $('#lgOrders').textContent = T.orders + (T.orders > 1 ? ' commandes' : ' commande');
+    $('#lgAvg').textContent = 'panier ' + money(T.avg);
+    $('#lgChips').innerHTML = [['1', "Aujourd'hui"], ['7', '7 jours'], ['30', '30 jours']]
+      .map(([d, l]) => `<button data-d="${d}" class="${String(days) === d ? 'on' : ''}">${l}</button>`).join('');
+    $('#lgChips').querySelectorAll('[data-d]').forEach(b => b.onclick = () => { days = Number(b.dataset.d); paint(); });
+    $('#lgKpis').innerHTML = [
+      ['Espèces à encaisser', money(T.due), T.due ? 'acc' : ''],
+      ['Wave', money(T.by.wave), ''],
+      ['Orange Money', money(T.by.orange_money), ''],
+      ['Frais de livraison', money(T.fees), ''],
+      ['Commandes annulées', String(T.cancelled), ''],
+      ['Panier moyen', money(T.avg), '']
+    ].map(([l, v, c]) => `<div class="lg-kpi ${c}"><span>${l}</span><b>${v}</b></div>`).join('');
+
+    const daysKeys = Object.keys(T.perDay).sort().slice(-14);
+    const max = Math.max(1, ...daysKeys.map(k => T.perDay[k].revenue));
+    $('#lgDays').innerHTML = daysKeys.length ? daysKeys.map(k => {
+      const d = T.perDay[k];
+      return `<div class="lg-day"><i>${dayLabel(k)}</i><div class="lg-bar"><span style="width:${Math.round(d.revenue / max * 100)}%"></span></div><b>${money(d.revenue)}</b></div>`;
+    }).join('') : `<p class="lg-note">Aucun mouvement sur la période.</p>`;
+
+    $('#lgRows').innerHTML = list.slice(0, 25).map(o => {
+      const m = o.payment_method || 'cod';
+      const paid = o.payment_status === 'paid' || m !== 'cod';
+      const who = (o.customer && o.customer.name) || 'Client';
+      return `<div class="lg-row ${paid ? 'paid' : 'due'}"><span class="id">${o.id}</span><span class="who">${who}</span>
+        <span class="m">${money(o.total)}</span><span class="pm">${m === 'wave' ? 'Wave' : m === 'orange_money' ? 'OM' : 'Espèces'}</span></div>`;
+    }).join('') || `<p class="lg-note">Rien à afficher.</p>`;
+
+    const sugs = ['Combien d\'espèces ?', 'Mon meilleur jour ?', 'Total Wave ?', 'Combien de commandes ?', 'Panier moyen ?'];
+    $('#lgSuggest').innerHTML = sugs.map(s => `<button>${s}</button>`).join('');
+    $('#lgSuggest').querySelectorAll('button').forEach(b => b.onclick = () => ask(b.textContent));
+  }
+
+  /* ── agent : calcule la réponse dans les chiffres de la période ── */
+  function answer(q){
+    const list = inWindow(), T = totals(list);
+    const s = q.toLowerCase();
+    if (/esp[eè]ce|cash|liquide/.test(s)) return `Espèces à encaisser sur ${days === 1 ? "aujourd'hui" : days + ' jours'} : <b>${money(T.due)}</b>.`;
+    if (/wave/.test(s)) return `Encaissé en Wave : <b>${money(T.by.wave)}</b>.`;
+    if (/orange|\bom\b/.test(s)) return `Encaissé en Orange Money : <b>${money(T.by.orange_money)}</b>.`;
+    if (/annul/.test(s)) return `${T.cancelled} commande${T.cancelled > 1 ? 's' : ''} annulée${T.cancelled > 1 ? 's' : ''} sur la période.`;
+    if (/panier|moyen/.test(s)) return `Panier moyen : <b>${money(T.avg)}</b> sur ${T.orders} commande${T.orders > 1 ? 's' : ''}.`;
+    if (/meilleur|record|plus gros/.test(s)) {
+      const k = Object.keys(T.perDay).sort((a, b) => T.perDay[b].revenue - T.perDay[a].revenue)[0];
+      return k ? `Meilleur jour : <b>${dayLabel(k)}</b> avec <b>${money(T.perDay[k].revenue)}</b> (${T.perDay[k].orders} commandes).` : 'Pas encore de données.';
+    }
+    if (/livraison|frais/.test(s)) return `Frais de livraison facturés : <b>${money(T.fees)}</b>.`;
+    if (/commande/.test(s)) return `${T.orders} commande${T.orders > 1 ? 's' : ''} sur la période, dont ${T.cancelled} annulée${T.cancelled > 1 ? 's' : ''}.`;
+    if (/total|chiffre|recette|caisse|combien/.test(s)) return `Total encaissé : <b>${money(T.revenue)}</b> · espèces à encaisser <b>${money(T.due)}</b> · panier moyen <b>${money(T.avg)}</b>.`;
+    return `Sur ${days === 1 ? "aujourd'hui" : 'les ' + days + ' derniers jours'} : <b>${money(T.revenue)}</b> encaissés, ${T.orders} commandes, panier moyen <b>${money(T.avg)}</b>. Demandez-moi les espèces, Wave, Orange Money, les annulations ou votre meilleur jour.`;
+  }
+
+  const strip = (h) => h.replace(/<\/?b>/g, '');
+  function speak(text){
+    const t = strip(text);
+    try {
+      if (window.Android && window.Android.speak) { window.Android.speak(t); return; }
+      if (window.speechSynthesis) {
+        const u = new SpeechSynthesisUtterance(t); u.lang = 'fr-FR'; u.rate = 1.02;
+        speechSynthesis.cancel(); speechSynthesis.speak(u); return;
+      }
+    } catch(e) {}
+    try { toast('Voix indisponible sur cet appareil'); } catch(e) {}
+  }
+
+  function bubble(who, html){
+    chat.push({ who, html });
+    const box = document.getElementById('lgChat');
+    if (!box) return;
+    box.innerHTML = chat.map(m => `<div class="lg-msg ${m.who}">${m.html}</div>`).join('');
+    box.scrollTop = box.scrollHeight;
+    if (who === 'bot') speak(html);
+  }
+
+  function ask(q){
+    const text = String(q || '').trim();
+    if (!text) return;
+    bubble('me', text.replace(/[<>]/g, ''));
+    setTimeout(() => bubble('bot', answer(text)), 260);
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!e.target) return;
+    if (e.target.id === 'lgSend') { const i = document.getElementById('lgAsk'); ask(i.value); i.value = ''; }
+    if (e.target.id === 'bLedger') { paint(); try { toast('Registre recalculé'); } catch(e) {} }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.target && e.target.id === 'lgAsk' && e.key === 'Enter') { ask(e.target.value); e.target.value = ''; }
+  });
+
+  /* recalcul quand on ouvre l'onglet et à chaque rafraîchissement des commandes */
+  const orig = window.paintOrders;
+  window.paintOrders = function(){ if (orig) orig.apply(this, arguments); try { paint(); } catch(e) {} };
+  document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.go === 'compta') setTimeout(paint, 30);
+  }));
+  setInterval(() => { if (document.querySelector('#vCompta.on')) paint(); }, 30000);
+  window.__ledger = { paint, answer, ask };
+})();
+</script>
+
+
+<script>
+/* ───────── Authenticator (Google Authenticator) dans les réglages ───────── */
+(function(){
+  const cardHTML = `
+    <div class="sec"><h2>Sécurité</h2></div>
+    <div class="card" id="authCard" style="padding:16px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc);flex:none">
+          <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.4"/></svg>
+        </div>
+        <div style="flex:1;min-width:0"><b style="font-size:14.5px">Authenticator</b>
+          <div id="authState" style="font-size:12px;color:var(--muted)">Vérification de l'état…</div></div>
+        <button class="pill" id="authBtn" style="width:auto;height:40px;padding:0 16px;font-size:13px">Gérer</button>
+      </div>
+      <div id="authBody" class="hidden" style="margin-top:14px"></div>
+    </div>`;
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const api = (path, body) => fetch(DEFAULT_API + path, {
+    method: 'POST', cache: 'no-store',
+    headers: {'Content-Type':'application/json','X-Admin-Token': token || ''},
+    body: JSON.stringify(body || {})
+  }).then(async r => ({ status: r.status, j: await r.json().catch(() => ({})) }));
+
+  function mount(){
+    const v = document.getElementById('vSettings');
+    if (!v || !v.innerHTML.trim() || document.getElementById('authCard')) return;
+    v.insertAdjacentHTML('beforeend', cardHTML);
+    const btn = document.getElementById('authBtn'), body = document.getElementById('authBody'), st = document.getElementById('authState');
+    let active = false, secret = null;
+
+    const render = () => {
+      st.textContent = active ? 'Activé · code à 6 chiffres demandé à la connexion' : 'Non activé';
+      st.style.color = active ? 'var(--ok)' : 'var(--muted)';
+      btn.textContent = active ? 'Désactiver' : 'Activer';
+    };
+
+    api('/api/staff/totp/state', { role: 'admin' }).then(({ j }) => { active = !!j.active; render(); }).catch(() => render());
+
+    btn.onclick = async () => {
+      if (!active) {
+        const { j } = await api('/api/staff/totp/setup', { role: 'admin' });
+        if (!j.secret) return toast('Impossible de créer la clé');
+        secret = j.secret;
+        body.classList.remove('hidden');
+        body.innerHTML = `
+          <p style="font-size:12.5px;color:var(--muted);line-height:1.5">1. Ouvrez Google Authenticator → « Ajouter » → « Saisir une clé de configuration ».<br>2. Collez la clé ci-dessous, puis tapez le code à 6 chiffres.</p>
+          <div style="display:flex;gap:8px;margin:10px 0">
+            <input id="authSecret" readonly value="${esc(secret)}" style="flex:1;min-width:0;font-family:ui-monospace,monospace;font-size:13px;letter-spacing:.08em;background:var(--bg);border:0;border-radius:12px;padding:12px">
+            <button class="pill ghost" id="authCopy" style="width:auto;height:44px;padding:0 14px;font-size:13px;background:var(--bg);color:var(--ink)">Copier</button>
+          </div>
+          <a href="${esc(j.uri)}" style="display:block;font-size:12.5px;color:var(--acc);font-weight:600;margin-bottom:10px">Ouvrir directement dans Google Authenticator</a>
+          <div class="fld"><label>Code à 6 chiffres</label><input id="authOtp" inputmode="numeric" maxlength="6" placeholder="123 456"></div>
+          <button class="pill" id="authConfirm" style="margin-top:10px">Vérifier et activer</button>`;
+        document.getElementById('authCopy').onclick = () => {
+          const el = document.getElementById('authSecret');
+          el.select(); try { document.execCommand('copy'); toast('Clé copiée'); } catch(e) {}
+        };
+        document.getElementById('authConfirm').onclick = async () => {
+          const otp = (document.getElementById('authOtp').value || '').replace(/\D/g, '');
+          const { status, j } = await api('/api/staff/totp/confirm', { role: 'admin', otp });
+          if (status === 200 && j.active) { active = true; body.classList.add('hidden'); body.innerHTML = ''; render(); toast('Authenticator activé'); }
+          else toast(j.error === 'otp_invalid' ? 'Code refusé, réessayez' : 'Activation impossible');
+        };
+      } else {
+        body.classList.remove('hidden');
+        body.innerHTML = `<div class="fld"><label>Confirmez avec un code à 6 chiffres</label><input id="authOtp" inputmode="numeric" maxlength="6" placeholder="123 456"></div>
+          <button class="pill acc" id="authOff" style="margin-top:10px">Désactiver l'authenticator</button>`;
+        document.getElementById('authOff').onclick = async () => {
+          const otp = (document.getElementById('authOtp').value || '').replace(/\D/g, '');
+          const { status, j } = await api('/api/staff/totp/disable', { role: 'admin', otp });
+          if (status === 200) { active = false; body.classList.add('hidden'); body.innerHTML = ''; render(); toast('Authenticator désactivé'); }
+          else toast(j.error === 'otp_invalid' ? 'Code refusé' : 'Impossible de désactiver');
+        };
+      }
+    };
+  }
+
+  document.querySelectorAll('.nav button').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.go === 'settings') setTimeout(mount, 60);
+  }));
+  const mo = new MutationObserver(() => { if (document.querySelector('#vSettings.on')) mount(); });
+  const v = document.getElementById('vSettings');
+  if (v) mo.observe(v, { childList: true });
+})();
+</script>
+
 </body>
 </html>
