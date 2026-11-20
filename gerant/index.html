@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '2.1';
+window.DRC_WEB = '2.3';
 </script>
 
 <meta charset="utf-8">
@@ -254,7 +254,7 @@ details.adv .fld{margin-top:12px}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.1').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.3').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -752,7 +752,9 @@ function setLive(on){
 }
 function startPoll(){
   clearInterval(pollT);
-  pollT = setInterval(() => { if (document.visibilityState === 'visible') pulse(); }, 20000);
+  /* le pouls tourne aussi en arrière-plan : c'est la seule façon de prévenir quand le gérant
+     n'est pas dans l'app (la notification est filtrée par inApp() quand il regarde l'écran) */
+  pollT = setInterval(pulse, 20000);
 }
 $('#bRefresh').onclick = () => { vib(); refreshAll().then(() => toast('À jour')); };
 $('#oRefresh').onclick = () => { vib(); refreshOrders().then(() => toast('À jour')); };
