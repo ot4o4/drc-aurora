@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '3.9';
+window.DRC_WEB = '4.0';
 </script>
 
 <meta charset="utf-8">
@@ -326,19 +326,23 @@ body.logged-out header{display:none}          /* bandeau masqué seulement sur l
 main{padding-bottom:calc(112px + var(--sb))!important}
 </style>
 <style id="nav-frame-style">
-/* Cadre rouge mobile dans la barre du bas : suit et encadre l'icône touchée */
+/* Bouton d'actualisation en haut + barre du bas épurée sans cadre carré rouge */
+.iconbtn .rf-ico{width:20px;height:20px;object-fit:contain;display:block;transition:transform .45s cubic-bezier(.22,1,.36,1)}
+.iconbtn.spin .rf-ico{transform:rotate(360deg)}
+header .brand-icon{background:#fff!important;border-radius:14px!important;padding:5px 7px!important;box-shadow:var(--shadow)!important}
+
 #drcNav{position:fixed!important;left:0!important;right:0!important;bottom:0!important;
-  height:calc(var(--navh) + var(--sb))!important;padding:0 16px var(--sb)!important}
-#drcNav .nav-frame{position:absolute;left:0;top:0;width:58px;height:58px;border-radius:19px;
-  background:var(--acc);box-shadow:0 6px 14px -6px rgba(0,0,0,.45), 0 8px 20px -8px rgba(200,22,29,.55);
-  pointer-events:none;z-index:0;
-  transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .2s}
-#drcNav button,#drcNav .mid{width:56px!important;height:56px!important;border-radius:19px!important;
-  background:transparent!important;box-shadow:none!important;color:rgba(255,255,255,.78)!important;
-  position:relative!important;z-index:1!important;transition:color .2s,transform .18s cubic-bezier(.22,1,.36,1)!important}
-#drcNav .mid .ring{width:56px!important;height:56px!important;background:transparent!important;box-shadow:none!important}
-#drcNav button.on,#drcNav button.on .ic,#drcNav .mid.on{color:#fff!important}
-#drcNav button svg,#drcNav .mid .ring svg{width:28px!important;height:28px!important;fill:currentColor!important;stroke:none!important}
+  height:calc(var(--navh) + var(--sb))!important;padding:0 18px var(--sb)!important}
+#drcNav .nav-frame{display:none!important}
+#drcNav button,#drcNav .mid{width:50px!important;height:50px!important;border-radius:14px!important;
+  background:transparent!important;box-shadow:none!important;color:rgba(255,255,255,.65)!important;
+  position:relative!important;z-index:1!important;transition:color .18s,transform .18s cubic-bezier(.22,1,.36,1)!important}
+#drcNav .mid .ring{width:50px!important;height:50px!important;background:transparent!important;box-shadow:none!important}
+#drcNav button.on,#drcNav button.on .ic,#drcNav .mid.on,#drcNav .mid.on .ring{color:var(--acc)!important}
+#drcNav button.on,#drcNav .mid.on{transform:translateY(-2px)}
+#drcNav button.on::after,#drcNav .mid.on::after{content:"";position:absolute;left:50%;bottom:3px;transform:translateX(-50%);
+  width:16px;height:3px;border-radius:3px;background:var(--acc)}
+#drcNav button svg,#drcNav .mid .ring svg{width:27px!important;height:27px!important;fill:currentColor!important;stroke:none!important}
 </style>
 </head>
 <body>
@@ -352,7 +356,7 @@ main{padding-bottom:calc(112px + var(--sb))!important}
 <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
 </defs></svg>
 <div id="splash"><div class="splash-inner"><div class="splash-mark"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="splash-brand">DAROU RAHMANE CHICKEN</div><div class="splash-role">LIVREUR</div><div class="splash-line"></div><div class="splash-sub">VOS LIVRAISONS. VOTRE TOURNÉE.</div></div></div>
-<header><div class="hd-top"><div class="brand-icon"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="brand"><b>DRC LIVREUR</b><small>ESPACE PROFESSIONNEL</small></div><div class="header-actions app-only hidden"><button class="iconbtn" onclick="loadOrders()" aria-label="Actualiser les missions"><svg class="svg"><use href="#refresh"/></svg></button><button class="iconbtn" onclick="lock()" aria-label="Verrouiller l’application"><svg class="svg"><use href="#lock"/></svg></button></div></div><div class="service app-only hidden" id="service"><span class="service-dot"></span><span id="service-text">Connexion au service…</span></div></header>
+<header><div class="hd-top"><div class="brand-icon"><img src="logo.png" alt="Darou Rahmane Chicken"></div><div class="brand"><b>DRC LIVREUR</b><small>ESPACE PROFESSIONNEL</small></div><div class="header-actions app-only hidden"><button class="iconbtn" onclick="loadOrders()" aria-label="Actualiser les missions"><img src="refresh.png" alt="" class="rf-ico"></button><button class="iconbtn" onclick="lock()" aria-label="Verrouiller l’application"><svg class="svg"><use href="#lock"/></svg></button></div></div><div class="service app-only hidden" id="service"><span class="service-dot"></span><span id="service-text">Connexion au service…</span></div></header>
 <main id="view-login"><section class="login-wrap"><div class="lg-brand"><img src="logo.png" alt="Darou Rahmane Chicken"><span>Espace livreur</span></div><div class="login-card"><div class="login-kicker"><svg class="svg"><use href="#scooter"/></svg> Accès livreur</div><h1>Votre tournée<br>commence ici.</h1><p>Consultez les colis confiés par le gérant, contactez les destinataires et confirmez chaque livraison.</p><div class="field" id="lg-field"><label for="lg-code">Code livreur</label><input id="lg-code" type="password" placeholder="Ex. DRC-1234-5678" autocomplete="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')login()"><div class="server-note">Code donné par le gérant (Espace gérant → Livreurs). Majuscules et tirets facultatifs.</div><div class="msg">Code incorrect ou serveur indisponible</div></div><button class="btn primary" id="lg-btn" onclick="login()">Accéder à mes missions</button><p class="sec-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.6 8 11 4.6-1.4 8-6 8-11V5l-8-3Zm-1 14-4-4 1.4-1.4 2.6 2.6 5.6-5.6L18 9l-7 7Z"/></svg>Connexion protégée : votre code n’est jamais enregistré sur le téléphone.</p><input id="lg-server" type="hidden"></div></section></main>
 <main id="view-app" class="hidden"><section class="tour-hero"><div class="tour-top"><div><div class="tour-label">Tableau de bord</div><h1 id="tournee-title">Ma tournée</h1></div><div class="tour-date" id="tour-date"></div></div><div class="tour-summary"><span><b id="active-total">0</b> missions actives</span><span><b id="done-total">0</b> terminées</span></div></section><div class="adm-stats" id="stats"></div><div class="tabs" role="tablist" aria-label="Filtrer les missions"><button id="t-depot" class="on" role="tab" onclick="switchTab('depot')">À récupérer<span class="tab-count" id="count-depot">0</span></button><button id="t-shipping" role="tab" onclick="switchTab('shipping')">En cours<span class="tab-count" id="count-shipping">0</span></button><button id="t-done" role="tab" onclick="switchTab('done')">Terminées<span class="tab-count" id="count-done">0</span></button></div><div class="list-head"><h2 id="list-title">Colis à récupérer au dépôt</h2><span id="list-count">0 mission</span></div><div id="orders" aria-live="polite"></div></main>
 <section id="mission-tracking" class="tracking-page" aria-label="Suivi de la mission">
@@ -380,7 +384,7 @@ main{padding-bottom:calc(112px + var(--sb))!important}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=3.9').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.0').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -798,5 +802,14 @@ migrateToken().then(()=>{if(token){enter()}else{showLogin()}});setTimeout(()=>do
 })();
 </script>
 
+<script>
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('.iconbtn');
+  if (b && b.querySelector('.rf-ico')) {
+    b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin');
+    setTimeout(() => b.classList.remove('spin'), 500);
+  }
+});
+</script>
 </body>
 </html>
