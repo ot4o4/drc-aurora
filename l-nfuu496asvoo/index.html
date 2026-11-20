@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.20';
+window.DRC_WEB = '4.21';
 </script>
 
 <meta charset="utf-8">
@@ -86,6 +86,18 @@ body.drc2 .pill-btn.acc{background:linear-gradient(160deg,#D91F27,#A90F16);
   box-shadow:0 14px 26px -14px rgba(200,22,29,.55)}
 body.drc2 .mstatus.shipping{background:rgba(200,22,29,.12);color:#A00E14}
 body.drc2 .mstatus.done{background:rgba(31,138,76,.12);color:#086B45}
+
+/* ── carte de suivi synchronisée 4.21 ── */
+.tracking-route{display:grid!important;grid-template-columns:1fr 1fr;gap:16px!important;margin-top:16px!important;align-items:start}
+.tracking-route .tr-col{min-width:0;text-align:left}
+.tracking-route .tr-col:last-child{text-align:right}
+.tracking-route .tr-col:first-child span{text-align:left!important}
+.tracking-route .tr-col:last-child span{text-align:right!important}
+.tracking-route small{display:block;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.45);font-weight:700;margin-bottom:4px}
+.tracking-route span{display:block;font-size:12.5px;line-height:1.45;color:#E7DED5;overflow-wrap:anywhere}
+body.drc2 .live-strip{padding:12px 16px!important;margin-top:14px!important;color:var(--ink2)!important}
+body.drc2 .live-strip b{color:var(--ink)!important;font-weight:700!important}
+body.drc2 #liveText{color:var(--ink2)}
 </style>
 <style>
 /* ── identité Darou Rahmane Chicken (même monde visuel que les applications) ── */
@@ -697,7 +709,7 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.20').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.21').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -945,7 +957,8 @@ function openTracking(id){
   const stages=['Confirmée','Préparée','En route','Livrée'];
   const stage=s==='shipping'?2:isDelivered(o)?3:s==='preparing'?1:0;
   const status=s==='shipping'?'EN ROUTE':isDelivered(o)?'LIVRÉE':statusLabel(s);
-  document.getElementById('tracking-hero').innerHTML=`<div class="tracking-order"><b>${esc(o.id)}</b><span>${status}</span></div><div class="tracking-route"><span>${esc(DEPOT.label)}</span><span>${esc(address||'Adresse non renseignée')}</span></div><div class="tracking-metrics"><div><b id="route-distance">—</b><small>Distance</small></div><div><b id="route-duration">—</b><small>Trajet estimé</small></div><div><b id="route-eta">—</b><small>Arrivée estimée</small></div></div>`;
+  const destLabel = address || (orderGps(o) ? 'Position GPS du client' : 'Adresse non renseignée');
+  document.getElementById('tracking-hero').innerHTML=`<div class="tracking-order"><b>${esc(o.id)}</b><span>${status}</span></div><div class="tracking-route"><div class="tr-col"><small>Départ</small><span>${esc(DEPOT.label)}</span></div><div class="tr-col"><small>Destination</small><span>${esc(destLabel)}</span></div></div><div class="tracking-metrics"><div><b id="route-distance">—</b><small>Dépôt → client</small></div><div><b id="route-duration">—</b><small>Durée estimée</small></div><div><b id="route-eta">—</b><small>Arrivée estimée</small></div></div>`;
   document.getElementById('tracking-progress').innerHTML=`<div class="progress-track"><div class="progress-fill" style="width:${stage/3*100}%"></div></div><div class="tracking-steps">${stages.map((label,i)=>`<div class="tracking-step ${i<stage?'past':i===stage?'now':''}"><span class="step-dot">${i<stage?'✓':i+1}</span>${label}</div>`).join('')}</div>`;
   const phone=customerPhone(o),initials=String(c.name||'Client').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase();
   document.getElementById('tracking-contact').innerHTML=`<div class="avatar">${esc(initials||'CL')}</div><div class="who"><b>${esc(c.name||'Destinataire non renseigné')}</b><small>${phone?esc(c.phone):'Aucun numéro de téléphone'}</small></div>`;
