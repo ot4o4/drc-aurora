@@ -1,5 +1,5 @@
-// DRC Gérant 2.0 — coquille hors ligne ; l'API n'est JAMAIS mise en cache.
-const CACHE = 'drc-gerant-2.0';
+// DRC Gérant 2.1 — coquille hors ligne ; l'API n'est JAMAIS mise en cache.
+const CACHE = 'drc-gerant-2.1';
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './index.html', './manifest.json'])).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {

@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '2.0';
+window.DRC_WEB = '2.1';
 </script>
 
 <meta charset="utf-8">
@@ -254,9 +254,11 @@ details.adv .fld{margin-top:12px}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.0').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=2.1').catch(function(){});
   function show(t, b){
     try {
+      /* dans l'app (onglet visible et au premier plan) : pas de notification système */
+      if (document.visibilityState === 'visible' && document.hasFocus()) return;
       if (!('Notification' in window)) return;
       var go = function(){ navigator.serviceWorker.ready.then(function(r){ r.showNotification(t, {body:b, icon:'icons/icon-192.png', badge:'icons/icon-192.png', vibrate:[60,40,60]}); }); };
       if (Notification.permission === 'granted') go();
@@ -284,6 +286,10 @@ details.adv .fld{margin-top:12px}
 const DEFAULT_API = 'https://drc-api-dj8t.onrender.com';
 const API = () => DEFAULT_API;
 const NATIVE = window.Android || null;
+/* On n'alerte le téléphone que si l'utilisateur N'EST PAS dans l'app (écran éteint, autre app,
+   ou app en arrière-plan) : quand il regarde l'écran, la commande apparaît déjà dans la liste et
+   le toast suffit. */
+const inApp = () => { try { return document.visibilityState === 'visible' && document.hasFocus(); } catch(e) { return true; } };
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fcfa = n => (Math.round(Number(n) || 0)).toLocaleString('fr-FR').replace(/\u202f|\u00a0|\s/g, '\u00a0') + '\u00a0F';
@@ -725,14 +731,14 @@ async function pulse(){
       lastSeen = latest.id;
       if (wasKnown) {
         vib(60);
-        if (NATIVE && NATIVE.notify) NATIVE.notify('Nouvelle commande ' + latest.id, (latest.name || 'Client') + ' · ' + (latest.total || 0).toLocaleString('fr-FR') + ' F · ' + (PAY[latest.method] || ''));
+        if (NATIVE && NATIVE.notify && !inApp()) NATIVE.notify('Nouvelle commande ' + latest.id, (latest.name || 'Client') + ' · ' + (latest.total || 0).toLocaleString('fr-FR') + ' F · ' + (PAY[latest.method] || ''));
         toast('Nouvelle commande ' + latest.id);
       }
     }
     const sec = p.security || {};
     if (sec.failed_24h >= 5 && sec.failed_24h !== window.__secSeen) {
       window.__secSeen = sec.failed_24h;
-      if (NATIVE && NATIVE.notify) NATIVE.notify('Sécurité', sec.failed_24h + ' tentatives de code refusées en 24 h' + (sec.blocked_ips ? ' · ' + sec.blocked_ips + ' appareil(s) bloqué(s)' : ''));
+      if (NATIVE && NATIVE.notify && !inApp()) NATIVE.notify('Sécurité', sec.failed_24h + ' tentatives de code refusées en 24 h' + (sec.blocked_ips ? ' · ' + sec.blocked_ips + ' appareil(s) bloqué(s)' : ''));
       toast('🔒 ' + sec.failed_24h + ' tentatives de code refusées en 24 h');
     }
     /* les données sont rechargées à chaque battement : la liste ne peut plus rester figée */
@@ -835,12 +841,16 @@ async function migrateToken(){
     if (from === to || to < 10) return;
     var pre = txt.slice(0, m.index), post = txt.slice(m.index + m[0].length), t0 = performance.now(), dur = 700;
     function fmt(v){ return Math.round(v).toLocaleString('fr-FR').replace(/\u202f/g, '\u202f'); }
-    el.__busy = true;
-    (function step(t){
-      var p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = pre + fmt(from + (to - from) * e) + post;
-      if (p < 1) requestAnimationFrame(step); else { el.textContent = txt; el.__busy = false; }
-    })(t0);
+    el.__busy = true; el.__last = txt;
+    (function step(){
+      var t = performance.now();
+      /* l'app a réécrit le montant entre-temps : on s'efface, sa valeur fait foi */
+      if (el.textContent !== el.__last) { el.__busy = false; el.dataset.mv = ''; return; }
+      var p = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - Math.pow(1 - p, 3);
+      el.__last = p < 1 ? pre + fmt(from + (to - from) * e) + post : txt;
+      el.textContent = el.__last;
+      if (p < 1) requestAnimationFrame(step); else el.__busy = false;
+    })();
   }
   var gseen = new Set();
   function scan(root){
