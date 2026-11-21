@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611201914">
+<link rel="manifest" href="manifest.json?v=202611210315">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -587,6 +587,17 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 .hist-info span{display:block;font-size:10.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .hist-amt{font-size:13.5px;white-space:nowrap}
 #histRefresh svg{width:20px;height:20px;color:var(--ink2)}
+
+/* ── recette rouge 1.8.6 ── */
+.recipe{background:linear-gradient(155deg,#FF3D46,#D4111A 74%,#C00E17)!important}
+.recipe .txt{padding:18px 18px 0}
+.recipe .kicker{color:#1A1A1A}
+.recipe h3{color:#fff}
+.recipe p{color:rgba(255,255,255,.9)}
+.recipe p b{color:#fff}
+.recipe .steps li{background:rgba(255,255,255,.16);color:#fff}
+.recipe .btn-ghost{background:#fff;color:#1A1A1A;box-shadow:0 10px 24px -12px rgba(40,0,0,.4)}
+.recipe .btn-ghost span{color:#1A1A1A}
 </style>
 </head>
 <body>
@@ -1724,7 +1735,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.5 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.6 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
