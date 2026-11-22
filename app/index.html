@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611221054">
+<link rel="manifest" href="manifest.json?v=202611221113">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -830,6 +830,25 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .reward-cart .mname b{white-space:normal;overflow:visible;line-height:1.25}
 .reward-cart .mright b{color:#1F8A4C}
 .reward-cart .rw-remove{flex:none;width:30px;height:30px;border-radius:50%;background:var(--bg);color:var(--muted);font-size:18px;display:grid;place-items:center;border:0}
+
+/* ── éclat sur tous les boutons 1.8.66 ── */
+button{position:relative}
+button:not(.add)::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;
+  background:linear-gradient(112deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.5) 45%,rgba(70,40,30,.06) 52%,rgba(255,255,255,0) 68%);
+  background-size:240% 100%;background-position:150% 0;background-repeat:no-repeat;
+  mix-blend-mode:normal;opacity:0;
+  animation:allBtnShine 4.8s ease-in-out infinite;will-change:background-position,opacity}
+.add::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;
+  background:linear-gradient(112deg,rgba(255,255,255,0) 25%,rgba(255,255,255,.55) 45%,rgba(255,255,255,0) 68%);
+  background-size:240% 100%;background-position:150% 0;background-repeat:no-repeat;
+  mix-blend-mode:normal;opacity:0;animation:allBtnShine 4.2s ease-in-out infinite}
+@keyframes allBtnShine{
+  0%,12%{background-position:150% 0;opacity:0}
+  28%{opacity:.42}
+  55%{background-position:-110% 0;opacity:.3}
+  70%,100%{background-position:-110% 0;opacity:0}
+}
+@media (prefers-reduced-motion: reduce){button::after,.add::before{animation:none;opacity:0}}
 </style>
 </head>
 <body>
@@ -1115,7 +1134,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.65', APP_BUILD = 126;
+const APP_VERSION = '1.8.66', APP_BUILD = 127;
 const PLAY_BUILD = false; /* remplacé par true dans le bundle Play Store */
 const APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
@@ -2534,7 +2553,7 @@ function paintAccount(){
       ${auth ? `<button class="mi danger" id="mDelete"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></span><div>Supprimer mon compte<small>Efface vos données personnelles</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.65 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.66 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
