@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611221007">
+<link rel="manifest" href="manifest.json?v=202611221020">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -629,7 +629,7 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
   background:radial-gradient(circle at 50% 48%,rgba(255,255,255,.62) 0 16%,rgba(255,255,255,.24) 36%,rgba(255,255,255,.08) 52%,rgba(255,255,255,0) 68%);
   border-radius:46% 54% 58% 42% / 44% 46% 54% 56%;
   filter:blur(13px);opacity:.38;mix-blend-mode:screen;
-  animation:liquidGlass 8.4s cubic-bezier(.45,0,.25,1) infinite;
+  animation:liquidGlass 5.8s cubic-bezier(.45,0,.25,1) infinite;
   will-change:transform,opacity,border-radius}
 .recipe .btn-ghost::after{animation-delay:2.1s}
 .code-copy::after{animation-delay:2.7s}
@@ -718,7 +718,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
   background:radial-gradient(ellipse at 46% 42%,rgba(255,255,255,.52) 0 14%,rgba(255,255,255,.18) 34%,rgba(255,255,255,.05) 50%,rgba(255,255,255,0) 66%);
   border-radius:44% 56% 60% 40% / 46% 42% 58% 54%;
   filter:blur(16px);opacity:.36;mix-blend-mode:screen;
-  animation:liquidGlass 9.2s cubic-bezier(.45,0,.25,1) infinite;animation-delay:.6s;
+  animation:liquidGlass 6.2s cubic-bezier(.45,0,.25,1) infinite;animation-delay:.4s;
   will-change:transform,opacity,border-radius}
 @media (prefers-reduced-motion: reduce){.banner::after{animation:none;opacity:.28;transform:none}}
 
@@ -728,9 +728,9 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
     radial-gradient(ellipse at 34% 24%,rgba(255,255,255,.48) 0 10%,rgba(255,255,255,.16) 34%,rgba(255,255,255,0) 68%),
     radial-gradient(ellipse at 72% 82%,rgba(255,255,255,.18) 0 8%,rgba(255,255,255,0) 58%);
   filter:blur(15px) saturate(.92);opacity:.3;mix-blend-mode:soft-light;
-  animation:photoSoft 10.5s ease-in-out infinite;will-change:transform,opacity}
-.pcard:nth-child(2n) .plate::after{animation-delay:1.8s}
-.pcard:nth-child(3n) .plate::after{animation-delay:3.1s}
+  animation:photoSoft 5.2s ease-in-out infinite;will-change:transform,opacity}
+.pcard:nth-child(2n) .plate::after{animation-delay:.9s}
+.pcard:nth-child(3n) .plate::after{animation-delay:1.6s}
 .pcard .plate .soon{z-index:3}
 @keyframes photoSoft{
   0%,100%{transform:translate3d(-7%,-6%,0) scale(1.05);opacity:.22}
@@ -1125,7 +1125,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.59', APP_BUILD = 120;
+const APP_VERSION = '1.8.60', APP_BUILD = 121;
 const PLAY_BUILD = false; /* remplacé par true dans le bundle Play Store */
 const APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
@@ -2544,7 +2544,7 @@ function paintAccount(){
       ${auth ? `<button class="mi danger" id="mDelete"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></span><div>Supprimer mon compte<small>Efface vos données personnelles</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.59 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.60 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
