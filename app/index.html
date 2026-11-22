@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220649">
+<link rel="manifest" href="manifest.json?v=202611220655">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -752,6 +752,9 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .upd-home .uh-go{flex:none;background:var(--acc);color:#fff;border-radius:99px;padding:7px 10px;font-size:10.5px;font-weight:800}
 
 .ref-ico{fill:none!important;stroke:currentColor!important;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.card.chat.chat-open{box-shadow:0 0 0 2px var(--acc),0 18px 34px -24px rgba(229,29,38,.55);transition:box-shadow .25s ease}
+.card.chat.chat-open .chat-row input{background:#fff;box-shadow:0 0 0 2px rgba(229,29,38,.18)}
 </style>
 </head>
 <body>
@@ -984,7 +987,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.35', APP_BUILD = 96, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.36', APP_BUILD = 97, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1755,7 +1758,7 @@ function openOrder(id, refresh){
   $('#oWa').onclick = () => openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour, à propos de ma commande ' + o.id + '.')}`);
   if ($('#oPay')) $('#oPay').onclick = () => openPay(o.id);
   if ($('#oCall')) $('#oCall').onclick = () => dial(o.driver.phone);
-  if ($('#oChat')) $('#oChat').onclick = () => { stack.length = 0; route = {name:'track'}; go('track'); setTimeout(() => { const i = $('#chatInput'); if (i) { i.focus({preventScroll:true}); i.scrollIntoView({block:'center', behavior:'smooth'}); } }, 420); };
+  if ($('#oChat')) $('#oChat').onclick = () => { stack.length = 0; route = {name:'track'}; go('track'); setTimeout(openChatPanel, 480); };
   if ($('#oCopyCode')) $('#oCopyCode').onclick = () => {
     const code = String(o.delivery_code || '');
     try {
@@ -2138,6 +2141,17 @@ function bindPasswordSheets(){
   $('#pwdConfirm').addEventListener('keydown', e => { if (e.key === 'Enter') changePassword(); });
 }
 
+function openChatPanel(){
+  const chat = document.querySelector('.view[data-view="track"] .card.chat');
+  const input = $('#chatInput');
+  if (!chat || !input) { toast('La messagerie sera disponible dès qu’un livreur est attribué'); return; }
+  chat.classList.add('chat-open');
+  chat.scrollIntoView({block:'center', behavior:'smooth'});
+  try { input.focus({preventScroll:true}); input.click(); input.setSelectionRange(input.value.length, input.value.length); } catch(e) {}
+  setTimeout(() => { try { input.focus(); } catch(e) {} }, 260);
+  setTimeout(() => chat.classList.remove('chat-open'), 2200);
+}
+
 function updateBells(){
   const unread = notifUnread();
   ['#bellDot', '#bellDot2', '#bellDot3'].forEach(s => $(s) && $(s).classList.toggle('on', unread > 0));
@@ -2182,7 +2196,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.35 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.36 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -2326,7 +2340,7 @@ function paintTrack(){
     const a = b.dataset.act;
     if (a === 'call') { if (drv && drv.phone) dial(drv.phone); else toast('Numéro du livreur indisponible'); }
     if (a === 'wa') openExternal(`https://wa.me/${String((drv && drv.phone) || '').replace(/\D/g, '').replace(/^0/, '221')}?text=${encodeURIComponent('Bonjour, je suis le client de la commande ' + o.id + '.')}`);
-    if (a === 'msg') { const i = $('#chatInput'); if (i) { i.focus({preventScroll:true}); i.scrollIntoView({block:'center', behavior:'smooth'}); } }
+    if (a === 'msg') openChatPanel();
   });
   if ($('#chatSend')) {
     $('#chatSend').onclick = sendChat;
