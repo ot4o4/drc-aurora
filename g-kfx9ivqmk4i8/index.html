@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '5.4';
+window.DRC_WEB = '5.5';
 </script>
 
 <meta charset="utf-8">
@@ -223,7 +223,7 @@ details.adv .fld{margin-top:12px}
 .inv-head>div{display:flex;flex-direction:column;gap:3px}
 .inv-head img{width:132px;height:auto;display:block}
 .inv-head span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8A827C;font-weight:700}
-.inv-x{width:34px;height:34px;border-radius:50%;background:#F1EEE9;color:#5B5550;font-size:22px;line-height:1;display:grid;place-items:center}
+.inv-x{width:42px;height:42px;border-radius:50%;background:#fff;color:#1A1A1A;font-size:22px;line-height:1;display:grid;place-items:center;border:1px solid #EAE2D9;box-shadow:0 8px 20px -12px rgba(60,20,10,.28)}
 .inv-title{display:flex;justify-content:space-between;gap:12px;margin:18px 0 12px;padding:14px 0;border-top:1px solid #ECE7E0;border-bottom:1px solid #ECE7E0}
 .inv-title small,.inv-client small,.inv-note small{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#9A9188;font-weight:800;margin-bottom:3px}
 .inv-title b{font-size:16px}
@@ -601,7 +601,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.4').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.5').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -1038,7 +1038,7 @@ function showInvoice(inv){
   el.innerHTML = `<div class="inv-sheet" role="dialog" aria-label="Facture ${esc(inv.number)}">
     <div class="inv-head">
       <div><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"><span>${esc((inv.shop && inv.shop.name) || 'Darou Rahmane Chicken')}</span></div>
-      <button class="inv-x" id="invClose" aria-label="Fermer">×</button>
+      <button class="inv-x" id="invClose" aria-label="Fermer"><svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:none;stroke:#1A1A1A;stroke-width:2.2;stroke-linecap:round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
     <div class="inv-title"><div><small>FACTURE</small><b>${esc(inv.number)}</b></div><div><small>DATE</small><b>${esc(frDate(inv.sent_at || inv.created_at))}</b></div></div>
     <div class="inv-client"><small>CLIENT</small><b>${esc(inv.customer && inv.customer.name || '—')}</b><span>${esc(inv.customer && inv.customer.phone || '')}</span><span>${esc(inv.customer && inv.customer.address || '')}</span></div>
