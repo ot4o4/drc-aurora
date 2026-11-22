@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220729">
+<link rel="manifest" href="manifest.json?v=202611220734">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -770,6 +770,19 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
   body.print-invoice #vInvoice .inv-paper{box-shadow:none!important;border-radius:0!important;margin:0!important;padding:0!important;max-width:none!important}
   @page{margin:12mm}
 }
+
+/* ── installation Android web 1.8.42 ── */
+.install-home{display:none;width:100%;align-items:center;gap:10px;padding:11px 12px;margin:0 0 12px;border-radius:17px;
+  background:linear-gradient(135deg,#1B1815,#332A24);color:#fff;border:1px solid rgba(255,255,255,.09);text-align:left;
+  box-shadow:0 16px 30px -22px rgba(35,20,10,.7)}
+.install-home .ih-ic{width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.1);display:grid;place-items:center;flex:none;color:#FFD7D6}
+.install-home .ih-ic svg{width:17px;height:17px;fill:currentColor}
+.install-home .ih-txt{flex:1;min-width:0}
+.install-home .ih-txt b{display:block;font-size:12.5px;font-weight:700}
+.install-home .ih-txt span{display:block;font-size:10px;color:rgba(255,255,255,.65);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.install-home .ih-go{flex:none;height:30px;padding:0 11px;border-radius:99px;background:var(--acc);color:#fff;font-size:10.5px;font-weight:800;border:0}
+.install-home .ih-x{flex:none;width:24px;height:24px;border-radius:50%;color:rgba(255,255,255,.55);font-size:16px;line-height:1;display:grid;place-items:center;border:0;background:transparent}
+.ag-install{display:block;margin:6px auto 0;font-size:11.5px;font-weight:700;color:var(--acc-ink);padding:8px 12px;background:transparent;border:0}
 </style>
 </head>
 <body>
@@ -829,6 +842,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
       <p class="ag-legal">En continuant, vous acceptez nos conditions d’utilisation et notre politique de confidentialité.</p>
     </div>
     <button class="ag-later" id="agLater">Plus tard · découvrir l’application</button>
+    <button type="button" class="ag-install" id="agInstall" style="display:none">Installer l’application Android</button>
     <div class="ag-perks"><span><i></i>Express</span><span><i></i>Paiement mobile</span><span><i></i>Points fidélité</span></div>
   </div>
 </div>
@@ -897,6 +911,12 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
         <button class="ibtn" id="bell" aria-label="Mes commandes"><svg viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-1.7 1.7A1 1 0 0 0 4 19.4h16a1 1 0 0 0 .7-1.7Z"/></svg><span class="dot" id="bellDot"></span></button>
       </div>
       <button class="upd-home" id="updHome" style="display:none"></button>
+      <div class="install-home" id="installHome" style="display:none">
+        <span class="ih-ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></span>
+        <div class="ih-txt"><b>Installer l’app DRC</b><span>Android · accès rapide et notifications</span></div>
+        <button class="ih-go" id="ihGo">Installer</button>
+        <button class="ih-x" id="ihX" aria-label="Fermer">×</button>
+      </div>
       <div class="cats" id="cats"></div>
       <div class="banner" id="promoBanner">
         <div><b id="bnT">Livraison offerte dès&nbsp;25&nbsp;000&nbsp;F</b><span id="bnS">Commande avant 18 h · Express à Dakar.</span><div class="wo">Ci sa keur</div></div>
@@ -1002,7 +1022,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.41', APP_BUILD = 102, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.42', APP_BUILD = 103, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -2048,6 +2068,54 @@ async function checkAppUpdate(manual = false){
     if (manual) toast('Vérification impossible, réessayez');
   }
 }
+/* ── installation de l'app Android depuis le web ── */
+const IS_ANDROID = /Android/i.test(navigator.userAgent);
+const INSTALL_APK = 'https://drc.sn/app/DarouRahmaneChicken-1.8.42.apk';
+let deferredInstallPrompt = null;
+function isInstalledApp(){
+  try { return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true || !!window.Android; } catch(e) { return !!window.Android; }
+}
+function canShowInstall(){
+  if (!IS_ANDROID || isInstalledApp()) return false;
+  if (localStorage.getItem('drc_install_done') === '1') return false;
+  return Number(localStorage.getItem('drc_install_dismissed') || 0) < Date.now();
+}
+function hideInstallUI(){
+  ['installHome','agInstall','mInstall'].forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+}
+function refreshInstallUI(){
+  const show = canShowInstall();
+  const home = document.getElementById('installHome'); if (home) home.style.display = show ? 'flex' : 'none';
+  const ag = document.getElementById('agInstall'); if (ag) ag.style.display = show ? 'block' : 'none';
+  if (!show) hideInstallUI();
+}
+async function installApp(){
+  if (isInstalledApp()) return;
+  if (deferredInstallPrompt) {
+    try {
+      deferredInstallPrompt.prompt();
+      const res = await deferredInstallPrompt.userChoice;
+      if (res && res.outcome === 'accepted') { localStorage.setItem('drc_install_done','1'); hideInstallUI(); toast('Application installée'); }
+      deferredInstallPrompt = null;
+      return;
+    } catch(e) { deferredInstallPrompt = null; }
+  }
+  toast('Téléchargement de l’APK Android…');
+  const a = document.createElement('a');
+  a.href = INSTALL_APK; a.download = 'DarouRahmaneChicken.apk';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function dismissInstall(){
+  localStorage.setItem('drc_install_dismissed', String(Date.now() + 7 * 86400000));
+  hideInstallUI();
+}
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); deferredInstallPrompt = e; refreshInstallUI();
+});
+window.addEventListener('appinstalled', () => {
+  localStorage.setItem('drc_install_done','1'); hideInstallUI(); toast('Application installée');
+});
+
 function renderUpdateBanner(){
   const b = $('#updHome'); if (!b) return;
   if (!updateInfo) { b.style.display = 'none'; b.innerHTML = ''; return; }
@@ -2219,11 +2287,12 @@ function paintAccount(){
       <button class="mi" id="mCall"><span class="mi-ic">${ICON.phone}</span><div>Appeler la boutique<small>70 917 09 20</small></div>${ICON.chev}</button>
       <button class="mi" id="mPro"><span class="mi-ic">${ICON.shop}</span><div>Devenir revendeur<small>Tarifs pros, commande hebdomadaire</small></div>${ICON.chev}</button>
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
+      ${canShowInstall() ? `<button class="mi" id="mInstall"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></span><div>Installer sur Android<small>APK officiel · version ${APP_VERSION}</small></div>${ICON.chev}</button>` : ''}
       <button class="mi" id="mUpdate"><span class="mi-ic">${ICON.update}</span><div>Mise à jour de l’application<small>Version ${APP_VERSION} · vérifier</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.41 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.42 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -2256,6 +2325,7 @@ function paintAccount(){
   $('#mPro').onclick = () => openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour, je souhaite devenir revendeur Darou Rahmane Chicken (commande pro hebdomadaire).')}`);
   $('#mSite').onclick = () => openExternal(SITE_URL);
   $('#mUpdate').onclick = () => checkAppUpdate(true);
+  if ($('#mInstall')) $('#mInstall').onclick = installApp;
   if ($('#mPwd')) $('#mPwd').onclick = openPwdSheet;
   if ($('#mOut')) $('#mOut').onclick = () => logout();
 }
@@ -2565,6 +2635,10 @@ function initOnb(){
 
 /* ════════════════ DÉMARRAGE ════════════════ */
 renderHome(); paintBadge(); updateBells(); initOnb(); bindAuthGate(); bindUpdateSheet(); bindPasswordSheets(); checkAppUpdate();
+$('#ihGo') && ($('#ihGo').onclick = installApp);
+$('#ihX') && ($('#ihX').onclick = dismissInstall);
+$('#agInstall') && ($('#agInstall').onclick = installApp);
+refreshInstallUI();
 setTimeout(() => { if ($('#onb').classList.contains('hidden')) maybeShowAuthGate(0); }, 1100);
 window.addEventListener('load', () => setTimeout(() => $('#boot').classList.add('out'), 250));
 setTimeout(() => $('#boot').classList.add('out'), 2500);
