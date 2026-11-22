@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611220931">
+<link rel="manifest" href="manifest.json?v=202611220941">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -731,16 +731,25 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
   will-change:transform,opacity,border-radius}
 @media (prefers-reduced-motion: reduce){.banner::after{animation:none;opacity:.28;transform:none}}
 
-.pcard .plate::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:2;
-  background:radial-gradient(ellipse at 32% 24%,rgba(255,255,255,.72) 0 10%,rgba(255,255,255,.28) 26%,rgba(255,255,255,0) 48%),radial-gradient(ellipse at 74% 82%,rgba(255,255,255,.3) 0 8%,rgba(255,255,255,0) 40%);
-  background-size:150% 150%,160% 160%;background-position:0% 0%,100% 100%;background-repeat:no-repeat;
-  filter:blur(4px);opacity:.46;mix-blend-mode:screen;
-  animation:liquidPhoto 8.8s ease-in-out infinite}
-.pcard:nth-child(2n) .plate::after{animation-delay:1.4s}
-.pcard:nth-child(3n) .plate::after{animation-delay:2.6s}
+.pcard .plate{overflow:hidden;isolation:isolate}
+.pcard .plate::before{content:"";position:absolute;inset:9px;border-radius:50%;pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse at 30% 17%,rgba(255,255,255,.52) 0 8%,rgba(255,255,255,.16) 24%,rgba(255,255,255,0) 46%);
+  filter:blur(3px);opacity:.62;mix-blend-mode:screen}
+.pcard .plate::after{content:"";position:absolute;inset:-8%;border-radius:48% 52% 60% 40% / 46% 48% 52% 54%;pointer-events:none;z-index:2;
+  background:radial-gradient(circle at 40% 38%,rgba(255,255,255,.96) 0 8%,rgba(255,255,255,.58) 20%,rgba(170,225,255,.2) 38%,rgba(255,255,255,0) 58%),linear-gradient(115deg,rgba(255,255,255,0) 34%,rgba(255,255,255,.5) 48%,rgba(255,255,255,.12) 55%,rgba(255,255,255,0) 68%);
+  filter:blur(3px);opacity:.78;mix-blend-mode:normal;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),inset 0 0 28px rgba(255,255,255,.3),0 12px 28px rgba(45,80,100,.18);
+  animation:photoLiquid 6.4s cubic-bezier(.45,0,.25,1) infinite;
+  will-change:transform,opacity,border-radius}
+.pcard:nth-child(2n) .plate::after{animation-delay:1.5s}
+.pcard:nth-child(3n) .plate::after{animation-delay:2.8s}
 .pcard .plate .soon{z-index:3}
-@keyframes liquidPhoto{0%,100%{background-position:0% 0%,100% 100%;opacity:.34}50%{background-position:20% 14%,80% 86%;opacity:.62}}
-@media (prefers-reduced-motion: reduce){.pcard .plate::after{animation:none}}
+@keyframes photoLiquid{
+  0%,100%{transform:translate3d(-28%,-20%,0) rotate(-14deg) scale(1.05);border-radius:52% 48% 42% 58% / 46% 54% 46% 54%;opacity:.28}
+  30%{transform:translate3d(7%,-4%,0) rotate(8deg) scale(1.24);border-radius:38% 62% 55% 45% / 50% 42% 58% 50%;opacity:.62}
+  62%{transform:translate3d(-2%,26%,0) rotate(-4deg) scale(1.12);border-radius:58% 42% 48% 52% / 44% 56% 44% 56%;opacity:.42}
+  82%{transform:translate3d(22%,10%,0) rotate(12deg) scale(1.18);border-radius:45% 55% 40% 60% / 55% 45% 55% 45%;opacity:.5}
+}
+@media (prefers-reduced-motion: reduce){.pcard .plate::after{animation:none;transform:translate3d(-10%,-8%,0) scale(1.1);opacity:.3}}
 
 /* ── récupération / mot de passe 1.8.20 ── */
 .ag-forgot{display:block;margin:9px 3px 0 auto;font-size:11px;font-weight:700;color:var(--acc-ink)}
@@ -1129,7 +1138,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.54', APP_BUILD = 115;
+const APP_VERSION = '1.8.55', APP_BUILD = 116;
 const PLAY_BUILD = false; /* remplacé par true dans le bundle Play Store */
 const APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
@@ -2548,7 +2557,7 @@ function paintAccount(){
       ${auth ? `<button class="mi danger" id="mDelete"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></span><div>Supprimer mon compte<small>Efface vos données personnelles</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.54 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.55 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
