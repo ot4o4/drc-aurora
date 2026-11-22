@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220713">
+<link rel="manifest" href="manifest.json?v=202611220718">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -780,7 +780,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
         <div class="tagp" style="left:22%;top:31%"><b data-price="8">Œufs</b><i style="height:9vh"></i></div>
         <div class="tagp" style="left:72%;top:52%"><b data-price="2">Filet · 5 000 F</b><i style="height:7vh"></i></div>
       </div>
-      <div class="txt"><img class="onb-logo" src="assets/img/logo.png" alt="Darou Rahmane Chicken"><h2>Votre poulet,<br>livré frais.</h2><p>Poulet Saf Sap préparé à la commande et livré chez vous à Dakar en 2 h.</p></div>
+      <div class="txt"><img class="onb-logo" src="assets/img/logo.png" alt="Darou Rahmane Chicken"><h2>Votre poulet,<br>livré frais.</h2><p>Poulet Saf Sap préparé à la commande, livraison express à Dakar.</p></div>
     </section>
     <section class="slide">
       <div class="ph"><img src="assets/img/hero2.webp" alt="">
@@ -824,7 +824,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
       <p class="ag-legal">En continuant, vous acceptez nos conditions d’utilisation et notre politique de confidentialité.</p>
     </div>
     <button class="ag-later" id="agLater">Plus tard · découvrir l’application</button>
-    <div class="ag-perks"><span><i></i>Livraison 2 h</span><span><i></i>Paiement mobile</span><span><i></i>Points fidélité</span></div>
+    <div class="ag-perks"><span><i></i>Livraison express</span><span><i></i>Paiement mobile</span><span><i></i>Points fidélité</span></div>
   </div>
 </div>
 
@@ -894,11 +894,11 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
       <button class="upd-home" id="updHome" style="display:none"></button>
       <div class="cats" id="cats"></div>
       <div class="banner" id="promoBanner">
-        <div><b id="bnT">Livraison offerte dès&nbsp;25&nbsp;000&nbsp;F</b><span id="bnS">Commande avant 18 h, livrée en 2 h partout à Dakar.</span><div class="wo">Ci sa keur</div></div>
+        <div><b id="bnT">Livraison offerte dès&nbsp;25&nbsp;000&nbsp;F</b><span id="bnS">Commande avant 18 h · livraison express à Dakar.</span><div class="wo">Ci sa keur</div></div>
         <img src="assets/img/cat-tout.webp" alt="">
       </div>
       <div class="benefits">
-        <div class="benefit"><span class="bico red"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm.9 5.2v4.9l3.5 2.1-1 1.7-4.5-2.7V7.2h2Z"/></svg></span><b>2 h</b><small>Livraison</small></div>
+        <div class="benefit"><span class="bico red"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm.9 5.2v4.9l3.5 2.1-1 1.7-4.5-2.7V7.2h2Z"/></svg></span><b>Express</b><small>Livraison</small></div>
         <div class="benefit"><span class="bico amber"><svg viewBox="0 0 24 24"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v1H3V6Zm0 3h18v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V9Zm3 6a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg></span><b>Wave · OM</b><small>Paiement</small></div>
         <div class="benefit"><span class="bico green"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.5 9.6 8 11 4.5-1.4 8-6 8-11V5l-8-3Zm-1 14.2-4.2-4.2 1.5-1.5 2.7 2.7 5.7-5.7 1.5 1.5-7.2 7.2Z"/></svg></span><b>Saf Sap</b><small>Poulet frais</small></div>
       </div>
@@ -997,12 +997,12 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.37', APP_BUILD = 98, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.38', APP_BUILD = 99, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
 /* réglages pilotés depuis l'application gérant (GET /api/settings), valeurs de secours ci-dessous */
-let SET = Object.assign({shop_open:true, closed_message:'', banner_title:'Livraison offerte dès 25 000 F', banner_text:'Commande avant 18 h, livrée en 2 h partout à Dakar.',
+let SET = Object.assign({shop_open:true, closed_message:'', banner_title:'Livraison offerte dès 25 000 F', banner_text:'Commande avant 18 h · livraison express à Dakar.',
   delivery_fee:2000, free_from:25000, payment_numbers:['70 917 09 20','78 924 95 55','78 471 17 67'], slots:['Express 2 h','Ce soir 18h–20h','Demain 9h–12h'],
   pay_methods:{wave:true, orange_money:true, cod:true}}, JSON.parse(localStorage.getItem('drc_app_settings') || '{}'));
 let FREE_FROM = SET.free_from, FEE = SET.delivery_fee;
@@ -1286,7 +1286,7 @@ function renderHome(){
     <article class="card pcard ${p.soon ? 'is-soon' : ''}" data-id="${p.id}">
       <h3>${esc(p.name)}</h3>
       <button class="fav ${favs.has(p.id) ? 'on' : ''}" data-fav="${p.id}" aria-label="Favori">${ICON.star}</button>
-      <div class="meta"><i>${ICON.check}</i>${p.soon ? 'Bientôt disponible' : 'Livré en 2 h'}</div>
+      <div class="meta"><i>${ICON.check}</i>${p.soon ? 'Bientôt disponible' : 'Livraison express'}</div>
       <div class="plate"><img src="${imgOf(p)}" alt="${esc(p.name)}" loading="lazy">${p.soon ? '<span class="soon">Bientôt</span>' : ''}</div>
       <button class="add" data-add="${p.id}" aria-label="${p.soon ? 'Me prévenir' : 'Ajouter au panier'}">${p.soon ? ICON.bell : ICON.plus}</button>
       <div class="pfoot"><div class="lvl">Frais ${bars(p)}</div><span class="sep"></span><div class="price">${p.soon ? 'Bientôt' : fcfa(p.price)}</div></div>
@@ -1296,7 +1296,7 @@ function renderHome(){
     return `<div class="card mcard" data-id="${p.id}">
       <div class="mrow"><div class="mthumb"><img src="${imgOf(p)}" alt="" loading="lazy"></div>
         <div class="mname"><b>${esc(p.name)}</b><span>${esc(p.unit)}</span></div>
-        <div class="mright"><b>${fcfa(p.price)}</b><span>${line ? line.qty + ' au panier' : 'Livré en 2 h'}</span></div></div>
+        <div class="mright"><b>${fcfa(p.price)}</b><span>${line ? line.qty + ' au panier' : 'Livraison express'}</span></div></div>
       <div class="macros"><div>Note<b>${String(p.rating).replace('.', ',')}</b></div><div>Vendus<b>${(p.sold || 0).toLocaleString('fr-FR')}</b></div><div>Livraison<b>2 h</b></div>
         <div class="act"><button class="edit" data-add="${p.id}" aria-label="Ajouter">${ICON.plus.replace('<svg','<svg style="stroke:var(--ink);stroke-width:2.2;fill:none"')}</button></div></div>
     </div>`;
@@ -2188,7 +2188,7 @@ function paintFavs(){
     <article class="card pcard ${p.soon ? 'is-soon' : ''}" data-id="${p.id}">
       <h3>${esc(p.name)}</h3>
       <button class="fav on" data-fav="${p.id}" aria-label="Favori">${ICON.star}</button>
-      <div class="meta"><i>${ICON.check}</i>${p.soon ? 'Bientôt disponible' : 'Livré en 2 h'}</div>
+      <div class="meta"><i>${ICON.check}</i>${p.soon ? 'Bientôt disponible' : 'Livraison express'}</div>
       <div class="plate"><img src="${imgOf(p)}" alt=""></div>
       <button class="add" data-add="${p.id}" aria-label="Ajouter">${p.soon ? ICON.bell : ICON.plus}</button>
       <div class="pfoot"><div class="lvl">Frais ${bars(p)}</div><span class="sep"></span><div class="price">${p.soon ? 'Bientôt' : fcfa(p.price)}</div></div>
@@ -2218,7 +2218,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.37 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.38 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
