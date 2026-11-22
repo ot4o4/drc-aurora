@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611220953">
+<link rel="manifest" href="manifest.json?v=202611220957">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -619,7 +619,7 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 .recipe .btn-ghost{background:linear-gradient(155deg,#A30F16,#7C090F);color:#fff;border:1px solid rgba(255,245,235,.32);box-shadow:0 12px 26px -14px rgba(50,0,0,.65),inset 0 1px 0 rgba(255,255,255,.18)}
 .recipe .btn-ghost span{color:#fff}
 
-.recipe .btn-ghost .rec-arrow{width:17px;height:17px;display:block;fill:none!important;stroke:#FFC2C4;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 5px rgba(255,61,70,.28));flex:none;margin-left:2px}
+.recipe .btn-ghost .rec-arrow{width:13px;height:13px;display:block;fill:#FF5A60;filter:drop-shadow(0 0 6px rgba(255,61,70,.55));flex:none;margin-left:2px}
 
 /* ── reflet verre sur les boutons 1.8.10 ── */
 .pill-btn:not(.light), .recipe .btn-ghost, .code-copy, .inv-link{position:relative;overflow:hidden;isolation:isolate}
@@ -1120,7 +1120,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.57', APP_BUILD = 118;
+const APP_VERSION = '1.8.58', APP_BUILD = 119;
 const PLAY_BUILD = false; /* remplacé par true dans le bundle Play Store */
 const APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
@@ -2539,7 +2539,7 @@ function paintAccount(){
       ${auth ? `<button class="mi danger" id="mDelete"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></span><div>Supprimer mon compte<small>Efface vos données personnelles</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.57 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.58 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
