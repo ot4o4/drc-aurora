@@ -850,6 +850,15 @@ button:not(.add)::after{content:"";position:absolute;inset:0;border-radius:inher
 }
 @media (prefers-reduced-motion: reduce){button::after,.add::before{animation:none;opacity:0}}
 </style>
+<style id="iphone-compact-nav">
+@media(max-width:600px){
+  .nav{width:calc(100% - 32px)!important;max-width:360px!important;margin-left:auto!important;margin-right:auto!important;padding-left:0!important;padding-right:0!important}
+}
+</style>
+<style id="client-nav-shine">
+.nav button:not(.scan)::after{animation:none!important;background:none!important;opacity:0!important}
+.nav button.on:not(.scan)::after{content:""!important;background:var(--acc)!important;opacity:1!important}
+</style>
 </head>
 <body>
 <div class="boot" id="boot"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div>
