@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220540">
+<link rel="manifest" href="manifest.json?v=202611220544">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -969,7 +969,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.25', APP_BUILD = 86, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.26', APP_BUILD = 87, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1010,7 +1010,7 @@ const N_ICON = {
   ship: '<svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v2h2.4a2 2 0 0 1 1.7.9l2.1 3.3c.2.3.3.7.3 1.1V16a2 2 0 0 1-2 2h-.8a3.2 3.2 0 0 1-6.2 0H9.5a3.2 3.2 0 0 1-6.2 0H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm13 4v2.5h3.8L18.2 10H16Zm-9.6 5.8a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Zm10.2 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></svg>',
   done: '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 14.2-4.2-4.2 1.5-1.5L11 13.2l5.7-5.7 1.5 1.5-7.2 7.2Z"/></svg>',
   invoice: '<svg viewBox="0 0 24 24"><path d="M6 2h8l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Zm7 1.5V8h4.5L13 3.5ZM8 12h8v2H8v-2Zm0 4h6v2H8v-2Z"/></svg>',
-  code: '<svg viewBox="0 0 24 24"><path d="M14 2a6 6 0 0 0-5.66 8H2v4h2v2h2v2h4v-4.34A6 6 0 1 0 14 2Zm2 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>',
+  code: '<svg viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="8" cy="8" r="4.5"/><path d="m11.2 11.2 8.3 8.3M16 16l2-2M18.5 18.5l2-2"/></svg>',
   update: '<svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg>'
 };
 const CATS = [['tout','Tout','cat-tout'],['entier','Entier','cat-entier'],['blancs','Filets','cat-blancs'],['cuisses','Cuisses','cat-cuisses'],['abats','Abats','cat-abats'],['oeufs','Œufs','cat-oeufs']];
@@ -1075,7 +1075,7 @@ const ICON = {
   cash:'<svg viewBox="0 0 24 24"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM5 9v2a2 2 0 0 0 2-2Zm12 0a2 2 0 0 0 2 2V9ZM5 13v2h2a2 2 0 0 0-2-2Zm14 0a2 2 0 0 0-2 2h2Z"/></svg>',
   user:'<svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.2-8 5v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1c0-2.8-3.6-5-8-5Z"/></svg>',
   shop:'<svg viewBox="0 0 24 24"><path d="M4 4h16l1 5a3 3 0 0 1-5 2.2A3 3 0 0 1 12 12a3 3 0 0 1-4-.8A3 3 0 0 1 3 9Zm1 9.5a4.9 4.9 0 0 0 3-.6 5 5 0 0 0 4 1.1 5 5 0 0 0 4-1.1 4.9 4.9 0 0 0 3 .6V20a1 1 0 0 1-1 1h-4v-5h-4v5H6a1 1 0 0 1-1-1Z"/></svg>',
-  key:'<svg viewBox="0 0 24 24"><path d="M14 2a8 8 0 0 0-7.7 10.2L2 16.5V22h5.5v-2.5H10V17h2.3l1.5-1.5A8 8 0 1 0 14 2Zm2.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/></svg>',
+  key:'<svg viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="8" cy="8" r="4.5"/><path d="m11.2 11.2 8.3 8.3M16 16l2-2M18.5 18.5l2-2"/></svg>',
   out:'<svg viewBox="0 0 24 24"><path d="M10 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-8v-2h8V5h-8Zm-.3 4.3L11 8.7 8.7 11H16v2H8.7l2.3 2.3-1.4 1.4L4.9 12Z"/></svg>',
   chev:'<svg class="chev" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   clock:'<svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg>',
@@ -2150,7 +2150,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.25 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.26 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
