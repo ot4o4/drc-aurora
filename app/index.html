@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220533">
+<link rel="manifest" href="manifest.json?v=202611220537">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -535,6 +535,16 @@ html[data-theme="dark"] .sticky-cta{background:linear-gradient(180deg,rgba(18,18
   font-size:11px;font-weight:700;border:1px solid rgba(255,255,255,.28)}
 .code-copy:active{background:rgba(255,255,255,.30)}
 html[data-theme="dark"] .code-card{background:linear-gradient(155deg,#FF3D46,#D4111A 72%,#C00E17)}
+.code-warn{display:flex;align-items:flex-start;gap:10px;padding:11px 13px;margin:0 0 10px;border-radius:16px;background:#FFF6E3;border:1px solid #F0D9A4;color:#6A4A08}
+.cw-ic{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;flex:none;background:#FFE9B8}
+.cw-ic svg{width:15px;height:15px;fill:#8A5B00}
+.code-warn b{display:block;font-size:11.5px;font-weight:700}
+.code-warn span:not(.cw-ic){display:block;font-size:10.5px;line-height:1.4;color:#8A6A2A;margin-top:2px}
+html[data-theme="dark"] .code-warn{background:#2F281A;border-color:#5C4B22;color:#F1D58A}
+html[data-theme="dark"] .code-warn span:not(.cw-ic){color:#C9AF72}
+html[data-theme="dark"] .cw-ic{background:#4A3B18}
+html[data-theme="dark"] .cw-ic svg{fill:#FFD36A}
+
 
 /* ── centre de notifications 1.8.2 ── */
 .notif-list{display:flex;flex-direction:column;gap:9px;margin-top:4px}
@@ -959,7 +969,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.23', APP_BUILD = 84, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.24', APP_BUILD = 85, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1708,7 +1718,8 @@ function openOrder(id, refresh){
     <div class="topbar"><button class="back" data-back aria-label="Retour">${ICON.back}</button><h1>${esc(o.id)}</h1>
       <button class="ibtn" id="oWa" style="width:52px;height:52px;flex-basis:52px" aria-label="WhatsApp">${ICON.wa}</button></div>
     <div class="gauge">${gaugeHTML(progress(o), frDate(o.created_at) + ' · ' + frTime(o.created_at), fcfa(o.total), statusText(o))}</div>
-    ${o.delivery_code && !['delivered','cancelled'].includes(o.status) ? `<div class="code-card"><div class="code-txt"><small>CODE DE LIVRAISON</small><b>${esc(o.delivery_code)}</b><span>À donner au livreur pour confirmer la réception.</span></div><button class="code-copy" id="oCopyCode" type="button">Copier</button></div>` : ''}
+    ${o.delivery_code && !['delivered','cancelled'].includes(o.status) ? `<div class="code-card"><div class="code-txt"><small>CODE DE LIVRAISON</small><b>${esc(o.delivery_code)}</b><span>À donner au livreur pour confirmer la réception.</span></div><button class="code-copy" id="oCopyCode" type="button">Copier</button></div>
+    <div class="code-warn"><span class="cw-ic"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.6 8 11 4.6-1.4 8-6 8-11V5l-8-3Zm-1 5h2v6h-2V7Zm0 8h2v2h-2v-2Z"/></svg></span><div><b>Ne le donnez pas avant la livraison.</b><span>Attendez d’avoir reçu votre commande. Le livreur vous demandera le code à ce moment-là.</span></div></div>` : ''}
     ${o.invoice ? `<button class="inv-link" id="oInv" type="button"><span class="inv-link-ico">${ICON.doc}</span><span class="inv-link-txt"><b>Facture ${esc(o.invoice.number)}</b><small>${o.invoice.seen_at ? 'Disponible' : 'Nouvelle facture'} · ${fcfa(o.invoice.total)}</small></span><span class="inv-chev">${ICON.chev}</span></button>` : ''}
     ${needPay ? `<button class="pill-btn acc" id="oPay" style="margin:6px 0 4px">Payer ${fcfa(o.total)} · ${PAY_LABEL[o.payment_method]}</button>` : ''}
     <div class="sec"><h2>Suivi</h2></div>
@@ -1736,7 +1747,7 @@ function openOrder(id, refresh){
       if (window.Android && window.Android.copy) window.Android.copy(code);
       else if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code);
       else { const ta = document.createElement('textarea'); ta.value = code; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
-      toast('Code copié');
+      toast('Code copié — à donner seulement à la livraison');
     } catch(e) { toast('Code : ' + code); }
   };
   if ($('#oInv')) $('#oInv').onclick = () => openInvoice(o.id);
@@ -2139,7 +2150,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.23 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.24 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
