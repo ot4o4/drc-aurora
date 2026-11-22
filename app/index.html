@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220726">
+<link rel="manifest" href="manifest.json?v=202611220729">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -613,23 +613,25 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 
 /* ── reflet verre sur les boutons 1.8.10 ── */
 .pill-btn:not(.light), .recipe .btn-ghost, .code-copy, .inv-link{position:relative;overflow:hidden;isolation:isolate}
+/* verre liquide : halo diffus qui se déforme lentement */
 .pill-btn:not(.light)::after, .recipe .btn-ghost::after, .code-copy::after, .inv-link::after{
-  content:"";position:absolute;top:-60%;left:-80%;width:62%;height:220%;z-index:3;pointer-events:none;
-  background:linear-gradient(100deg,rgba(255,255,255,0) 12%,rgba(255,255,255,.58) 50%,rgba(255,255,255,0) 88%);
-  transform:translateX(-230%) rotate(14deg);opacity:0;
-  animation:glassSheen 4.8s cubic-bezier(.4,0,.2,1) infinite;will-change:transform,opacity}
+  content:"";position:absolute;inset:-55%;z-index:3;pointer-events:none;
+  background:radial-gradient(circle at 50% 48%,rgba(255,255,255,.62) 0 16%,rgba(255,255,255,.24) 36%,rgba(255,255,255,.08) 52%,rgba(255,255,255,0) 68%);
+  border-radius:46% 54% 58% 42% / 44% 46% 54% 56%;
+  filter:blur(13px);opacity:.38;mix-blend-mode:screen;
+  animation:liquidGlass 8.4s cubic-bezier(.45,0,.25,1) infinite;
+  will-change:transform,opacity,border-radius}
 .recipe .btn-ghost::after{animation-delay:2.1s}
 .code-copy::after{animation-delay:2.7s}
-.inv-link::after{background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.75),rgba(255,255,255,0));animation-delay:3.3s}
-@keyframes glassSheen{
-  0%,16%{transform:translateX(-230%) rotate(14deg);opacity:0}
-  27%{opacity:.78}
-  50%{transform:translateX(190%) rotate(14deg);opacity:.78}
-  64%{transform:translateX(270%) rotate(14deg);opacity:0}
-  100%{transform:translateX(270%) rotate(14deg);opacity:0}
+.inv-link::after{animation-delay:3.3s;opacity:.3}
+@keyframes liquidGlass{
+  0%,100%{transform:translate3d(-30%,-12%,0) rotate(-12deg) scale(1.05);border-radius:46% 54% 58% 42% / 44% 46% 54% 56%;opacity:.28}
+  28%{transform:translate3d(7%,4%,0) rotate(8deg) scale(1.2);border-radius:60% 40% 46% 54% / 55% 44% 56% 45%;opacity:.55}
+  55%{transform:translate3d(30%,16%,0) rotate(-6deg) scale(1.06);border-radius:40% 60% 55% 45% / 50% 56% 44% 50%;opacity:.42}
+  80%{transform:translate3d(-4%,34%,0) rotate(10deg) scale(1.14);border-radius:54% 46% 42% 58% / 46% 54% 46% 54%;opacity:.3}
 }
 @media (prefers-reduced-motion: reduce){
-  .pill-btn::after,.recipe .btn-ghost::after,.code-copy::after,.inv-link::after{animation:none}
+  .pill-btn::after,.recipe .btn-ghost::after,.code-copy::after,.inv-link::after{animation:none;opacity:.24;transform:none}
 }
 
 /* ── auth gate 1.8.14 ── */
@@ -702,20 +704,23 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .upd-hint{font-size:9.5px;line-height:1.45;color:var(--muted);text-align:center;margin:8px 8px 0}
 .notif-ico.update{background:var(--acc-soft);color:var(--acc-ink)}
 
-.banner::after{content:"";position:absolute;top:-65%;left:-80%;width:58%;height:230%;z-index:3;pointer-events:none;
-  background:linear-gradient(100deg,rgba(255,255,255,0) 12%,rgba(255,255,255,.48) 50%,rgba(255,255,255,0) 88%);
-  transform:translateX(-230%) rotate(14deg);opacity:0;
-  animation:glassSheen 5.2s cubic-bezier(.4,0,.2,1) infinite;animation-delay:.6s;will-change:transform,opacity}
-@media (prefers-reduced-motion: reduce){.banner::after{animation:none}}
+.banner::after{content:"";position:absolute;inset:-45%;z-index:3;pointer-events:none;
+  background:radial-gradient(ellipse at 46% 42%,rgba(255,255,255,.52) 0 14%,rgba(255,255,255,.18) 34%,rgba(255,255,255,.05) 50%,rgba(255,255,255,0) 66%);
+  border-radius:44% 56% 60% 40% / 46% 42% 58% 54%;
+  filter:blur(16px);opacity:.36;mix-blend-mode:screen;
+  animation:liquidGlass 9.2s cubic-bezier(.45,0,.25,1) infinite;animation-delay:.6s;
+  will-change:transform,opacity,border-radius}
+@media (prefers-reduced-motion: reduce){.banner::after{animation:none;opacity:.28;transform:none}}
 
-.pcard .plate::after{content:"";position:absolute;inset:9px;border-radius:50%;pointer-events:none;z-index:2;
-  background:linear-gradient(115deg,rgba(255,255,255,0) 34%,rgba(255,255,255,.95) 47%,rgba(255,255,255,.55) 53%,rgba(255,255,255,0) 64%);
-  background-size:240% 100%;background-position:150% 0;background-repeat:no-repeat;
-  animation:photoSheen 6.2s ease-in-out infinite}
+.pcard .plate::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse at 32% 24%,rgba(255,255,255,.72) 0 10%,rgba(255,255,255,.28) 26%,rgba(255,255,255,0) 48%),radial-gradient(ellipse at 74% 82%,rgba(255,255,255,.3) 0 8%,rgba(255,255,255,0) 40%);
+  background-size:150% 150%,160% 160%;background-position:0% 0%,100% 100%;background-repeat:no-repeat;
+  filter:blur(4px);opacity:.46;mix-blend-mode:screen;
+  animation:liquidPhoto 8.8s ease-in-out infinite}
 .pcard:nth-child(2n) .plate::after{animation-delay:1.4s}
 .pcard:nth-child(3n) .plate::after{animation-delay:2.6s}
 .pcard .plate .soon{z-index:3}
-@keyframes photoSheen{0%{background-position:150% 0}45%,100%{background-position:-110% 0}}
+@keyframes liquidPhoto{0%,100%{background-position:0% 0%,100% 100%;opacity:.34}50%{background-position:20% 14%,80% 86%;opacity:.62}}
 @media (prefers-reduced-motion: reduce){.pcard .plate::after{animation:none}}
 
 /* ── récupération / mot de passe 1.8.20 ── */
@@ -997,7 +1002,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.40', APP_BUILD = 101, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.41', APP_BUILD = 102, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -2218,7 +2223,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.40 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.41 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
