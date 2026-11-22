@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220734">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="DRC">
+<link rel="apple-touch-icon" href="assets/img/icon-192.png">
+<link rel="manifest" href="manifest.json?v=202611220738">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -783,6 +787,24 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .install-home .ih-go{flex:none;height:30px;padding:0 11px;border-radius:99px;background:var(--acc);color:#fff;font-size:10.5px;font-weight:800;border:0}
 .install-home .ih-x{flex:none;width:24px;height:24px;border-radius:50%;color:rgba(255,255,255,.55);font-size:16px;line-height:1;display:grid;place-items:center;border:0;background:transparent}
 .ag-install{display:block;margin:6px auto 0;font-size:11.5px;font-weight:700;color:var(--acc-ink);padding:8px 12px;background:transparent;border:0}
+
+/* ── installation iOS 1.8.43 ── */
+.ios-sheet{position:fixed;inset:0;z-index:340;display:none;align-items:flex-end;justify-content:center;background:rgba(20,14,12,.5);backdrop-filter:blur(5px)}
+.ios-sheet.on{display:flex;animation:agFade .24s ease both}
+.ios-card{position:relative;width:100%;max-width:440px;background:var(--card);color:var(--ink);border-radius:28px 28px 0 0;padding:22px 20px calc(22px + var(--sb));box-shadow:0 -24px 70px -22px rgba(0,0,0,.5);animation:updUp .38s cubic-bezier(.2,.8,.2,1) both}
+.ios-x{position:absolute;right:16px;top:16px;width:42px;height:42px;border-radius:50%;background:var(--bg);color:var(--ink);font-size:22px;line-height:1;display:grid;place-items:center;border:1px solid var(--line)}
+.ios-ic{width:52px;height:52px;border-radius:17px;background:var(--acc-soft);color:var(--acc-ink);display:grid;place-items:center;margin-bottom:14px}
+.ios-ic svg{width:27px;height:27px;fill:currentColor}
+.ios-kicker{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc-ink);font-weight:800;margin:0 0 5px}
+.ios-card h2{font-size:26px;line-height:1.05;letter-spacing:-.035em;margin:0}
+.ios-lead{font-size:13px;line-height:1.5;color:var(--muted);margin:10px 0 14px}
+.ios-steps{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:9px}
+.ios-steps li{display:flex;align-items:flex-start;gap:11px;background:var(--bg);border-radius:14px;padding:11px 12px;font-size:12.5px;line-height:1.4;color:var(--ink2)}
+.ios-steps li>span{width:22px;height:22px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;font-size:11px;font-weight:800;color:var(--acc-ink);flex:none}
+.ios-steps b{color:var(--ink);font-weight:700}
+.ios-share{display:inline-block;width:15px;height:15px;fill:currentColor;vertical-align:-2px;margin:0 2px}
+.ios-card .pill-btn{width:100%}
+.ios-note{font-size:10px;line-height:1.45;color:var(--muted);text-align:center;margin:10px 8px 0}
 </style>
 </head>
 <body>
@@ -823,6 +845,22 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 </div>
 
 <!-- écran d’authentification après l’intro -->
+<div class="ios-sheet" id="iosSheet" aria-hidden="true">
+  <div class="ios-card">
+    <button class="ios-x" id="iosClose" aria-label="Fermer">×</button>
+    <div class="ios-ic"><svg viewBox="0 0 24 24"><path d="M12 2 6.5 7.5l1.4 1.4L11 5.8V16h2V5.8l3.1 3.1 1.4-1.4L12 2ZM5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8h-2v7H7v-7H5Z"/></svg></div>
+    <p class="ios-kicker">Installer sur iPhone / iPad</p>
+    <h2>Ajoutez DRC à<br>votre écran d’accueil.</h2>
+    <p class="ios-lead" id="iosLead">Trois gestes suffisent pour installer l’application depuis Safari.</p>
+    <ol class="ios-steps">
+      <li><span>1</span><div>Ouvrez cette page dans <b>Safari</b>.</div></li>
+      <li><span>2</span><div>Touchez <b>Partager</b> <svg class="ios-share" viewBox="0 0 24 24"><path d="M12 2 7.5 6.5 9 8l2-2V15h2V6l2 2 1.5-1.5L12 2ZM5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8h-2v7H7v-7H5Z"/></svg> en bas de l’écran.</div></li>
+      <li><span>3</span><div>Choisissez <b>Sur l’écran d’accueil</b>, puis <b>Ajouter</b>.</div></li>
+    </ol>
+    <button class="pill-btn" id="iosDone">J’ai compris</button>
+    <p class="ios-note">L’app s’ouvrira ensuite en plein écran, comme une application installée.</p>
+  </div>
+</div>
 <div class="auth-gate" id="authGate" aria-hidden="true">
   <div class="ag-photo"></div>
   <div class="ag-wrap">
@@ -842,7 +880,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
       <p class="ag-legal">En continuant, vous acceptez nos conditions d’utilisation et notre politique de confidentialité.</p>
     </div>
     <button class="ag-later" id="agLater">Plus tard · découvrir l’application</button>
-    <button type="button" class="ag-install" id="agInstall" style="display:none">Installer l’application Android</button>
+    <button type="button" class="ag-install" id="agInstall" style="display:none">Installer l’application</button>
     <div class="ag-perks"><span><i></i>Express</span><span><i></i>Paiement mobile</span><span><i></i>Points fidélité</span></div>
   </div>
 </div>
@@ -913,7 +951,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
       <button class="upd-home" id="updHome" style="display:none"></button>
       <div class="install-home" id="installHome" style="display:none">
         <span class="ih-ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></span>
-        <div class="ih-txt"><b>Installer l’app DRC</b><span>Android · accès rapide et notifications</span></div>
+        <div class="ih-txt"><b>Installer l’app DRC</b><span id="ihSub">Accès rapide et notifications</span></div>
         <button class="ih-go" id="ihGo">Installer</button>
         <button class="ih-x" id="ihX" aria-label="Fermer">×</button>
       </div>
@@ -1022,7 +1060,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.42', APP_BUILD = 103, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.43', APP_BUILD = 104, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1281,6 +1319,7 @@ function pop(){
 }
 window.appBack = function(){
   if ($('#updSheet').classList.contains('on')) { closeUpdateSheet(true); return true; }
+  if ($('#iosSheet') && $('#iosSheet').classList.contains('on')) { closeIOSInstall(); return true; }
   if ($('#authGate').classList.contains('on')) { closeAuthGate(); return true; }
   if (!$('#onb').classList.contains('hidden')) return false;
   if (stack.length || !TABS.includes(route.name)) { pop(); return true; }
@@ -2070,13 +2109,15 @@ async function checkAppUpdate(manual = false){
 }
 /* ── installation de l'app Android depuis le web ── */
 const IS_ANDROID = /Android/i.test(navigator.userAgent);
+const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const IS_IOS_SAFARI = IS_IOS && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(navigator.userAgent);
 const INSTALL_APK = 'https://drc.sn/app/DarouRahmaneChicken-1.8.42.apk';
 let deferredInstallPrompt = null;
 function isInstalledApp(){
   try { return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true || !!window.Android; } catch(e) { return !!window.Android; }
 }
 function canShowInstall(){
-  if (!IS_ANDROID || isInstalledApp()) return false;
+  if ((!IS_ANDROID && !IS_IOS) || isInstalledApp()) return false;
   if (localStorage.getItem('drc_install_done') === '1') return false;
   return Number(localStorage.getItem('drc_install_dismissed') || 0) < Date.now();
 }
@@ -2086,11 +2127,13 @@ function hideInstallUI(){
 function refreshInstallUI(){
   const show = canShowInstall();
   const home = document.getElementById('installHome'); if (home) home.style.display = show ? 'flex' : 'none';
+  const sub = document.getElementById('ihSub'); if (sub) sub.textContent = IS_IOS ? 'iPhone/iPad · écran d’accueil' : 'Android · accès rapide et notifications';
   const ag = document.getElementById('agInstall'); if (ag) ag.style.display = show ? 'block' : 'none';
   if (!show) hideInstallUI();
 }
 async function installApp(){
   if (isInstalledApp()) return;
+  if (IS_IOS) { showIOSInstall(); return; }
   if (deferredInstallPrompt) {
     try {
       deferredInstallPrompt.prompt();
@@ -2109,9 +2152,22 @@ function dismissInstall(){
   localStorage.setItem('drc_install_dismissed', String(Date.now() + 7 * 86400000));
   hideInstallUI();
 }
+function showIOSInstall(){
+  const sh = document.getElementById('iosSheet'); if (!sh) return;
+  const lead = document.getElementById('iosLead');
+  if (lead) lead.textContent = IS_IOS_SAFARI
+    ? 'Trois gestes suffisent pour installer l’application depuis Safari.'
+    : 'Ouvrez d’abord drc.sn/app dans Safari : les autres navigateurs iOS ne permettent pas d’ajouter l’app à l’écran d’accueil.';
+  sh.classList.add('on'); sh.setAttribute('aria-hidden','false');
+}
+function closeIOSInstall(){
+  const sh = document.getElementById('iosSheet'); if (!sh) return;
+  sh.classList.remove('on'); sh.setAttribute('aria-hidden','true');
+}
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault(); deferredInstallPrompt = e; refreshInstallUI();
 });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshInstallUI(); });
 window.addEventListener('appinstalled', () => {
   localStorage.setItem('drc_install_done','1'); hideInstallUI(); toast('Application installée');
 });
@@ -2287,12 +2343,12 @@ function paintAccount(){
       <button class="mi" id="mCall"><span class="mi-ic">${ICON.phone}</span><div>Appeler la boutique<small>70 917 09 20</small></div>${ICON.chev}</button>
       <button class="mi" id="mPro"><span class="mi-ic">${ICON.shop}</span><div>Devenir revendeur<small>Tarifs pros, commande hebdomadaire</small></div>${ICON.chev}</button>
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
-      ${canShowInstall() ? `<button class="mi" id="mInstall"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></span><div>Installer sur Android<small>APK officiel · version ${APP_VERSION}</small></div>${ICON.chev}</button>` : ''}
+      ${canShowInstall() ? `<button class="mi" id="mInstall"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></span><div>Installer l’application<small>${IS_IOS ? 'iPhone/iPad · écran d’accueil' : 'Android · APK officiel'}</small></div>${ICON.chev}</button>` : ''}
       <button class="mi" id="mUpdate"><span class="mi-ic">${ICON.update}</span><div>Mise à jour de l’application<small>Version ${APP_VERSION} · vérifier</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.42 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.43 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -2638,6 +2694,9 @@ renderHome(); paintBadge(); updateBells(); initOnb(); bindAuthGate(); bindUpdate
 $('#ihGo') && ($('#ihGo').onclick = installApp);
 $('#ihX') && ($('#ihX').onclick = dismissInstall);
 $('#agInstall') && ($('#agInstall').onclick = installApp);
+$('#iosClose') && ($('#iosClose').onclick = closeIOSInstall);
+$('#iosDone') && ($('#iosDone').onclick = closeIOSInstall);
+$('#iosSheet') && $('#iosSheet').addEventListener('click', e => { if (e.target.id === 'iosSheet') closeIOSInstall(); });
 refreshInstallUI();
 setTimeout(() => { if ($('#onb').classList.contains('hidden')) maybeShowAuthGate(0); }, 1100);
 window.addEventListener('load', () => setTimeout(() => $('#boot').classList.add('out'), 250));
