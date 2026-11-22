@@ -1,5 +1,5 @@
 /* Darou Rahmane Chicken — service worker (coque hors ligne) */
-const CACHE = 'drc-app-202611220917';
+const CACHE = 'drc-app-202611220928';
 const SHELL = ['./', './index.html', './manifest.json',
   './assets/img/logo.png', './assets/img/p1.webp', './assets/img/p2.webp', './assets/img/p3.webp',
   './assets/img/p4.webp', './assets/img/p5.webp', './assets/img/p8.webp', './assets/img/p9.webp',
