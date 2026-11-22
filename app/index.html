@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611220831">
+<link rel="manifest" href="manifest.json?v=202611220901">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -340,6 +340,9 @@ html[data-theme="dark"] .drv-acts button.wa svg{fill:#25794A}
 .mi .mi-ic svg{width:20px;height:20px;fill:var(--ink)}
 .mi .chev{margin-left:auto;width:16px;height:16px;stroke:var(--muted);stroke-width:2;fill:none}
 .mi small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+.mi.danger{color:var(--acc-ink)}
+.mi.danger .mi-ic{background:var(--acc-soft)}
+.mi.danger .mi-ic svg{fill:var(--acc-ink)}
 .seg2{display:flex;background:var(--seg);border-radius:999px;padding:4px;margin-bottom:14px}
 .seg2 button{flex:1;height:42px;border-radius:999px;font-weight:600;font-size:14.5px;color:var(--ink2)}
 .seg2 button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px -4px rgba(0,0,0,.25)}
@@ -977,6 +980,20 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
   </div>
 </div>
 
+<!-- suppression de compte -->
+<div class="fp-sheet" id="delSheet" aria-hidden="true">
+  <div class="fp-card">
+    <div class="fp-head"><span class="fp-ic" style="background:var(--acc-soft);color:var(--acc-ink)"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></span><button class="fp-close" id="delClose" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="fp-kicker">Suppression définitive</p>
+    <h2>Supprimer mon compte ?</h2>
+    <p class="fp-sub">Votre nom, téléphone, adresses, points et bons seront effacés. Les commandes déjà facturées seront anonymisées pour nos obligations comptables. Cette action est irréversible.</p>
+    <div class="ag-field"><label>Confirmez avec votre mot de passe</label><input id="delPass" type="password" autocomplete="current-password" placeholder="Votre mot de passe"></div>
+    <p class="fp-err" id="delErr"></p>
+    <button class="pill-btn" id="delGo">Supprimer définitivement</button>
+    <button class="fp-later" id="delLater">Annuler</button>
+  </div>
+</div>
+
 <div class="app" id="app">
   <div class="stage" id="stage">
 
@@ -1100,7 +1117,8 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.49', APP_BUILD = 110, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.50', APP_BUILD = 111;
+const PLAY_BUILD = false; /* remplacé par true dans le bundle Play Store */ APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1361,6 +1379,7 @@ window.appBack = function(){
   if ($('#updSheet').classList.contains('on')) { closeUpdateSheet(true); return true; }
   if ($('#iosSheet') && $('#iosSheet').classList.contains('on')) { closeIOSInstall(); return true; }
   if ($('#androidSheet') && $('#androidSheet').classList.contains('on')) { closeAndroidInstall(); return true; }
+  if ($('#delSheet') && $('#delSheet').classList.contains('on')) { closeDeleteSheet(); return true; }
   if ($('#authGate').classList.contains('on')) { closeAuthGate(); return true; }
   if (!$('#onb').classList.contains('hidden')) return false;
   if (stack.length || !TABS.includes(route.name)) { pop(); return true; }
@@ -2141,6 +2160,7 @@ function maybeShowAuthGate(delay = 0){
 
 /* ════════════════ MISE À JOUR IN-APP ════════════════ */
 async function checkAppUpdate(manual = false){
+  if (PLAY_BUILD) return;
   try {
     const j = await api('/api/app/version');
     const code = Number(j.code) || 0;
@@ -2232,6 +2252,7 @@ window.addEventListener('appinstalled', () => {
 
 function renderUpdateBanner(){
   const b = $('#updHome'); if (!b) return;
+  if (PLAY_BUILD) { b.style.display = 'none'; b.innerHTML = ''; return; }
   if (!updateInfo) { b.style.display = 'none'; b.innerHTML = ''; return; }
   b.style.display = 'flex';
   b.innerHTML = `<span class="uh-ic">${ICON.update}</span><span class="uh-txt"><b>Mise à jour ${esc(updateInfo.version)}</b><span>Nouvelle version disponible — installer</span></span><span class="uh-go">Installer</span>`;
@@ -2328,6 +2349,35 @@ async function changePassword(){
     btn.disabled = false; btn.textContent = 'Enregistrer le nouveau mot de passe';
   }
 }
+function openDeleteSheet(){
+  const sh = $('#delSheet'); if (!sh) return;
+  $('#delPass').value = ''; $('#delErr').textContent = '';
+  sh.classList.add('on'); sh.setAttribute('aria-hidden','false');
+  setTimeout(() => { try { $('#delPass').focus({preventScroll:true}); } catch(e) {} }, 260);
+}
+function closeDeleteSheet(){
+  const sh = $('#delSheet'); if (!sh) return;
+  sh.classList.remove('on'); sh.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+async function deleteAccount(){
+  const pw = $('#delPass').value;
+  if (!pw) { $('#delErr').textContent = 'Saisissez votre mot de passe.'; return; }
+  const btn = $('#delGo'); btn.disabled = true; btn.textContent = 'Suppression…';
+  try {
+    await api('/api/auth/delete-account', {method:'POST', body:{password:pw}, timeout:30000});
+    closeDeleteSheet();
+    cart = []; saveCart(); paintBadge();
+    ordersCache = {}; myOrders = [];
+    localStorage.removeItem('drc_app_orders_cache');
+    localStorage.removeItem('drc_app_my_orders');
+    logout(true);
+    toast('Compte supprimé'); vib(30);
+    go('home');
+  } catch(e) {
+    $('#delErr').textContent = e.message === 'invalid_password' ? 'Mot de passe incorrect.' : e.message === 'rate_limited' ? 'Trop d’essais, patientez.' : e.status === 0 ? 'Pas de connexion.' : 'Suppression impossible.';
+  } finally { btn.disabled = false; btn.textContent = 'Supprimer définitivement'; }
+}
 function bindPasswordSheets(){
   if (!$('#fpSheet')) return;
   $('#fpClose').onclick = closeForgotPassword;
@@ -2335,6 +2385,9 @@ function bindPasswordSheets(){
   $('#fpGo').onclick = requestPasswordReset;
   $('#fpWa').onclick = forgotWhatsApp;
   $('#pwdClose').onclick = closePwdSheet;
+  $('#delClose').onclick = closeDeleteSheet;
+  $('#delLater').onclick = closeDeleteSheet;
+  $('#delGo').onclick = deleteAccount;
   $('#pwdGo').onclick = changePassword;
   $('#fpPhone').addEventListener('keydown', e => { if (e.key === 'Enter') requestPasswordReset(); });
   $('#pwdConfirm').addEventListener('keydown', e => { if (e.key === 'Enter') changePassword(); });
@@ -2477,11 +2530,12 @@ function paintAccount(){
       <button class="mi" id="mPro"><span class="mi-ic">${ICON.shop}</span><div>Devenir revendeur<small>Tarifs pros, commande hebdomadaire</small></div>${ICON.chev}</button>
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${canShowInstall() ? `<button class="mi" id="mInstall"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></span><div>Installer l’application<small>${IS_IOS ? 'iPhone/iPad · écran d’accueil' : 'Android · APK officiel'}</small></div>${ICON.chev}</button>` : ''}
-      <button class="mi" id="mUpdate"><span class="mi-ic">${ICON.update}</span><div>Mise à jour de l’application<small>Version ${APP_VERSION} · vérifier</small></div>${ICON.chev}</button>
+      ${PLAY_BUILD ? '' : `<button class="mi" id="mUpdate"><span class="mi-ic">${ICON.update}</span><div>Mise à jour de l’application<small>Version ${APP_VERSION} · vérifier</small></div>${ICON.chev}</button>`}
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
+      ${auth ? `<button class="mi danger" id="mDelete"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></span><div>Supprimer mon compte<small>Efface vos données personnelles</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.49 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.50 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -2514,11 +2568,12 @@ function paintAccount(){
   $('#mCall').onclick = () => dial(SHOP_CALL);
   $('#mPro').onclick = () => openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour, je souhaite devenir revendeur Darou Rahmane Chicken (commande pro hebdomadaire).')}`);
   $('#mSite').onclick = () => openExternal(SITE_URL);
-  $('#mUpdate').onclick = () => checkAppUpdate(true);
+  if ($('#mUpdate')) $('#mUpdate').onclick = () => checkAppUpdate(true);
   if ($('#mInstall')) $('#mInstall').onclick = installApp;
   if (auth && auth.user) loadLoyalty();
   if ($('#mPwd')) $('#mPwd').onclick = openPwdSheet;
   if ($('#mOut')) $('#mOut').onclick = () => logout();
+  if ($('#mDelete')) $('#mDelete').onclick = openDeleteSheet;
 }
 async function doAuth(){
   const phone = $('#aPhone').value.trim(), password = $('#aPass').value, name = $('#aName') ? $('#aName').value.trim() : '';
