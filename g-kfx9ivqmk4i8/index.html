@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '5.5';
+window.DRC_WEB = '5.6';
 </script>
 
 <meta charset="utf-8">
@@ -305,6 +305,26 @@ details.adv .fld{margin-top:12px}
 .temp-pwd .acts button{flex:1;height:40px;border-radius:999px;font-size:11.5px;font-weight:700;background:#fff;color:#1F5C33}
 .temp-pwd .acts button:last-child{background:#25D366;color:#fff}
 .temp-pwd p{font-size:10px;line-height:1.4;color:#4C7A5B;margin:8px 2px 0}
+
+/* ── célébration livraison 5.6 ── */
+.delivery-burst{position:fixed;inset:0;z-index:400;display:none;place-items:center;background:rgba(20,14,12,.42);backdrop-filter:blur(5px);overflow:hidden}
+.delivery-burst.on{display:grid;animation:dbFade .22s ease both}
+@keyframes dbFade{from{opacity:0}to{opacity:1}}
+.db-card{position:relative;z-index:2;width:min(340px,86vw);padding:28px 24px 22px;border-radius:28px;background:#FFFDF9;color:#1A1A1A;text-align:center;
+  box-shadow:0 30px 80px -24px rgba(0,0,0,.5);animation:dbPop .55s cubic-bezier(.16,1,.3,1) both}
+@keyframes dbPop{0%{transform:scale(.7) translateY(20px);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1) translateY(0);opacity:1}}
+.db-check{width:82px;height:82px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;background:#E4F5E9;color:#1F8A4C;
+  box-shadow:0 0 0 8px rgba(31,138,76,.08);animation:dbCheck .6s cubic-bezier(.16,1,.3,1) .08s both}
+@keyframes dbCheck{0%{transform:scale(0) rotate(-25deg)}70%{transform:scale(1.12) rotate(4deg)}100%{transform:scale(1) rotate(0)}}
+.db-check svg{width:44px;height:44px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.db-kicker{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:#1F8A4C;font-weight:800;margin:0 0 5px}
+.db-card h2{font-size:25px;line-height:1.05;letter-spacing:-.035em;margin:0 0 8px}
+.db-card b{display:block;font-size:13px;font-family:ui-monospace,monospace;letter-spacing:.04em;color:#5C554F}
+.db-card > span{display:block;font-size:22px;font-weight:700;margin-top:3px;color:#B10E17}
+.db-card small{display:block;font-size:9.5px;color:#9A9188;margin-top:15px}
+.db-confetti{position:absolute;inset:0;pointer-events:none;z-index:1}
+.db-confetti i{position:absolute;top:-8vh;width:7px;height:14px;border-radius:2px;opacity:.9;animation-name:dbFall;animation-timing-function:linear;animation-fill-mode:forwards}
+@keyframes dbFall{0%{transform:translateY(-10vh) rotate(0)}100%{transform:translateY(115vh) rotate(760deg)}}
 </style>
 
 <style id="compta">
@@ -596,12 +616,23 @@ body{font-family:PJS,system-ui,sans-serif}
 
 <section class="view" data-view="detail" id="vDetail" style="display:none"></section>
 <section class="view" data-view="userdetail" id="vUserDetail" style="display:none"></section>
+<div class="delivery-burst" id="deliveryBurst" aria-hidden="true">
+  <div class="db-card">
+    <div class="db-check"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg></div>
+    <p class="db-kicker">COLIS LIVRÉ</p>
+    <h2>Commande livrée !</h2>
+    <b id="dbOrder">—</b>
+    <span id="dbTotal"></span>
+    <small>Touchez pour fermer</small>
+  </div>
+  <div class="db-confetti" id="dbConfetti"></div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.5').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.6').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -1169,8 +1200,47 @@ function paintOrders(){
   $('#ordersList').querySelectorAll('[data-id]').forEach(c => c.onclick = () => openDetail(c.dataset.id));
 }
 $('#q').addEventListener('input', e => { query = e.target.value; paintOrders(); });
+function orderStatusMap(list){ const m = {}; (list || []).forEach(o => { if (o && o.id) m[o.id] = o.status; }); return m; }
+let orderStatusBaseline = null;
+function checkDeliveryTransition(prev, next){
+  if (!orderStatusBaseline) {
+    orderStatusBaseline = { ids: new Set((next || []).map(o => o && o.id)), statuses: orderStatusMap(next) };
+    return;
+  }
+  const before = orderStatusBaseline.statuses;
+  const ids = orderStatusBaseline.ids;
+  const newly = (next || []).find(o => o && o.status === 'delivered' && before[o.id] && before[o.id] !== 'delivered' && ids.has(o.id));
+  orderStatusBaseline = { ids: new Set((next || []).map(o => o && o.id)), statuses: orderStatusMap(next) };
+  if (newly) celebrateDelivery(newly);
+}
+function celebrateDelivery(o){
+  const el = $('#deliveryBurst'); if (!el) return;
+  $('#dbOrder').textContent = o.id || 'Commande';
+  $('#dbTotal').textContent = fcfa(o.total);
+  const box = $('#dbConfetti'); box.innerHTML = '';
+  const colors = ['#E51D26', '#1F8A4C', '#F2B233', '#1A1A1A', '#FFFFFF', '#F7A6AA'];
+  for (let i = 0; i < 34; i++) {
+    const p = document.createElement('i');
+    p.style.left = (Math.random() * 100) + '%';
+    p.style.background = colors[i % colors.length];
+    p.style.animationDuration = (1.5 + Math.random() * 1.4) + 's';
+    p.style.animationDelay = (Math.random() * .35) + 's';
+    p.style.transform = 'rotate(' + Math.floor(Math.random() * 360) + 'deg)';
+    p.style.width = (5 + Math.random() * 6) + 'px';
+    p.style.height = (9 + Math.random() * 11) + 'px';
+    box.appendChild(p);
+  }
+  el.classList.add('on'); el.setAttribute('aria-hidden','false');
+  clearTimeout(window.__dbTimer);
+  window.__dbTimer = setTimeout(closeDeliveryBurst, 3800);
+  vib(35);
+}
+function closeDeliveryBurst(){
+  const el = $('#deliveryBurst'); if (!el) return;
+  el.classList.remove('on'); el.setAttribute('aria-hidden','true');
+}
 async function refreshOrders(){
-  try { const j = await api('/api/admin/orders'); ORDERS = j.orders || []; paintOrders(); paintLast(); if (detailId) openDetail(detailId); }
+  try { const j = await api('/api/admin/orders'); const next = j.orders || []; checkDeliveryTransition(ORDERS, next); ORDERS = next; paintOrders(); paintLast(); if (detailId) openDetail(detailId); }
   catch(e) {}
 }
 function paintLast(){
@@ -1339,6 +1409,7 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 let toastT = null;
 function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2400); }
 window.appBack = function(){
+  if ($('#deliveryBurst') && $('#deliveryBurst').classList.contains('on')) { closeDeliveryBurst(); return true; }
   if (detailId) { closeDetail(); return true; }
   if (view !== 'home') { go('home'); return true; }
   return false;
@@ -1346,6 +1417,7 @@ window.appBack = function(){
 window.appResume = function(){ pulse(); };
 setInterval(() => { if (document.visibilityState === 'visible') refreshOrders().catch(() => {}); }, 60000);
 
+$('#deliveryBurst').onclick = closeDeliveryBurst;
 /* démarrage */
 function shake(el){ if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
 async function migrateToken(){
