@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220339">
+<link rel="manifest" href="manifest.json?v=202611220347">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -598,6 +598,8 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 .recipe .steps li{background:rgba(255,255,255,.16);color:#fff}
 .recipe .btn-ghost{background:#141312;color:#fff;box-shadow:0 12px 26px -14px rgba(20,0,0,.6)}
 .recipe .btn-ghost span{color:#fff}
+
+.recipe .btn-ghost .rec-arrow{width:17px;height:17px;display:block;fill:currentColor;flex:none;margin-left:1px}
 </style>
 </head>
 <body>
@@ -677,7 +679,7 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
           <h3>Le wrap dont tout Dakar parle.</h3>
           <p>Nos <b>blancs de poulet</b>, une poêle et vingt minutes : la recette de <b>@Suukëru keur gui</b>, filmée en cuisine.</p>
           <ul class="steps"><li>Découpe</li><li>Marinade</li><li>Poêle</li></ul>
-          <button class="btn-ghost" id="recetteLink">Voir la recette complète <span>→</span></button>
+          <button class="btn-ghost" id="recetteLink">Voir la recette complète <svg class="rec-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3.2c0-1.1 1.2-1.7 2-1.1l14.6 7.6c.9.5.9 1.7 0 2.2L6 19.9c-.8.5-2 0-2-1.1v-4.9l3.4-1.9L4 9.1V3.2Z"/></svg></button>
         </div>
       </div>
     </section>
@@ -1735,7 +1737,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.7 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.8 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
