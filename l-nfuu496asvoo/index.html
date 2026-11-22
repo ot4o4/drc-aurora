@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.24';
+window.DRC_WEB = '4.25';
 </script>
 
 <meta charset="utf-8">
@@ -831,7 +831,7 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.24').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.25').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -1098,7 +1098,7 @@ async function loadMissionMap(o){
     if(seq!==trackingSeq||!document.getElementById('mission-tracking').classList.contains('open'))return;
     document.getElementById('mission-map').classList.remove('hidden');document.getElementById('map-fallback').classList.add('hidden');
     missionMap=L.map('mission-map',{preferCanvas:true,attributionControl:false,zoomControl:true,zoomAnimation:false,fadeAnimation:false,markerZoomAnimation:false}).setView([destination.lat,destination.lng],13);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,updateWhenIdle:true,keepBuffer:2,crossOrigin:true}).addTo(missionMap);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri · HERE · Garmin · OpenStreetMap',updateWhenIdle:true,keepBuffer:2,crossOrigin:true}).addTo(missionMap);
     routeGroup=L.layerGroup().addTo(missionMap);routeGroup.addLayer(L.circleMarker([DEPOT.lat,DEPOT.lng],{radius:9,color:'#fff',weight:3,fillColor:'#B3121A',fillOpacity:1}).bindTooltip('Dépôt DRC'));routeGroup.addLayer(L.circleMarker([destination.lat,destination.lng],{radius:9,color:'#fff',weight:3,fillColor:'#1A1A1A',fillOpacity:1}).bindTooltip('Destination'));
     let bounds=[[DEPOT.lat,DEPOT.lng],[destination.lat,destination.lng]],route=null;
     try{const url='https://routing.openstreetmap.de/routed-car/route/v1/driving/'+DEPOT.lng+','+DEPOT.lat+';'+destination.lng+','+destination.lat+'?overview=full&geometries=geojson';const data=await mapFetch(url);if(seq!==trackingSeq)return;route=data.routes&&data.routes[0];if(!route)throw new Error('Itinéraire introuvable');const points=route.geometry.coordinates.map(p=>[p[1],p[0]]);routeGroup.addLayer(L.polyline(points,{color:'#B3121A',weight:5,opacity:.9,lineCap:'round'}));bounds=points;document.getElementById('route-distance').textContent=(route.distance/1000).toFixed(1).replace('.',',')+' km';const mins=Math.max(1,Math.round(route.duration/60));document.getElementById('route-duration').textContent=mins+' min';document.getElementById('route-eta').textContent=new Date(Date.now()+mins*60000).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});}catch(e){if(seq!==trackingSeq)return;routeGroup.addLayer(L.polyline(bounds,{color:'#A30F16',weight:3,dashArray:'7 8'}));document.getElementById('route-distance').textContent='—';document.getElementById('route-duration').textContent='—';document.getElementById('route-eta').textContent='—'}
@@ -1458,7 +1458,7 @@ function renderTourMap(){
     if(tourMap){tourMap.remove();tourMap=null}
     const el=document.getElementById('tour-map');if(!el)return;
     tourMap=L.map('tour-map',{preferCanvas:true,attributionControl:false,zoomControl:true}).setView([DEPOT.lat,DEPOT.lng],12);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,updateWhenIdle:true,keepBuffer:2,crossOrigin:true}).addTo(tourMap);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'© Esri · HERE · Garmin · OpenStreetMap',updateWhenIdle:true,keepBuffer:2,crossOrigin:true}).addTo(tourMap);
     const pts=[[DEPOT.lat,DEPOT.lng]];
     L.circleMarker([DEPOT.lat,DEPOT.lng],{radius:10,color:'#fff',weight:3,fillColor:'#C8161D',fillOpacity:1}).addTo(tourMap).bindTooltip('Dépôt DRC');
     stops.forEach(o=>{const g=orderGps(o);pts.push([g.lat,g.lng]);L.circleMarker([g.lat,g.lng],{radius:8,color:'#fff',weight:3,fillColor:'#1A1A1A',fillOpacity:1}).addTo(tourMap).bindTooltip(esc((o.customer&&o.customer.name)||o.id))});
