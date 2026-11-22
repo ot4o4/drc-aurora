@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220437">
+<link rel="manifest" href="manifest.json?v=202611220458">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -627,7 +627,10 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 .auth-gate{position:fixed;inset:0;z-index:200;display:none;overflow-y:auto;background:linear-gradient(180deg,#FFF9F3 0%,#FBF3EC 48%,#F7EDE4 100%);color:var(--ink);-webkit-overflow-scrolling:touch}
 .auth-gate.on{display:block;animation:agFade .38s ease both}
 @keyframes agFade{from{opacity:0}to{opacity:1}}
-.ag-glow{position:fixed;top:-140px;left:50%;transform:translateX(-50%);width:520px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(229,29,38,.20),rgba(229,29,38,0) 66%);pointer-events:none}
+.ag-photo{position:absolute;top:0;left:0;right:0;height:62vh;min-height:390px;background:url('assets/img/hero1.webp') center 32%/cover no-repeat;opacity:.34;filter:saturate(.92);pointer-events:none}
+.ag-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,249,243,.10) 0%,rgba(255,249,243,.42) 42%,rgba(251,243,236,.92) 82%,#FBF3EC 100%)}
+html[data-theme="dark"] .ag-photo{opacity:.22}
+html[data-theme="dark"] .ag-photo::after{background:linear-gradient(180deg,rgba(24,20,18,.22) 0%,rgba(24,20,18,.62) 52%,#171413 92%)}
 .ag-wrap{position:relative;max-width:440px;margin:0 auto;padding:calc(22px + var(--sb)) 20px 34px}
 .ag-close{position:absolute;top:calc(14px + var(--sb));right:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.75);display:grid;place-items:center;box-shadow:0 8px 20px -12px rgba(80,20,10,.35)}
 .ag-close svg{width:17px;height:17px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
@@ -742,7 +745,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 
 <!-- écran d’authentification après l’intro -->
 <div class="auth-gate" id="authGate" aria-hidden="true">
-  <div class="ag-glow"></div>
+  <div class="ag-photo"></div>
   <div class="ag-wrap">
     <button class="ag-close" id="agClose" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="ag-brand"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div>
@@ -893,7 +896,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.18', APP_BUILD = 79, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.19', APP_BUILD = 80, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1996,7 +1999,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.18 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.19 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
