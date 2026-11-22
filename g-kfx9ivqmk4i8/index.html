@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '5.6';
+window.DRC_WEB = '5.7';
 </script>
 
 <meta charset="utf-8">
@@ -325,6 +325,25 @@ details.adv .fld{margin-top:12px}
 .db-confetti{position:absolute;inset:0;pointer-events:none;z-index:1}
 .db-confetti i{position:absolute;top:-8vh;width:7px;height:14px;border-radius:2px;opacity:.9;animation-name:dbFall;animation-timing-function:linear;animation-fill-mode:forwards}
 @keyframes dbFall{0%{transform:translateY(-10vh) rotate(0)}100%{transform:translateY(115vh) rotate(760deg)}}
+
+/* ── mise à jour gérant 5.7 ── */
+.upd-modal{position:fixed;inset:0;z-index:360;display:none;align-items:flex-end;justify-content:center;background:rgba(20,14,12,.48);backdrop-filter:blur(4px)}
+.upd-modal.on{display:flex;animation:updFade .22s ease both}
+@keyframes updFade{from{opacity:0}to{opacity:1}}
+.upd-card{position:relative;width:100%;max-width:440px;background:#FFFDF9;color:#1A1A1A;border-radius:28px 28px 0 0;padding:24px 20px calc(22px + var(--sb));box-shadow:0 -20px 60px -20px rgba(0,0,0,.45);animation:updRise .4s cubic-bezier(.16,1,.3,1) both}
+@keyframes updRise{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.upd-x{position:absolute;right:16px;top:16px;width:42px;height:42px;border-radius:50%;background:#fff;border:1px solid #EAE2D9;color:#1A1A1A;font-size:22px;line-height:1;display:grid;place-items:center;box-shadow:0 8px 20px -12px rgba(60,20,10,.28)}
+.upd-ic{width:52px;height:52px;border-radius:17px;background:#FBE8E7;color:#B10E17;display:grid;place-items:center;margin-bottom:14px}
+.upd-ic svg{width:26px;height:26px;fill:currentColor}
+.upd-kicker{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#B10E17;font-weight:800;margin:0 0 5px}
+.upd-card h2{font-size:26px;line-height:1.05;letter-spacing:-.035em;margin:0}
+.upd-notes{font-size:13px;line-height:1.5;color:#6E665F;margin:10px 0 14px}
+.upd-meta{display:flex;align-items:center;justify-content:space-between;background:#F7F3EE;border-radius:14px;padding:11px 13px;margin-bottom:14px}
+.upd-meta b{font-size:13px}
+.upd-meta span{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#9A9188;font-weight:800}
+.upd-card .pill{height:52px;margin-top:0}
+.upd-later{display:block;margin:10px auto 0;padding:8px 12px;font-size:12px;font-weight:600;color:#8A827C}
+.upd-hint{font-size:9.5px;line-height:1.45;color:#9A9188;text-align:center;margin:8px 8px 0}
 </style>
 
 <style id="compta">
@@ -627,12 +646,25 @@ body{font-family:PJS,system-ui,sans-serif}
   </div>
   <div class="db-confetti" id="dbConfetti"></div>
 </div>
+<div class="upd-modal" id="updModal" aria-hidden="true">
+  <div class="upd-card">
+    <button class="upd-x" id="updClose" aria-label="Fermer">×</button>
+    <div class="upd-ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></div>
+    <p class="upd-kicker">Mise à jour disponible</p>
+    <h2>Nouvelle version<br>du gérant.</h2>
+    <p class="upd-notes" id="updNotes">Améliorations et corrections de l’application.</p>
+    <div class="upd-meta"><b id="updVer">5.7</b><span>APK Android</span></div>
+    <button class="pill acc" id="updDownload">Télécharger et installer</button>
+    <button class="upd-later" id="updLater">Plus tard</button>
+    <p class="upd-hint">Le fichier se télécharge dans le navigateur. Ouvrez-le pour installer la mise à jour.</p>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.6').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.7').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -663,6 +695,8 @@ body{font-family:PJS,system-ui,sans-serif}
 'use strict';
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = () => DEFAULT_API;
+const APP_VERSION = '5.7', APP_BUILD = 48;
+let updateInfo = null;
 const NATIVE = window.Android || null;
 /* On n'alerte le téléphone que si l'utilisateur N'EST PAS dans l'app (écran éteint, autre app,
    ou app en arrière-plan) : quand il regarde l'écran, la commande apparaît déjà dans la liste et
@@ -749,6 +783,7 @@ async function doLogin(){
     $('#login').style.display = 'none'; $('#app').style.display = 'flex';
     await refreshAll();
     startPoll();
+    checkAppUpdate();
     toast('Bienvenue');
   } catch(e) {
     if (e.message === 'unauthorized' || e.status === 401) { token = ''; localStorage.removeItem('drc_g_tok'); $('#fCode').classList.add('err'); shake($('#fCode')); }
@@ -1319,6 +1354,7 @@ function paintSettings(){
     <div class="card menu">
       <button class="mi" id="mClient"><span class="ic">${ICON.phone}</span><div>Application client<small>Ouvrir Darou Rahmane Chicken — la boutique</small></div>${ICON.chev}</button>
       <button class="mi" id="mUsers"><span class="ic">${ICON.users}</span><div>Clients<small>Comptes, points, commandes</small></div>${ICON.chev}</button>
+      <button class="mi" id="mUpdate"><span class="ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></span><div>Mise à jour<small>Version ${APP_VERSION} · vérifier</small></div>${ICON.chev}</button>
       <button class="mi" id="mBackup"><span class="ic">${ICON.box}</span><div>Sauvegarder la base<small>Fichier JSON téléchargé</small></div>${ICON.chev}</button>
       <button class="mi" id="mRevoke"><span class="ic">${ICON.out}</span><div>Déconnecter tous les appareils<small style="display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:2px">Gérant et livreurs devront ressaisir leur code</small></div>${ICON.chev}</button>
       <button class="mi" id="mDecon"><span class="ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>
@@ -1349,6 +1385,7 @@ function paintSettings(){
   };
   $('#mClient').onclick = () => openClientApp();
   $('#mUsers').onclick = openUsers;
+  $('#mUpdate').onclick = () => checkAppUpdate(true);
   $('#mBackup').onclick = async () => {
     try { const j = await api('/api/admin/backup'); const t = JSON.stringify(j); if (NATIVE && NATIVE.saveFile) NATIVE.saveFile('drc-sauvegarde-' + new Date().toISOString().slice(0,10) + '.json', t); else { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([t], {type:'application/json'})); a.download = 'drc-sauvegarde.json'; a.click(); } toast('Sauvegarde prête'); }
     catch(e) { toast('Sauvegarde impossible'); }
@@ -1359,6 +1396,39 @@ function paintSettings(){
     try { const j = await api('/api/admin/sessions/revoke', {method:'POST', body:{}}); token = j.token; localStorage.setItem('drc_g_tok', token); toast('Tous les autres appareils sont déconnectés'); }
     catch(e) { toast('Action impossible'); }
   };
+}
+
+/* ── mise à jour in-app ── */
+async function checkAppUpdate(manual = false){
+  try {
+    const j = await api('/api/app/version?app=gerant');
+    const code = Number(j.code) || 0;
+    if (code > APP_BUILD) {
+      updateInfo = { version: j.version || '', code, apk_url: j.apk_url || '', notes: j.notes || '' };
+      const seen = Number(localStorage.getItem('drc_g_upd_seen') || 0);
+      if (manual || seen < code) showUpdateWindow();
+      if (manual) toast('Mise à jour ' + (j.version || '') + ' disponible');
+    } else if (manual) toast('Application à jour · ' + APP_VERSION);
+  } catch(e) { if (manual) toast('Vérification impossible'); }
+}
+function showUpdateWindow(){
+  if (!updateInfo) return;
+  const m = $('#updModal'); if (!m) return;
+  $('#updNotes').textContent = updateInfo.notes || 'Améliorations et corrections de l’application.';
+  $('#updVer').textContent = updateInfo.version || '—';
+  m.classList.add('on'); m.setAttribute('aria-hidden','false');
+}
+function closeUpdateWindow(){
+  const m = $('#updModal'); if (!m) return;
+  m.classList.remove('on'); m.setAttribute('aria-hidden','true');
+  if (updateInfo) localStorage.setItem('drc_g_upd_seen', updateInfo.code);
+}
+function downloadUpdate(){
+  if (!updateInfo) return;
+  const url = updateInfo.apk_url || 'https://drc.sn/g-kfx9ivqmk4i8/DRC-Gerant.apk';
+  closeUpdateWindow();
+  toast('Téléchargement de la mise à jour…');
+  openExt(url);
 }
 
 /* ── rafraîchissement + notifications ── */
@@ -1418,6 +1488,9 @@ window.appResume = function(){ pulse(); };
 setInterval(() => { if (document.visibilityState === 'visible') refreshOrders().catch(() => {}); }, 60000);
 
 $('#deliveryBurst').onclick = closeDeliveryBurst;
+$('#updClose').onclick = closeUpdateWindow;
+$('#updLater').onclick = closeUpdateWindow;
+$('#updDownload').onclick = downloadUpdate;
 /* démarrage */
 function shake(el){ if (!el) return; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
 async function migrateToken(){
@@ -1432,7 +1505,7 @@ async function migrateToken(){
   await migrateToken();
   if (!token) { $('#login').style.display = 'flex'; $('#app').style.display = 'none'; return; }
   $('#login').style.display = 'none'; $('#app').style.display = 'flex';
-  try { await refreshAll(); startPoll(); pulse(); }
+  try { await refreshAll(); startPoll(); pulse(); checkAppUpdate(); }
   catch(e) { if (e.message === 'unauthorized') { $('#login').style.display = 'flex'; $('#app').style.display = 'none'; } }
 })();
 </script>

@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.26';
+window.DRC_WEB = '4.27';
 </script>
 
 <meta charset="utf-8">
@@ -113,6 +113,11 @@ body.drc2 #liveText{color:var(--ink2)}
 .dlv-err{min-height:20px;color:var(--bad);font-size:11.5px;font-weight:600;margin:5px 2px 8px}
 .dlv-sheet .pill-btn{display:flex;align-items:center;justify-content:center;width:100%;height:54px;border:0;border-radius:999px;font-size:15px;font-weight:600;color:#fff;background:linear-gradient(160deg,#D91F27,#A90F16)}
 .dlv-sheet .pill-btn.light{background:var(--seg);color:var(--ink);margin-top:8px}
+
+.upd-version{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:14px;padding:11px 13px;margin:2px 0 12px}
+.upd-version b{font-size:13px;color:var(--ink)}
+.upd-version span{font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}
+.upd-hint{font-size:9.5px!important;line-height:1.45!important;color:var(--muted)!important;text-align:center;margin:8px 8px 0!important}
 </style>
 <style>
 /* ── identité Darou Rahmane Chicken (même monde visuel que les applications) ── */
@@ -808,12 +813,25 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
     <div class="sec"><h2>Actions</h2></div>
     <div class="account-actions">
       <button onclick="loadOrders();toast('Missions actualisées')"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/></svg></span>Actualiser mes missions</button>
+      <button onclick="checkAppUpdate(true)"><span class="ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></span>Mettre à jour l’application</button>
       <button onclick="openClientApp()"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg></span>Ouvrir l’application client</button>
       <button class="danger" onclick="lock()"><span class="ic"><svg viewBox="0 0 24 24"><path d="M7 10V8a5 5 0 0 1 10 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h1Zm2 0h6V8a3 3 0 0 0-6 0v2Z"/></svg></span>Verrouiller l’application</button>
     </div>
   </div>
 </section>
 
+<div id="updModal" class="dlv-modal hidden" role="dialog" aria-modal="true" aria-label="Mise à jour">
+  <div class="dlv-sheet">
+    <button class="dlv-x" id="updClose" aria-label="Fermer">×</button>
+    <span class="dlv-kicker">Mise à jour disponible</span>
+    <h3>Nouvelle version</h3>
+    <p id="updNotes">Améliorations et corrections de l’application.</p>
+    <div class="upd-version"><b id="updVer">4.27</b><span>APK Android</span></div>
+    <button class="pill-btn" onclick="downloadUpdate()">Télécharger et installer</button>
+    <button class="pill-btn light" onclick="closeUpdateWindow()">Plus tard</button>
+    <p class="upd-hint">Le fichier se télécharge dans le navigateur. Ouvrez-le pour installer la mise à jour.</p>
+  </div>
+</div>
 <div id="dlvModal" class="dlv-modal hidden" role="dialog" aria-modal="true" aria-label="Code de livraison">
   <div class="dlv-sheet">
     <button class="dlv-x" id="dlvClose" aria-label="Fermer">×</button>
@@ -831,7 +849,7 @@ body.drc2 .account-api{margin:18px 20px 0;font-size:11px;color:var(--muted);text
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.26').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.27').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -863,6 +881,8 @@ const NATIVE = window.Android || null;
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 function validServer(v){return /^https:\/\/[^\s]+$/.test(v)||/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(v)}
 const API = () => DEFAULT_API;
+const APP_VERSION = '4.27', APP_BUILD = 53;
+let updateInfo = null;
 let token = localStorage.getItem('drc_driver') || '';
 let tabTouched = false;
 function autoTab(){if(tabTouched)return;const st=o=>o.status||'pending';const dep=orders.some(o=>['confirmed','preparing','paid'].includes(st(o)));const sh=orders.some(o=>st(o)==='shipping');const t=dep?'depot':(sh?'shipping':'depot');if(t===tab)return;tab=t;['depot','shipping','done'].forEach(x=>{const b=document.getElementById('t-'+x);if(b){b.classList.toggle('on',x===t);b.setAttribute('aria-selected',x===t?'true':'false')}})}
@@ -896,6 +916,38 @@ function openClientApp(){
   window.open('https://drc.sn/app', '_blank', 'noopener');
 }
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2600)}
+async function checkAppUpdate(manual = false){
+  try {
+    const r = await api('/api/app/version?app=livreur');
+    if (!r.ok || !r.data) throw new Error('version');
+    const j = r.data; const code = Number(j.code) || 0;
+    if (code > APP_BUILD) {
+      updateInfo = { version: j.version || '', code, apk_url: j.apk_url || '', notes: j.notes || '' };
+      const seen = Number(localStorage.getItem('drc_l_upd_seen') || 0);
+      if (manual || seen < code) showUpdateWindow();
+      if (manual) toast('Mise à jour ' + (j.version || '') + ' disponible');
+    } else if (manual) toast('Application à jour · ' + APP_VERSION);
+  } catch(e) { if (manual) toast('Vérification impossible'); }
+}
+function showUpdateWindow(){
+  if (!updateInfo) return;
+  const m = document.getElementById('updModal'); if (!m) return;
+  document.getElementById('updNotes').textContent = updateInfo.notes || 'Améliorations et corrections de l’application.';
+  document.getElementById('updVer').textContent = updateInfo.version || '—';
+  m.classList.remove('hidden');
+}
+function closeUpdateWindow(){
+  const m = document.getElementById('updModal'); if (!m) return;
+  m.classList.add('hidden');
+  if (updateInfo) localStorage.setItem('drc_l_upd_seen', updateInfo.code);
+}
+function downloadUpdate(){
+  if (!updateInfo) return;
+  const url = updateInfo.apk_url || 'https://drc.sn/l-nfuu496asvoo/DRC-Livreur.apk';
+  closeUpdateWindow(); toast('Téléchargement de la mise à jour…');
+  try { if (NATIVE && NATIVE.openExternal) { NATIVE.openExternal(url); return; } } catch(e) {}
+  window.open(url, '_blank', 'noopener');
+}
 function net(state,txt){const b=document.getElementById('service');b.classList.toggle('online',state==='on');b.classList.toggle('offline',state==='off');document.getElementById('service-text').textContent=txt}
 function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms||10)}catch(e){}}
 async function api(path, opts){const c=new AbortController();const t=setTimeout(()=>c.abort(),22000);try{const r=await fetch(API()+path,Object.assign({cache:'no-store'},opts||{},{signal:c.signal,headers:Object.assign({'X-Admin-Token':token,'Content-Type':'application/json'},(opts&&opts.headers)||{})}));let j=null;try{j=await r.json()}catch(e){}return {ok:r.ok,status:r.status,data:j}}finally{clearTimeout(t)}}
@@ -909,7 +961,7 @@ function showLogin(){try{window.scrollTo(0,0)}catch(e){};stopAutoShare();documen
 async function login(){const inp=document.getElementById('lg-code');const code=(inp.value||'').trim();const fld=document.getElementById('lg-field');if(!code){toast('Saisissez votre code livreur');shake(fld);return}const btn=document.getElementById('lg-btn');btn.classList.add('loading');btn.disabled=true;try{const r=await fetch(DEFAULT_API+'/api/staff/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,role:'driver'}),cache:'no-store'});inp.value='';if(r.status===429){const j=await r.json().catch(()=>({}));fld.classList.add('err');shake(fld);toast('Trop d’essais — réessayez dans '+Math.ceil((j.retry_after||600)/60)+' min');return}if(r.status!==200){fld.classList.add('err');shake(fld);toast(r.status===401?'Code livreur incorrect':'Serveur indisponible');return}const j=await r.json();token=j.token;localStorage.setItem('drc_driver',token);fld.classList.remove('err');enter()}catch(e){toast('Serveur injoignable — réessayez')}finally{btn.classList.remove('loading');btn.disabled=false}}
 function shake(el){if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')}
 async function migrateToken(){if(!token||token.startsWith('stf.'))return;try{const r=await fetch(DEFAULT_API+'/api/staff/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code:token,role:'driver'}),cache:'no-store'});if(r.status===200){token=(await r.json()).token;localStorage.setItem('drc_driver',token)}else if(r.status===401){token='';localStorage.removeItem('drc_driver')}}catch(e){}}
-function enter(){try{window.scrollTo(0,0)}catch(e){};setTimeout(startAutoShare,700);document.getElementById('view-login').classList.add('hidden');document.getElementById('view-app').classList.remove('hidden');document.querySelectorAll('.app-only').forEach(e=>e.classList.remove('hidden'));document.getElementById('tour-date').innerHTML=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}).replace(',','<br>');loadOrders();clearInterval(timer);timer=setInterval(loadOrders,20000)}
+function enter(){try{window.scrollTo(0,0)}catch(e){};setTimeout(startAutoShare,700);document.getElementById('view-login').classList.add('hidden');document.getElementById('view-app').classList.remove('hidden');document.querySelectorAll('.app-only').forEach(e=>e.classList.remove('hidden'));document.getElementById('tour-date').innerHTML=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'short'}).replace(',','<br>');loadOrders();clearInterval(timer);timer=setInterval(loadOrders,20000);setTimeout(checkAppUpdate,1200)}
 function itemsText(o){return (o.items||[]).map(i=>esc(i.name||'')+' ×'+Number(i.qty||1)).join('<br>')||'—'}
 function paymentMethod(o){const c=o.customer||{};return o.payment_method||(c.pay_phone?'wave':'cod')}
 function isCod(o){return paymentMethod(o)==='cod'}
@@ -1491,7 +1543,10 @@ function closeAccount(){
   if(!document.querySelector('.tracking-page.open'))document.body.style.overflow='';
 }
 document.getElementById('account-page').addEventListener('click',e=>{if(e.target.id==='account-page')closeAccount()});
+document.getElementById('updClose').onclick=closeUpdateWindow;
 window.appBack=function(){
+  var up=document.getElementById('updModal');
+  if(up&&!up.classList.contains('hidden')){closeUpdateWindow();return true}
   var acc=document.getElementById('account-page');
   if(acc&&acc.classList.contains('open')){closeAccount();return true}
   var map=document.getElementById('tour-map-page');
