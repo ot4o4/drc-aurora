@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220407">
+<link rel="manifest" href="manifest.json?v=202611220417">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -622,6 +622,71 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 @media (prefers-reduced-motion: reduce){
   .pill-btn::after,.nav .scan::after,.recipe .btn-ghost::after,.code-copy::after,.inv-link::after{animation:none}
 }
+
+/* ── auth gate 1.8.14 ── */
+.auth-gate{position:fixed;inset:0;z-index:200;display:none;overflow-y:auto;background:linear-gradient(180deg,#FFF9F3 0%,#FBF3EC 48%,#F7EDE4 100%);color:var(--ink);-webkit-overflow-scrolling:touch}
+.auth-gate.on{display:block;animation:agFade .38s ease both}
+@keyframes agFade{from{opacity:0}to{opacity:1}}
+.ag-glow{position:fixed;top:-140px;left:50%;transform:translateX(-50%);width:520px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(229,29,38,.20),rgba(229,29,38,0) 66%);pointer-events:none}
+.ag-wrap{position:relative;max-width:440px;margin:0 auto;padding:calc(22px + var(--sb)) 20px 34px}
+.ag-close{position:absolute;top:calc(14px + var(--sb));right:14px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.75);display:grid;place-items:center;box-shadow:0 8px 20px -12px rgba(80,20,10,.35)}
+.ag-close svg{width:17px;height:17px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.ag-brand{display:flex;justify-content:center;margin:4px 0 24px}
+.ag-brand img{height:66px;width:auto;background:var(--logo-plate);border-radius:14px;padding:0 8px}
+.ag-kicker{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--acc-ink);font-weight:800;text-align:center;margin:0 0 8px}
+.ag-title{font-size:31px;line-height:1.03;letter-spacing:-.045em;font-weight:600;text-align:center;margin:0}
+.ag-sub{font-size:13.5px;line-height:1.5;color:var(--ink2);text-align:center;max-width:330px;margin:12px auto 20px}
+.ag-card{background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.9);border-radius:28px;padding:16px 16px 14px;box-shadow:0 26px 60px -34px rgba(80,25,15,.55),0 2px 0 rgba(255,255,255,.8) inset;backdrop-filter:blur(16px)}
+.ag-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#F3ECE5;border-radius:15px;padding:4px}
+.ag-seg button{height:40px;border-radius:12px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.ag-seg button.on{background:#fff;color:var(--ink);box-shadow:0 6px 16px -10px rgba(50,20,10,.45)}
+.ag-field{margin-top:12px}
+.ag-field label{display:block;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin:0 0 6px 3px}
+.ag-in{display:flex;align-items:center;gap:6px;height:52px;border-radius:15px;background:#F7F1EA;border:1px solid transparent;padding:0 13px;transition:border-color .2s,background .2s}
+.ag-in:focus-within{border-color:rgba(229,29,38,.45);background:#fff}
+.ag-in span{font-size:13px;font-weight:700;color:var(--ink2);border-right:1px solid rgba(80,40,30,.12);padding-right:9px}
+.ag-in input{flex:1;min-width:0;width:100%;height:100%;background:transparent!important;font-size:15px;color:var(--ink);border:0!important;outline:0!important;box-shadow:none!important;border-radius:0;padding:0;margin:0;appearance:none}
+.ag-in input:focus{outline:0!important;box-shadow:none!important}
+.ag-field > input{width:100%;height:52px;border-radius:15px;background:#F7F1EA;border:1px solid transparent;padding:0 13px;font-size:15px;color:var(--ink);outline:0;box-shadow:none}
+.ag-field > input:focus{border-color:rgba(229,29,38,.45);background:#fff;outline:0}
+html[data-theme="dark"] .ag-field > input{background:#2A2320;color:#fff}
+html[data-theme="dark"] .ag-field > input:focus{background:#332925}
+.ag-in input::placeholder{color:#B7A79E}
+.ag-eye{width:32px;height:32px;display:grid;place-items:center;flex:none;border-radius:50%}
+.ag-eye svg{width:18px;height:18px;fill:var(--muted)}
+.ag-eye.on svg{fill:var(--acc-ink)}
+.ag-err{min-height:16px;margin:8px 2px 0;font-size:11.5px;font-weight:600;color:#B10E17}
+.ag-card .pill-btn{width:100%;margin-top:6px;height:52px;font-size:14.5px;background:linear-gradient(155deg,#FF3D46,#D4111A 74%,#C00E17)!important;color:#fff;box-shadow:0 16px 30px -18px rgba(229,29,38,.8)}
+.ag-legal{font-size:9.5px;line-height:1.45;color:#A18F85;text-align:center;margin:10px 8px 0}
+.ag-later{display:block;margin:18px auto 0;font-size:12px;font-weight:600;color:var(--ink2);padding:8px 12px}
+.ag-perks{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:18px}
+.ag-perks span{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:600;color:var(--muted)}
+.ag-perks i{width:5px;height:5px;border-radius:50%;background:var(--acc)}
+html[data-theme="dark"] .auth-gate{background:linear-gradient(180deg,#201A18,#171413)}
+html[data-theme="dark"] .ag-card{background:rgba(35,29,27,.94);border-color:rgba(255,255,255,.06)}
+html[data-theme="dark"] .ag-seg{background:#2A2320}
+html[data-theme="dark"] .ag-seg button.on{background:#3A302C;color:#fff}
+html[data-theme="dark"] .ag-in{background:#2A2320}
+html[data-theme="dark"] .ag-in:focus-within{background:#332925}
+html[data-theme="dark"] .ag-close{background:rgba(45,37,33,.85)}
+html[data-theme="dark"] .ag-close svg{stroke:#fff}
+/* ── mise à jour 1.8.14 ── */
+.upd-sheet{position:fixed;inset:0;z-index:220;display:none;align-items:flex-end;justify-content:center;background:rgba(20,12,10,.48);backdrop-filter:blur(4px)}
+.upd-sheet.on{display:flex;animation:agFade .25s ease both}
+.upd-card{width:100%;max-width:460px;background:var(--card);border-radius:30px 30px 0 0;padding:24px 20px calc(22px + var(--sb));box-shadow:0 -20px 60px -20px rgba(0,0,0,.4);animation:updUp .4s cubic-bezier(.2,.8,.2,1) both;color:var(--ink)}
+@keyframes updUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.upd-ic{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc-ink);margin-bottom:14px}
+.upd-ic svg{width:27px;height:27px;fill:currentColor}
+.upd-kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc-ink);font-weight:800;margin:0 0 6px}
+.upd-card h2{font-size:25px;line-height:1.08;letter-spacing:-.03em;margin:0}
+.upd-notes{font-size:13px;line-height:1.5;color:var(--ink2);margin:10px 0 14px}
+.upd-meta{display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:14px;padding:11px 13px;margin-bottom:14px}
+.upd-meta b{font-size:13px}
+.upd-meta span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.upd-card .pill-btn{width:100%;height:52px;background:linear-gradient(155deg,#FF3D46,#D4111A 74%,#C00E17)!important;color:#fff;box-shadow:0 16px 30px -18px rgba(229,29,38,.8)}
+.upd-later{display:block;margin:10px auto 0;font-size:12px;font-weight:600;color:var(--muted);padding:8px 12px}
+.upd-hint{font-size:9.5px;line-height:1.45;color:var(--muted);text-align:center;margin:8px 8px 0}
+.notif-ico.update{background:var(--acc-soft);color:var(--acc-ink)}
 </style>
 </head>
 <body>
@@ -658,6 +723,43 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
   <div class="onb-foot">
     <div class="dots" id="onbDots"><i class="on"></i><i></i><i></i></div>
     <button class="pill-btn" id="onbNext">Suivant</button>
+  </div>
+</div>
+
+<!-- écran d’authentification après l’intro -->
+<div class="auth-gate" id="authGate" aria-hidden="true">
+  <div class="ag-glow"></div>
+  <div class="ag-wrap">
+    <button class="ag-close" id="agClose" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="ag-brand"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div>
+    <p class="ag-kicker">Bienvenue chez DRC</p>
+    <h1 class="ag-title">Votre poulet frais,<br>à portée de main.</h1>
+    <p class="ag-sub">Connectez-vous pour commander plus vite, suivre vos livraisons et cumuler vos points fidélité.</p>
+    <div class="ag-card">
+      <div class="ag-seg"><button type="button" data-agm="login" class="on">Connexion</button><button type="button" data-agm="register">Créer un compte</button></div>
+      <div class="ag-field" id="agNameField" hidden><label>Nom complet</label><input id="agName" placeholder="Awa Diop" autocomplete="name"></div>
+      <div class="ag-field"><label>Téléphone</label><div class="ag-in"><span>+221</span><input id="agPhone" inputmode="tel" placeholder="77 123 45 67" autocomplete="tel"></div></div>
+      <div class="ag-field"><label>Mot de passe</label><div class="ag-in"><input id="agPass" type="password" placeholder="••••••" autocomplete="current-password"><button type="button" class="ag-eye" id="agEye" aria-label="Afficher le mot de passe"><svg viewBox="0 0 24 24"><path d="M12 5c5 0 9 4.4 10 7-1 2.6-5 7-10 7S3 14.6 2 12c1-2.6 5-7 10-7Zm0 2c-3.3 0-6.2 2.7-7.5 5 1.3 2.3 4.2 5 7.5 5s6.2-2.7 7.5-5C18.2 9.7 15.3 7 12 7Zm0 1.8a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4Z"/></svg></button></div></div>
+      <p class="ag-err" id="agErr"></p>
+      <button class="pill-btn" id="agGo">Se connecter</button>
+      <p class="ag-legal">En continuant, vous acceptez nos conditions d’utilisation et notre politique de confidentialité.</p>
+    </div>
+    <button class="ag-later" id="agLater">Plus tard · découvrir l’application</button>
+    <div class="ag-perks"><span><i></i>Livraison 2 h</span><span><i></i>Paiement mobile</span><span><i></i>Points fidélité</span></div>
+  </div>
+</div>
+
+<!-- feuille de mise à jour -->
+<div class="upd-sheet" id="updSheet" aria-hidden="true">
+  <div class="upd-card">
+    <div class="upd-ic"><svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg></div>
+    <p class="upd-kicker">Mise à jour disponible</p>
+    <h2>Une nouvelle version<br>est prête.</h2>
+    <p class="upd-notes" id="updNotes">Nouvelles fonctionnalités et améliorations de l’application.</p>
+    <div class="upd-meta"><b id="updVer">1.8.14</b><span>APK · Android</span></div>
+    <button class="pill-btn" id="updGo">Télécharger et installer</button>
+    <button class="upd-later" id="updLater">Plus tard</button>
+    <p class="upd-hint">Le fichier se télécharge dans votre navigateur. Ouvrez-le pour installer la mise à jour.</p>
   </div>
 </div>
 
@@ -777,6 +879,8 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
+const APP_VERSION = '1.8.14', APP_BUILD = 75, APK_URL = 'https://drc.sn/app/drc-android.apk';
+let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
 /* réglages pilotés depuis l'application gérant (GET /api/settings), valeurs de secours ci-dessous */
@@ -816,7 +920,8 @@ const N_ICON = {
   ship: '<svg viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v2h2.4a2 2 0 0 1 1.7.9l2.1 3.3c.2.3.3.7.3 1.1V16a2 2 0 0 1-2 2h-.8a3.2 3.2 0 0 1-6.2 0H9.5a3.2 3.2 0 0 1-6.2 0H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm13 4v2.5h3.8L18.2 10H16Zm-9.6 5.8a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Zm10.2 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></svg>',
   done: '<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1 14.2-4.2-4.2 1.5-1.5L11 13.2l5.7-5.7 1.5 1.5-7.2 7.2Z"/></svg>',
   invoice: '<svg viewBox="0 0 24 24"><path d="M6 2h8l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Zm7 1.5V8h4.5L13 3.5ZM8 12h8v2H8v-2Zm0 4h6v2H8v-2Z"/></svg>',
-  code: '<svg viewBox="0 0 24 24"><path d="M14 2a6 6 0 0 0-5.66 8H2v4h2v2h2v2h4v-4.34A6 6 0 1 0 14 2Zm2 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>'
+  code: '<svg viewBox="0 0 24 24"><path d="M14 2a6 6 0 0 0-5.66 8H2v4h2v2h2v2h4v-4.34A6 6 0 1 0 14 2Zm2 5.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>',
+  update: '<svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg>'
 };
 const CATS = [['tout','Tout','cat-tout'],['entier','Entier','cat-entier'],['blancs','Filets','cat-blancs'],['cuisses','Cuisses','cat-cuisses'],['abats','Abats','cat-abats'],['oeufs','Œufs','cat-oeufs']];
 const ORDER_IDS = [1,2,3,9,4,5,8];
@@ -886,7 +991,8 @@ const ICON = {
   clock:'<svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg>',
   wave:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 15.2c2 0 2.6-4.6 5-4.6s3 4.6 5.5 4.6 3-4.6 5.5-4.6 3 4.6 5 4.6" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round"/><path d="M1.5 10c2 0 2.6-3.4 5-3.4s3 3.4 5.5 3.4 3-3.4 5.5-3.4 3 3.4 5 3.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".55"/></svg>',
   chat:'<svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4V6a2 2 0 0 1 2-2Z"/></svg>',
-  bag:'<svg viewBox="0 0 24 24"><path d="M7 4a1 1 0 0 1 1 1v1h8V5a1 1 0 1 1 2 0v1h1.3a1.7 1.7 0 0 1 1.7 1.9l-1.1 10.4a3 3 0 0 1-3 2.7H7.1a3 3 0 0 1-3-2.7L3 7.9A1.7 1.7 0 0 1 4.7 6H6V5a1 1 0 0 1 1-1Z"/></svg>'
+  bag:'<svg viewBox="0 0 24 24"><path d="M7 4a1 1 0 0 1 1 1v1h8V5a1 1 0 1 1 2 0v1h1.3a1.7 1.7 0 0 1 1.7 1.9l-1.1 10.4a3 3 0 0 1-3 2.7H7.1a3 3 0 0 1-3-2.7L3 7.9A1.7 1.7 0 0 1 4.7 6H6V5a1 1 0 0 1 1-1Z"/></svg>',
+  update:'<svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg>'
 };
 
 /* ── état ── */
@@ -1031,6 +1137,8 @@ function pop(){
   if (prev.name === 'track') paintTrack();
 }
 window.appBack = function(){
+  if ($('#updSheet').classList.contains('on')) { closeUpdateSheet(true); return true; }
+  if ($('#authGate').classList.contains('on')) { closeAuthGate(); return true; }
   if (!$('#onb').classList.contains('hidden')) return false;
   if (stack.length || !TABS.includes(route.name)) { pop(); return true; }
   if (route.name !== 'home') { go('home'); return true; }
@@ -1608,6 +1716,7 @@ function notifSeenSet(){ const v = store.get('drc_notifs_seen'); return new Set(
 function buildNotifications(){
   const seen = new Set();
   const out = [];
+  if (updateInfo) out.push({ key: 'update:' + updateInfo.code, kind: 'update', at: new Date().toISOString(), title: 'Mise à jour disponible', body: 'Version ' + updateInfo.version + ' — touchez pour installer la nouvelle version.', update: true });
   myOrders.forEach(({ id }) => {
     const o = ordersCache[id]; if (!o) return;
     const at0 = o.created_at || new Date().toISOString();
@@ -1633,6 +1742,7 @@ function renderNotifs(){
   v.querySelector('[data-back]').onclick = pop;
   v.querySelectorAll('.notif').forEach(b => b.onclick = () => {
     const id = b.dataset.order;
+    if (b.dataset.kind === 'update') { showUpdateSheet(); return; }
     if (b.dataset.kind === 'invoice') openInvoice(id); else openOrder(id);
   });
 }
@@ -1717,6 +1827,119 @@ function renderHistory(){
   v.querySelectorAll('.hist-item').forEach(b => b.onclick = () => openOrder(b.dataset.order));
 }
 
+/* ════════════════ AUTHENTIFICATION APRÈS INTRO ════════════════ */
+let gateMode = 'login', gateBusy = false;
+function openAuthGate(){
+  if (auth) return;
+  const g = $('#authGate'); if (!g) return;
+  gateMode = 'login'; setGateMode('login');
+  $('#agPhone').value = buyer.phone || '';
+  $('#agPass').value = '';
+  $('#agName').value = '';
+  $('#agErr').textContent = '';
+  g.classList.add('on'); g.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closeAuthGate(){
+  const g = $('#authGate'); if (!g) return;
+  g.classList.remove('on'); g.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+function setGateMode(m){
+  gateMode = m;
+  document.querySelectorAll('#authGate [data-agm]').forEach(b => b.classList.toggle('on', b.dataset.agm === m));
+  const nf = $('#agNameField'); if (nf) nf.hidden = m !== 'register';
+  const go = $('#agGo'); if (go) go.textContent = m === 'register' ? 'Créer mon compte' : 'Se connecter';
+  const pass = $('#agPass'); if (pass) { pass.autocomplete = m === 'register' ? 'new-password' : 'current-password'; pass.placeholder = m === 'register' ? '6 caractères minimum' : 'Votre mot de passe'; }
+  const err = $('#agErr'); if (err) err.textContent = '';
+}
+function gateError(msg){ const e = $('#agErr'); if (e) e.textContent = msg; }
+async function gateAuth(){
+  if (gateBusy) return;
+  const mode = gateMode;
+  const name = $('#agName').value.trim();
+  const phone = $('#agPhone').value.trim();
+  const password = $('#agPass').value;
+  if (mode === 'register' && name.length < 3) return gateError('Indiquez votre nom complet.');
+  if (phoneDigits(phone).length < 9) return gateError('Numéro de téléphone invalide.');
+  if (password.length < 6) return gateError('Mot de passe : 6 caractères minimum.');
+  gateError('');
+  const btn = $('#agGo'); gateBusy = true; btn.disabled = true; const old = btn.textContent; btn.innerHTML = '<span class="spin"></span>';
+  try {
+    const j = await api(mode === 'register' ? '/api/auth/register' : '/api/auth/login', { method:'POST', body: mode === 'register' ? {name, phone, password} : {phone, password}, timeout:45000 });
+    auth = { token: j.token, user: j.user }; store.set('drc_app_auth', auth);
+    if (!buyer.name) buyer.name = j.user.name; if (!buyer.phone) buyer.phone = j.user.phone; saveBuyer();
+    closeAuthGate();
+    toast(mode === 'register' ? 'Bienvenue ' + j.user.name.split(' ')[0] + ' !' : 'Content de vous revoir !'); vib(20);
+    paintAccount(); paintOrders(true).catch(() => {});
+  } catch(e) {
+    gateError(e.message === 'invalid_credentials' ? 'Téléphone ou mot de passe incorrect.' : e.message === 'phone_exists' ? 'Ce numéro a déjà un compte : connectez-vous.' :
+      e.message === 'rate_limited' ? 'Trop d’essais, patientez quelques minutes.' : e.message === 'account_disabled' ? 'Compte désactivé, contactez-nous.' : e.status === 0 ? 'Pas de connexion, réessayez.' : 'Échec, réessayez.');
+  } finally {
+    gateBusy = false; btn.disabled = false; if (btn.textContent.trim() === '') btn.textContent = old;
+  }
+}
+function bindAuthGate(){
+  if (!$('#authGate')) return;
+  $('#agClose').onclick = closeAuthGate;
+  $('#agLater').onclick = closeAuthGate;
+  document.querySelectorAll('#authGate [data-agm]').forEach(b => b.onclick = () => setGateMode(b.dataset.agm));
+  $('#agGo').onclick = gateAuth;
+  $('#agEye').onclick = () => { const i = $('#agPass'); const on = i.type === 'password'; i.type = on ? 'text' : 'password'; $('#agEye').classList.toggle('on', on); };
+  $('#agPass').addEventListener('keydown', e => { if (e.key === 'Enter') gateAuth(); });
+  $('#agPhone').addEventListener('keydown', e => { if (e.key === 'Enter') $('#agPass').focus(); });
+}
+function maybeShowAuthGate(delay = 0){
+  if (auth) return;
+  setTimeout(() => {
+    if (auth) return;
+    const g = $('#authGate'); if (g && g.classList.contains('on')) return;
+    if (!$('#onb').classList.contains('hidden')) return;
+    openAuthGate();
+  }, delay);
+}
+
+/* ════════════════ MISE À JOUR IN-APP ════════════════ */
+async function checkAppUpdate(){
+  try {
+    const j = await api('/api/app/version');
+    const code = Number(j.code) || 0;
+    if (code > APP_BUILD) {
+      updateInfo = { version: j.version || '', code, apk_url: j.apk_url || APK_URL, notes: j.notes || '' };
+      updateBells();
+      const seen = Number(store.get('drc_upd_seen', 0)) || 0;
+      if (seen < code) setTimeout(showUpdateSheet, 1400);
+    }
+  } catch(e) { /* pas bloquant */ }
+}
+function showUpdateSheet(){
+  if (!updateInfo) return;
+  const sh = $('#updSheet'); if (!sh) return;
+  $('#updNotes').textContent = updateInfo.notes || 'Nouvelles fonctionnalités et améliorations de l’application.';
+  $('#updVer').textContent = updateInfo.version || 'Mise à jour';
+  sh.classList.add('on'); sh.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closeUpdateSheet(mark){
+  const sh = $('#updSheet'); if (!sh) return;
+  sh.classList.remove('on'); sh.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+  if (mark && updateInfo) store.set('drc_upd_seen', updateInfo.code);
+}
+function downloadUpdate(){
+  if (!updateInfo) return;
+  const url = updateInfo.apk_url || APK_URL;
+  closeUpdateSheet(true);
+  toast('Téléchargement de la mise à jour…');
+  if (window.Android && Android.openExternal) Android.openExternal(url);
+  else window.open(url, '_blank');
+}
+function bindUpdateSheet(){
+  if (!$('#updSheet')) return;
+  $('#updGo').onclick = downloadUpdate;
+  $('#updLater').onclick = () => closeUpdateSheet(true);
+}
+
 function updateBells(){
   const unread = notifUnread();
   ['#bellDot', '#bellDot2', '#bellDot3'].forEach(s => $(s) && $(s).classList.toggle('on', unread > 0));
@@ -1759,7 +1982,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.13 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.14 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -1813,6 +2036,7 @@ function logout(silent){
   auth = null; localStorage.removeItem('drc_app_auth');
   if (!silent) toast('Déconnecté');
   if (route.name === 'account') paintAccount();
+  if (!silent) setTimeout(() => maybeShowAuthGate(700), 700);
 }
 async function refreshMe(){
   if (!auth) return;
@@ -2081,7 +2305,7 @@ function toast(msg){
 }
 
 /* ════════════════ ONBOARDING ════════════════ */
-function hideOnb(){ const o = $('#onb'); if (o.classList.contains('hidden')) return; o.classList.add('out'); store.set('drc_app_onb', 1); setTimeout(() => o.classList.add('hidden'), 450); }
+function hideOnb(){ const o = $('#onb'); if (o.classList.contains('hidden')) return; o.classList.add('out'); store.set('drc_app_onb', 1); setTimeout(() => o.classList.add('hidden'), 450); setTimeout(() => maybeShowAuthGate(0), 520); }
 function initOnb(){
   if (store.get('drc_app_onb', 0)) return;
   const o = $('#onb'), tr = $('#onbTrack'), dots = [...document.querySelectorAll('#onbDots i')], next = $('#onbNext');
@@ -2094,7 +2318,8 @@ function initOnb(){
 }
 
 /* ════════════════ DÉMARRAGE ════════════════ */
-renderHome(); paintBadge(); updateBells(); initOnb();
+renderHome(); paintBadge(); updateBells(); initOnb(); bindAuthGate(); bindUpdateSheet(); checkAppUpdate();
+setTimeout(() => { if ($('#onb').classList.contains('hidden')) maybeShowAuthGate(0); }, 1100);
 window.addEventListener('load', () => setTimeout(() => $('#boot').classList.add('out'), 250));
 setTimeout(() => $('#boot').classList.add('out'), 2500);
 applySettings(); loadSettings(); loadCatalog(); refreshMe();
