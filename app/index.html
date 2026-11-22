@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220347">
+<link rel="manifest" href="manifest.json?v=202611220352">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -599,7 +599,7 @@ html[data-theme="dark"] .notif.new{background:linear-gradient(150deg,#2B1A1B,#1E
 .recipe .btn-ghost{background:#141312;color:#fff;box-shadow:0 12px 26px -14px rgba(20,0,0,.6)}
 .recipe .btn-ghost span{color:#fff}
 
-.recipe .btn-ghost .rec-arrow{width:17px;height:17px;display:block;fill:currentColor;flex:none;margin-left:1px}
+.recipe .btn-ghost .rec-arrow{width:13px;height:13px;display:block;fill:currentColor;flex:none;margin-left:2px}
 </style>
 </head>
 <body>
@@ -1737,7 +1737,7 @@ function paintAccount(){
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.8 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.9 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
