@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220722">
+<link rel="manifest" href="manifest.json?v=202611220726">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -780,7 +780,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
         <div class="tagp" style="left:22%;top:31%"><b data-price="8">Œufs</b><i style="height:9vh"></i></div>
         <div class="tagp" style="left:72%;top:52%"><b data-price="2">Filet · 5 000 F</b><i style="height:7vh"></i></div>
       </div>
-      <div class="txt"><img class="onb-logo" src="assets/img/logo.png" alt="Darou Rahmane Chicken"><h2>Votre poulet,<br>livré frais.</h2><p>Poulet Saf Sap préparé à la commande, livré express à Dakar.</p></div>
+      <div class="txt"><img class="onb-logo" src="assets/img/logo.png" alt="Darou Rahmane Chicken"><h2>Votre poulet,<br>livré frais.</h2><p>Poulet Selleu té Saff préparé à la commande, livré express à Dakar.</p></div>
     </section>
     <section class="slide">
       <div class="ph"><img src="assets/img/hero2.webp" alt="">
@@ -900,7 +900,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
       <div class="benefits">
         <div class="benefit"><span class="bico red"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm.9 5.2v4.9l3.5 2.1-1 1.7-4.5-2.7V7.2h2Z"/></svg></span><b>Express</b><small>Livraison</small></div>
         <div class="benefit"><span class="bico amber"><svg viewBox="0 0 24 24"><path d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v1H3V6Zm0 3h18v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V9Zm3 6a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg></span><b>Wave · OM</b><small>Paiement</small></div>
-        <div class="benefit"><span class="bico green"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.5 9.6 8 11 4.5-1.4 8-6 8-11V5l-8-3Zm-1 14.2-4.2-4.2 1.5-1.5 2.7 2.7 5.7-5.7 1.5 1.5-7.2 7.2Z"/></svg></span><b>Saf Sap</b><small>Poulet frais</small></div>
+        <div class="benefit"><span class="bico green"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.5 9.6 8 11 4.5-1.4 8-6 8-11V5l-8-3Zm-1 14.2-4.2-4.2 1.5-1.5 2.7 2.7 5.7-5.7 1.5 1.5-7.2 7.2Z"/></svg></span><b>Selleu té Saff</b><small>Poulet frais</small></div>
       </div>
       <div class="sec"><h2 id="railTitle">Nos produits</h2><span class="cnt" id="railCnt">0</span><button class="more" id="seeAll">Voir tout</button></div>
       <div class="rail" id="rail"></div>
@@ -997,7 +997,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.39', APP_BUILD = 100, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.40', APP_BUILD = 101, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1011,7 +1011,7 @@ const NATIVE = window.Android || null;
 
 /* ── catalogue local (secours si l'API dort) — mêmes règles que drc.sn ── */
 let PRODUCTS = [
-  {id:1,name:'Poulet Entier',cat:'entier',img:'p1',price:4500,unit:'la pièce · ~1,7 kg',rating:4.9,sold:1240,tags:[['green','Frais du jour'],['yellow','Top vente']],short:'Poulet Saf Sap, préparé pour votre commande.'},
+  {id:1,name:'Poulet Entier',cat:'entier',img:'p1',price:4500,unit:'la pièce · ~1,7 kg',rating:4.9,sold:1240,tags:[['green','Frais du jour'],['yellow','Top vente']],short:'Poulet Selleu té Saff, préparé pour votre commande.'},
   {id:2,name:'Blanc de Poulet',cat:'blancs',img:'p2',price:5000,unit:'le kilo',rating:4.8,sold:986,tags:[['green','Riche en protéines']],short:'Sans peau, sans arêtes, préparé à la commande.'},
   {id:3,name:'Pilons',cat:'cuisses',img:'p3',price:4900,unit:'le kilo',rating:4.8,sold:2150,tags:[['green','Frais du jour']],short:'Le morceau préféré des familles.'},
   {id:9,name:'Cuisses de Poulet',cat:'cuisses',img:'p9',price:2750,unit:'le kilo',rating:4.8,sold:640,tags:[['green','Frais du jour'],['yellow','Petit prix']],short:'Cuisses charnues, préparées à la commande.'},
@@ -1431,7 +1431,7 @@ function openProduct(id, refresh){
       <button class="ibtn fav ${favs.has(p.id) ? 'on' : ''}" data-fav="${p.id}" aria-label="Favori" style="width:52px;height:52px;flex-basis:52px">${ICON.star}</button></div>
     <div class="plate hero-plate"><img src="${imgOf(p)}" alt="${esc(p.name)}">${p.soon ? '<span class="soon">Bientôt</span>' : ''}</div>
     <h2 class="dname">${esc(p.name)}</h2>
-    <div class="dunit">${esc(p.unit)} · Poulet Saf Sap</div>
+    <div class="dunit">${esc(p.unit)} · Poulet Selleu té Saff</div>
     <div class="tags">${tags}</div>
     <div class="card mcard" style="padding:14px 18px"><div class="macros" style="margin:0;padding:0"><div>Note<b>${String(p.rating).replace('.', ',')} / 5</b></div><div>Vendus<b>${(p.sold || 0).toLocaleString('fr-FR')}</b></div><div>Livraison<b>2 h</b></div><div>Fraîcheur ${bars(p).replace('class="bars"', 'class="bars" style="margin-top:6px"')}</div></div></div>
     ${p.recipe ? `<div class="card note"><p>${esc(p.recipe.txt)}</p><div class="wo">${esc(p.recipe.w)}</div></div>` : ''}
@@ -2218,7 +2218,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.39 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.40 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
