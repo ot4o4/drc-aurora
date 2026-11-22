@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611220928">
+<link rel="manifest" href="manifest.json?v=202611220931">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -457,13 +457,13 @@ html[data-theme="dark"] .boot img{width:180px;padding:8px 10px}
 .benefit .bico.green{background:#E3F2E8;color:#1F8A4C}
 .benefit b{display:block;font-size:13px;font-weight:700;letter-spacing:-.01em}
 .benefit small{display:block;font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:2px}
-.banner{background:linear-gradient(145deg,#FF3D46,#D4111A 74%,#C00E17);box-shadow:0 20px 44px -24px rgba(229,29,38,.70)}
+.banner{background:linear-gradient(145deg,#FF3D46,#D4111A 74%,#C00E17);border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(0,0,0,.10),0 20px 44px -24px rgba(229,29,38,.70);isolation:isolate}
 .pill-btn{background:linear-gradient(160deg,#2A2A2A,#111111)}
 .pill-btn.acc,.pill-btn.primary{background:linear-gradient(160deg,#D91F27,#A90F16);
   box-shadow:0 14px 26px -14px rgba(200,22,29,.55)}
 .card,.pcard,.banner,.login-card,.mcard{box-shadow:0 16px 36px -26px rgba(80,30,20,.42)}
 
-.banner>div{position:relative;z-index:1;min-width:0}
+.banner>div{position:relative;z-index:4;min-width:0}
 .banner img{position:absolute;right:-8px;bottom:-20px;width:106px;height:106px;flex:none;margin:0;opacity:.20;object-fit:contain;pointer-events:none}
 
 .empty-orders{display:flex;flex-direction:column;align-items:center;text-align:center;padding:26px 20px 22px;margin-top:14px}
@@ -714,10 +714,19 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .upd-hint{font-size:9.5px;line-height:1.45;color:var(--muted);text-align:center;margin:8px 8px 0}
 .notif-ico.update{background:var(--acc-soft);color:var(--acc-ink)}
 
+.banner::before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;pointer-events:none;
+  background:
+    radial-gradient(125% 160% at 8% -25%,rgba(255,255,255,.58) 0,rgba(255,255,255,.18) 28%,rgba(255,255,255,.04) 48%,rgba(255,255,255,0) 66%),
+    radial-gradient(75% 110% at 92% 125%,rgba(255,255,255,.22) 0,rgba(255,255,255,0) 58%),
+    linear-gradient(180deg,rgba(255,255,255,.16) 0,rgba(255,255,255,0) 34%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.58),inset 0 -12px 24px -18px rgba(255,255,255,.45);
+  -webkit-backdrop-filter:blur(7px) saturate(1.22);
+  backdrop-filter:blur(7px) saturate(1.22);
+  opacity:.72;mix-blend-mode:normal}
 .banner::after{content:"";position:absolute;inset:-45%;z-index:3;pointer-events:none;
-  background:radial-gradient(ellipse at 46% 42%,rgba(255,255,255,.52) 0 14%,rgba(255,255,255,.18) 34%,rgba(255,255,255,.05) 50%,rgba(255,255,255,0) 66%);
+  background:radial-gradient(ellipse at 46% 42%,rgba(255,255,255,.62) 0 12%,rgba(255,255,255,.24) 32%,rgba(255,255,255,.07) 48%,rgba(255,255,255,0) 64%);
   border-radius:44% 56% 60% 40% / 46% 42% 58% 54%;
-  filter:blur(16px);opacity:.36;mix-blend-mode:screen;
+  filter:blur(15px);opacity:.46;mix-blend-mode:screen;
   animation:liquidGlass 9.2s cubic-bezier(.45,0,.25,1) infinite;animation-delay:.6s;
   will-change:transform,opacity,border-radius}
 @media (prefers-reduced-motion: reduce){.banner::after{animation:none;opacity:.28;transform:none}}
@@ -1120,7 +1129,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.53', APP_BUILD = 114;
+const APP_VERSION = '1.8.54', APP_BUILD = 115;
 const PLAY_BUILD = false; /* remplacé par true dans le bundle Play Store */
 const APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
@@ -2539,7 +2548,7 @@ function paintAccount(){
       ${auth ? `<button class="mi danger" id="mDelete"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></span><div>Supprimer mon compte<small>Efface vos données personnelles</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.53 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.54 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
