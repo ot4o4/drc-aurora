@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611220805">
+<link rel="manifest" href="manifest.json?v=202611220816">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -805,6 +805,23 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .ios-share{display:inline-block;width:15px;height:15px;fill:currentColor;vertical-align:-2px;margin:0 2px}
 .ios-card .pill-btn{width:100%}
 .ios-note{font-size:10px;line-height:1.45;color:var(--muted);text-align:center;margin:10px 8px 0}
+
+/* ── récompenses fidélité 1.8.47 ── */
+.loyalty-box{margin-bottom:12px}
+.loyalty-box .sec{margin:14px 2px 8px}
+.rw-list{display:flex;flex-direction:column;gap:8px}
+.rw-card{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:18px;background:var(--card);box-shadow:var(--shadow)}
+.rw-img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:var(--bg);flex:none}
+.rw-mid{flex:1;min-width:0}
+.rw-mid b{display:block;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rw-mid small{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
+.rw-mid .rw-pts{color:var(--acc-ink);font-weight:800}
+.rw-btn{flex:none;height:32px;padding:0 11px;border-radius:99px;background:var(--acc);color:#fff;font-size:10.5px;font-weight:800;border:0}
+.rw-btn:disabled{background:var(--seg);color:var(--muted);opacity:1}
+.rw-code{display:block;font-size:9.5px;letter-spacing:.08em;color:var(--muted);font-family:ui-monospace,monospace;margin-top:3px}
+.reward-cart .mname b{white-space:normal;overflow:visible;line-height:1.25}
+.reward-cart .mright b{color:#1F8A4C}
+.reward-cart .rw-remove{flex:none;width:30px;height:30px;border-radius:50%;background:var(--bg);color:var(--muted);font-size:18px;display:grid;place-items:center;border:0}
 </style>
 </head>
 <body>
@@ -1060,7 +1077,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.46', APP_BUILD = 107, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.47', APP_BUILD = 108, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1392,7 +1409,7 @@ function toggleFav(id){
 
 /* ════════════════ PANIER ════════════════ */
 const cartCount = () => cart.reduce((s, l) => s + l.qty, 0);
-const subtotal = () => cart.reduce((s, l) => { const p = prod(l.id); return s + l.qty * (p ? p.price : l.price); }, 0);
+const subtotal = () => cart.reduce((s, l) => { if (l.reward_code) return s; const p = prod(l.id); return s + l.qty * (p ? p.price : l.price); }, 0);
 const fee = () => subtotal() === 0 ? 0 : (subtotal() >= FREE_FROM ? 0 : FEE);
 
 function addToCart(id, qty = 1, btn = null){
@@ -1447,8 +1464,8 @@ function paintBadge(){
 }
 function paintCart(){
   paintBadge();
-  cart.forEach(l => { const p = prod(l.id); if (p) l.price = p.price; });
-  cart = cart.filter(l => { const p = prod(l.id); return !p || !p.soon; });
+  cart.forEach(l => { if (l.reward_code) return; const p = prod(l.id); if (p) l.price = p.price; });
+  cart = cart.filter(l => l.reward_code || (() => { const p = prod(l.id); return !p || !p.soon; })());
   const s = subtotal(), f = fee();
   const ratio = s / FREE_FROM;
   const now = new Date();
@@ -1462,6 +1479,14 @@ function paintCart(){
   }
   $('#cartLines').innerHTML = cart.map(l => {
     const p = prod(l.id) || {name:'Produit', unit:'', img:'p1', price:l.price};
+    if (l.reward_code) {
+      return `<div class="card mcard reward-cart">
+        <div class="mrow"><div class="mthumb"><img src="${imgOf(p)}" alt=""></div>
+          <div class="mname"><b>${esc(l.reward_name || p.name)}</b><span>Récompense fidélité · ${l.reward_points} pts</span></div>
+          <div class="mright"><b>Offert</b><span>0 F</span></div>
+          <button class="rw-remove" data-rm="${esc(l.reward_code)}" aria-label="Retirer">×</button></div>
+      </div>`;
+    }
     const pct = Math.round(l.qty * p.price / Math.max(s, 1) * 100);
     return `<div class="card mcard">
       <div class="mrow"><div class="mthumb"><img src="${imgOf(p)}" alt=""></div>
@@ -1472,6 +1497,7 @@ function paintCart(){
     </div>`;
   }).join('');
   $('#cartLines').querySelectorAll('[data-q]').forEach(b => b.onclick = () => setQty(+b.dataset.id, +b.dataset.q));
+  $('#cartLines').querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { cart = cart.filter(l => l.reward_code !== b.dataset.rm); saveCart(); paintBadge(); paintCart(); toast('Récompense retirée du panier'); });
   $('#cartFoot').innerHTML = `
     <div class="card totals"><div><span>Sous-total</span><span>${fcfa(s)}</span></div>
       <div><span>Livraison</span><span>${f ? fcfa(f) : 'Offerte'}</span></div>
@@ -1596,7 +1622,8 @@ async function placeOrder(){
   try {
     const j = await api('/api/orders', {method:'POST', timeout: 60000, body:{
       client_order_id: pend.id,
-      items: cart.map(l => ({id:l.id, qty:l.qty})),
+      items: cart.filter(l => !l.reward_code).map(l => ({id:l.id, qty:l.qty})),
+      reward_codes: cart.filter(l => l.reward_code).map(l => l.reward_code),
       customer: {name:buyer.name.trim(), phone:buyer.phone.trim(), address:buyer.address.trim(), slot:buyer.slot,
         lat:buyer.lat, lng:buyer.lng, gps_accuracy:buyer.acc || 0, email:(auth && auth.user && auth.user.email) || '', note:'Commande depuis l’application'},
       payment_method: buyer.pay
@@ -1613,7 +1640,10 @@ async function placeOrder(){
     toast(e.status === 0 ? 'Pas de connexion — réessayez, votre panier est gardé' :
       e.message === 'shop_closed' ? (SET.closed_message || 'La boutique est fermée pour le moment') :
       e.message === 'payment_method_disabled' ? 'Ce moyen de paiement est indisponible, choisissez-en un autre' :
-      e.message === 'invalid_item' ? 'Un produit n’est plus disponible, vérifiez le panier' : 'Commande non envoyée, réessayez');
+      e.message === 'invalid_item' ? 'Un produit n’est plus disponible, vérifiez le panier' :
+      e.message === 'invalid_reward' ? 'Une récompense a expiré ou a déjà été utilisée' :
+      e.message === 'reward_unavailable' ? 'Un article récompense n’est plus disponible' :
+      e.message === 'auth_required' ? 'Connectez-vous pour utiliser vos récompenses' : 'Commande non envoyée, réessayez');
     if (e.message === 'shop_closed' || e.message === 'payment_method_disabled') loadSettings();
     if (e.message === 'invalid_item') loadCatalog();
   } finally {
@@ -2328,6 +2358,81 @@ $('#qf').addEventListener('input', paintFavs);
 
 /* ════════════════ COMPTE ════════════════ */
 let authMode = 'login';
+/* ── fidélité : récompenses en articles ── */
+let LOYALTY = [], VOUCHERS = [];
+function setAuthPoints(pts){
+  if (!(auth && auth.user)) return;
+  auth.user.points = Math.max(0, Number(pts) || 0);
+  store.set('drc_app_auth', auth);
+  const el = document.querySelector('.prof .pts b'); if (el) el.textContent = auth.user.points;
+}
+async function loadLoyalty(){
+  if (!(auth && auth.user)) return;
+  try {
+    const r = await api('/api/loyalty/rewards');
+    LOYALTY = Array.isArray(r.rewards) ? r.rewards : [];
+    try {
+      const v = await api('/api/loyalty/vouchers');
+      VOUCHERS = Array.isArray(v.vouchers) ? v.vouchers : [];
+      if (v.points != null) setAuthPoints(v.points);
+    } catch(e) { VOUCHERS = []; }
+    renderLoyalty();
+  } catch(e) {
+    const box = document.getElementById('loyaltyBox');
+    if (box) box.innerHTML = '<div class="card empty" style="padding:16px"><b>Récompenses indisponibles</b><span>Réessayez plus tard.</span></div>';
+  }
+}
+function renderLoyalty(){
+  const box = document.getElementById('loyaltyBox'); if (!box || !(auth && auth.user)) return;
+  const pts = Math.max(0, Number(auth.user.points) || 0);
+  box.innerHTML = `
+    <div class="sec"><h2>Récompenses fidélité</h2><span class="cnt">${pts} pts</span></div>
+    <div class="rw-list">${LOYALTY.map(r => {
+      const inCart = cart.some(l => l.reward_code && VOUCHERS.some(v => v.code === l.reward_code && v.reward_id === r.id));
+      const enough = pts >= r.points;
+      const label = !r.available ? 'Indisponible' : inCart ? 'Au panier' : enough ? 'Échanger' : r.points + ' pts';
+      return `<div class="rw-card">
+        <img class="rw-img" src="${imgOf({img:r.img})}" alt="">
+        <div class="rw-mid"><b>${esc(r.name)}</b><small><span class="rw-pts">${r.points} pts</span> · valeur ${fcfa(r.value)}</small></div>
+        <button class="rw-btn" data-rw="${esc(r.id)}" ${(!r.available || !enough || inCart) ? 'disabled' : ''}>${label}</button>
+      </div>`;
+    }).join('')}</div>
+    ${VOUCHERS.length ? `<div class="sec"><h2>Mes récompenses</h2><span class="cnt">${VOUCHERS.length}</span></div><div class="rw-list">${VOUCHERS.map(v => {
+      const inCart = cart.some(l => l.reward_code === v.code);
+      return `<div class="rw-card">
+        <img class="rw-img" src="${imgOf({img:v.img})}" alt="">
+        <div class="rw-mid"><b>${esc(v.name)}</b><small>Valable jusqu’au ${new Date(v.expires_at).toLocaleDateString('fr-FR')}</small><span class="rw-code">${esc(v.code)}</span></div>
+        <button class="rw-btn" data-v="${esc(v.code)}" ${inCart ? 'disabled' : ''}>${inCart ? 'Au panier' : 'Ajouter'}</button>
+      </div>`;
+    }).join('')}</div>` : ''}
+    <p class="hint" style="text-align:left;margin:9px 2px 0">1 point pour 100 F payés. Une récompense reste valable 30 jours.</p>`;
+  box.querySelectorAll('[data-rw]').forEach(b => b.onclick = () => redeemReward(b.dataset.rw));
+  box.querySelectorAll('[data-v]').forEach(b => b.onclick = () => {
+    const v = VOUCHERS.find(x => x.code === b.dataset.v); if (v) addVoucherToCart(v);
+  });
+}
+function addVoucherToCart(v){
+  if (!v) return;
+  if (cart.some(l => l.reward_code === v.code)) { toast('Cette récompense est déjà dans le panier'); return; }
+  cart.push({ id:Number(v.product_id), qty:1, price:0, reward_code:v.code, reward_name:v.name, reward_points:v.points, reward_product:v.reward_id });
+  saveCart(); paintBadge(); renderLoyalty();
+  toast('Récompense ajoutée au panier');
+}
+async function redeemReward(rewardId){
+  if (!(auth && auth.user)) { toast('Connectez-vous pour utiliser vos points'); return; }
+  try {
+    const j = await api('/api/loyalty/redeem', {method:'POST', body:{reward_id:rewardId}});
+    if (j && j.points != null) setAuthPoints(j.points);
+    if (j && j.voucher) addVoucherToCart(j.voucher);
+    await loadLoyalty();
+  } catch(e) {
+    if (e.message === 'not_enough_points') toast('Points insuffisants pour cette récompense');
+    else if (e.message === 'reward_unavailable') toast('Cette récompense n’est plus disponible');
+    else if (e.message === 'rate_limited') toast('Trop de demandes, réessayez dans un instant');
+    else toast('Échange impossible, réessayez');
+  }
+}
+
 function paintAccount(){
   const b = $('#accBody');
   const contact = `
@@ -2348,14 +2453,15 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.46 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.47 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
       <div class="card prof"><div class="avatar">${esc((u.name || '?').trim().charAt(0).toUpperCase())}</div><div><b>${esc(u.name)}</b><span>${esc(u.phone)}</span></div>
         <div class="pts"><b>${pts}</b><span class="muted" style="display:block;font-size:12px">points</span></div></div>
-      <div class="gauge" style="max-width:300px">${gaugeHTML((pts % 1000) / 1000, 'Fidélité', pts + ' pts', 'Encore ' + (1000 - pts % 1000) + ' pts pour un bon d’achat', ICON.star.replace('stroke-linejoin="round"', ''))}</div>
-      <p class="hint" style="margin:-4px 0 14px">1 point pour 100 F payés.</p>` + contact;
+      <div class="gauge" style="max-width:300px">${gaugeHTML((pts % 1000) / 1000, 'Fidélité', pts + ' pts', 'Encore ' + (1000 - pts % 1000) + ' pts pour une récompense', ICON.star.replace('stroke-linejoin="round"', ''))}</div>
+      <p class="hint" style="margin:-4px 0 14px">1 point pour 100 F payés.</p>
+      <div id="loyaltyBox" class="loyalty-box"><div class="card empty" style="padding:16px"><b>Chargement des récompenses…</b></div></div>` + contact;
   } else {
     b.innerHTML = `
       <div class="card" style="padding:20px 18px;margin-bottom:12px">
@@ -2382,6 +2488,7 @@ function paintAccount(){
   $('#mSite').onclick = () => openExternal(SITE_URL);
   $('#mUpdate').onclick = () => checkAppUpdate(true);
   if ($('#mInstall')) $('#mInstall').onclick = installApp;
+  if (auth && auth.user) loadLoyalty();
   if ($('#mPwd')) $('#mPwd').onclick = openPwdSheet;
   if ($('#mOut')) $('#mOut').onclick = () => logout();
 }
