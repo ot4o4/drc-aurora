@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220544">
+<link rel="manifest" href="manifest.json?v=202611220546">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -69,8 +69,8 @@ svg{display:block}
 .nav button svg{width:30px;height:30px;fill:currentColor}
 .nav button.on{color:var(--acc)}
 .nav .scan{width:60px;height:60px;border-radius:19px;background:linear-gradient(160deg,#FF4049,#D4111A);color:#fff!important;box-shadow:0 14px 24px -10px rgba(229,29,38,.60),inset 0 1px 0 rgba(255,255,255,.28)}
-.nav .scan svg{width:28px;height:28px}
-.nav .badge{position:absolute;top:3px;right:3px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--bg);color:var(--ink);font-size:10.5px;font-weight:800;display:grid;place-items:center;border:2px solid var(--acc);box-shadow:0 2px 6px -2px rgba(0,0,0,.25);transform:scale(0);transition:transform .3s cubic-bezier(.16,1,.3,1);z-index:3}
+.nav .scan svg{width:31px;height:31px}
+.nav .badge{position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;background:var(--bg);color:var(--ink);font-size:11.5px;font-weight:800;display:grid;place-items:center;border:2px solid var(--acc);box-shadow:0 3px 8px -3px rgba(0,0,0,.3);transform:scale(0);transition:transform .3s cubic-bezier(.16,1,.3,1);z-index:3}
 .nav .badge.on{transform:scale(1)}
 .app.push .nav{display:none}
 .app.push .stage{border-radius:0}
@@ -969,7 +969,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.26', APP_BUILD = 87, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.27', APP_BUILD = 88, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -2150,7 +2150,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.26 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.27 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
