@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611220823">
+<link rel="manifest" href="manifest.json?v=202611220831">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -885,6 +885,22 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
     <p class="ios-note">L’app s’ouvrira ensuite en plein écran, comme une application installée.</p>
   </div>
 </div>
+<div class="ios-sheet" id="androidSheet" aria-hidden="true">
+  <div class="ios-card">
+    <button class="ios-x" id="androidClose" aria-label="Fermer">×</button>
+    <div class="ios-ic"><svg viewBox="0 0 24 24"><path d="M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Zm0-3h12v2H6V5Zm2 8v2h8v-2H8Z"/></svg></div>
+    <p class="ios-kicker">Installer sur Android</p>
+    <h2>Ajoutez DRC à<br>votre écran d’accueil.</h2>
+    <p class="ios-lead">L’installation depuis Chrome installe l’application web : pas d’APK, donc pas d’avertissement Play Protect.</p>
+    <ol class="ios-steps">
+      <li><span>1</span><div>Ouvrez <b>drc.sn/app</b> dans <b>Chrome</b>.</div></li>
+      <li><span>2</span><div>Touchez le menu <b>⋮</b> en haut à droite.</div></li>
+      <li><span>3</span><div>Choisissez <b>Installer l’application</b> ou <b>Ajouter à l’écran d’accueil</b>.</div></li>
+    </ol>
+    <button class="pill-btn" id="androidDone">J’ai compris</button>
+    <p class="ios-note">L’app s’ouvrira en plein écran et se mettra à jour automatiquement.</p>
+  </div>
+</div>
 <div class="auth-gate" id="authGate" aria-hidden="true">
   <div class="ag-photo"></div>
   <div class="ag-wrap">
@@ -1084,7 +1100,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.48', APP_BUILD = 109, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.49', APP_BUILD = 110, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1344,6 +1360,7 @@ function pop(){
 window.appBack = function(){
   if ($('#updSheet').classList.contains('on')) { closeUpdateSheet(true); return true; }
   if ($('#iosSheet') && $('#iosSheet').classList.contains('on')) { closeIOSInstall(); return true; }
+  if ($('#androidSheet') && $('#androidSheet').classList.contains('on')) { closeAndroidInstall(); return true; }
   if ($('#authGate').classList.contains('on')) { closeAuthGate(); return true; }
   if (!$('#onb').classList.contains('hidden')) return false;
   if (stack.length || !TABS.includes(route.name)) { pop(); return true; }
@@ -2148,7 +2165,6 @@ async function checkAppUpdate(manual = false){
 const IS_ANDROID = /Android/i.test(navigator.userAgent);
 const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const IS_IOS_SAFARI = IS_IOS && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(navigator.userAgent);
-const INSTALL_APK = 'https://drc.sn/app/DarouRahmaneChicken-1.8.42.apk';
 let deferredInstallPrompt = null;
 function isInstalledApp(){
   try { return window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true || !!window.Android; } catch(e) { return !!window.Android; }
@@ -2164,7 +2180,7 @@ function hideInstallUI(){
 function refreshInstallUI(){
   const show = canShowInstall();
   const home = document.getElementById('installHome'); if (home) home.style.display = show ? 'flex' : 'none';
-  const sub = document.getElementById('ihSub'); if (sub) sub.textContent = IS_IOS ? 'iPhone/iPad · écran d’accueil' : 'Android · accès rapide et notifications';
+  const sub = document.getElementById('ihSub'); if (sub) sub.textContent = IS_IOS ? 'iPhone/iPad · écran d’accueil' : 'Android · installation via Chrome';
   const ag = document.getElementById('agInstall'); if (ag) ag.style.display = show ? 'block' : 'none';
   if (!show) hideInstallUI();
 }
@@ -2180,10 +2196,7 @@ async function installApp(){
       return;
     } catch(e) { deferredInstallPrompt = null; }
   }
-  toast('Téléchargement de l’APK Android…');
-  const a = document.createElement('a');
-  a.href = INSTALL_APK; a.download = 'DarouRahmaneChicken.apk';
-  document.body.appendChild(a); a.click(); a.remove();
+  showAndroidInstallGuide();
 }
 function dismissInstall(){
   localStorage.setItem('drc_install_dismissed', String(Date.now() + 7 * 86400000));
@@ -2199,6 +2212,14 @@ function showIOSInstall(){
 }
 function closeIOSInstall(){
   const sh = document.getElementById('iosSheet'); if (!sh) return;
+  sh.classList.remove('on'); sh.setAttribute('aria-hidden','true');
+}
+function showAndroidInstallGuide(){
+  const sh = document.getElementById('androidSheet'); if (!sh) return;
+  sh.classList.add('on'); sh.setAttribute('aria-hidden','false');
+}
+function closeAndroidInstall(){
+  const sh = document.getElementById('androidSheet'); if (!sh) return;
   sh.classList.remove('on'); sh.setAttribute('aria-hidden','true');
 }
 window.addEventListener('beforeinstallprompt', e => {
@@ -2460,7 +2481,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.48 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.49 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -2811,6 +2832,9 @@ $('#agInstall') && ($('#agInstall').onclick = installApp);
 $('#iosClose') && ($('#iosClose').onclick = closeIOSInstall);
 $('#iosDone') && ($('#iosDone').onclick = closeIOSInstall);
 $('#iosSheet') && $('#iosSheet').addEventListener('click', e => { if (e.target.id === 'iosSheet') closeIOSInstall(); });
+$('#androidClose') && ($('#androidClose').onclick = closeAndroidInstall);
+$('#androidDone') && ($('#androidDone').onclick = closeAndroidInstall);
+$('#androidSheet') && $('#androidSheet').addEventListener('click', e => { if (e.target.id === 'androidSheet') closeAndroidInstall(); });
 refreshInstallUI();
 setTimeout(() => { if ($('#onb').classList.contains('hidden')) maybeShowAuthGate(0); }, 1100);
 window.addEventListener('load', () => setTimeout(() => $('#boot').classList.add('out'), 250));
