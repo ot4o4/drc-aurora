@@ -729,7 +729,6 @@ function go(v){
   if (v === 'products') paintProducts();
   if (v === 'orders') paintOrders();
   if (v === 'compta' && window.__ledger) window.__ledger.paint();
-  if (v === 'users') paintUsers();
 }
 document.querySelectorAll('.nav button').forEach(b => b.onclick = () => { vib(); go(b.dataset.go); });
 /* ════════════════ CLIENTS ════════════════ */
