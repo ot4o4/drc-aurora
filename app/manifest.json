@@ -7,7 +7,7 @@
  "start_url": "./index.html",
  "scope": "./",
  "id": "/app/",
- "display": "fullscreen",
+ "display": "standalone",
  "orientation": "portrait",
  "background_color": "#F4F4F3",
  "theme_color": "#F4F4F3",
