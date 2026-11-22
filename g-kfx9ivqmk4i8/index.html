@@ -3,7 +3,7 @@
 <head>
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
 <meta name="googlebot" content="noindex,nofollow">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://hermes11.vps.webdock.cloud https://routing.openstreetmap.de https://nominatim.openstreetmap.org; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org; font-src 'self' data:; connect-src 'self' https://drc-api-dj8t.onrender.com https://routing.openstreetmap.de https://nominatim.openstreetmap.org; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'; manifest-src 'self'; worker-src 'self'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1A1A1A">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '4.9';
+window.DRC_WEB = '5.0';
 </script>
 
 <meta charset="utf-8">
@@ -241,6 +241,54 @@ details.adv .fld{margin-top:12px}
 .inv-note{margin-top:12px;padding:13px 14px;border-radius:14px;background:#FBF4E9;border:1px solid #F0E2CC}
 .inv-note p{font-size:12.5px;line-height:1.55;color:#4A433D}
 .inv-foot{margin-top:16px;text-align:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#A39A91}
+
+/* ── clients / bannissement 5.0 ── */
+#vUsers{padding-bottom:20px}
+.usr{display:flex;align-items:center;gap:11px;width:100%;padding:12px 13px;margin-bottom:8px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);text-align:left;color:var(--ink)}
+.usr.banned{background:linear-gradient(150deg,#FFF4F3,var(--card))}
+.usr-av{width:42px;height:42px;border-radius:14px;flex:none;display:grid;place-items:center;background:var(--acc-soft,#FBE8E7);color:var(--acc-ink);font-size:16px;font-weight:700}
+.usr-main{flex:1;min-width:0}
+.usr-main b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.usr-main span{display:block;font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.usr-end{text-align:right;flex:none}
+.usr-end b{display:block;font-size:12.5px;white-space:nowrap}
+.usr-tag{display:inline-block;margin-top:4px;padding:3px 7px;border-radius:99px;font-size:9px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.usr-tag.active{background:#E6F4EA;color:#1F7A45}
+.usr-tag.banni{background:#FCE5E3;color:#B10E17}
+.uprof{display:flex;align-items:center;gap:13px;padding:16px}
+.uavatar{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:var(--acc-soft,#FBE8E7);color:var(--acc-ink);font-size:21px;font-weight:700;flex:none}
+.uprof-main{flex:1;min-width:0}
+.uprof-main b{display:block;font-size:16px}
+.uprof-main span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.ustats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:11px}
+.ustats div{background:var(--card);border-radius:15px;padding:11px 8px;text-align:center;box-shadow:var(--shadow)}
+.ustats b{display:block;font-size:15px}
+.ustats span{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+.ban-note{background:#FFF1EF;border:1px solid #F5CFCB;border-radius:16px;padding:12px 14px;margin-top:12px;color:#8F1B16}
+.ban-note b{display:block;font-size:13px;margin-bottom:3px}
+.ban-note span{display:block;font-size:12px;line-height:1.4}
+.ban-note small{display:block;font-size:9.5px;color:#A86B65;margin-top:5px}
+.uorders{padding:4px 14px}
+.uord{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.uord:last-child{border-bottom:0}
+.uord span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.uord span:last-child{text-align:right;flex:none}
+.uord b{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.uord small{font-size:10px;color:var(--muted)}
+.uact{margin-top:14px}
+.ban-box{margin-top:12px;padding:14px;border-radius:18px;background:var(--card);box-shadow:var(--shadow)}
+.ban-box label{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;font-weight:800;color:var(--muted);margin-bottom:6px}
+.ban-box textarea{width:100%;min-height:82px;border:1px solid var(--line);border-radius:13px;padding:10px;font-size:13px;background:var(--bg);color:var(--ink);resize:vertical}
+.ban-box p{font-size:10.5px;line-height:1.4;color:var(--muted);margin:7px 2px}
+.ban-box .acts{display:flex;flex-direction:column;gap:8px}
+.ban-box .acts button{width:100%;flex:none;height:44px;border-radius:999px;font-size:12.5px;font-weight:700;background:var(--seg);color:var(--ink)}
+.ban-box .acts .pill{height:44px;font-size:12.5px;width:100%}
+
+#vUserDetail{background:#F4F4F3;color:#1A1A1A;min-height:100vh}
+#vUserDetail .topbar h1{color:#1A1A1A}
+#vUserDetail .sec h2{color:#1A1A1A}
+#vUserDetail .topbar .ibtn{background:#fff;color:#1A1A1A}
+#vUserDetail .hint{color:#8D8178}
 </style>
 
 <style id="compta">
@@ -443,36 +491,6 @@ body{font-family:PJS,system-ui,sans-serif}
 </style>
 </head>
 <body>
-<script>
-/* version web : notifications du navigateur à la place du pont Android */
-(function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=4.9.1').catch(function(){});
-  function show(t, b){
-    try {
-      /* dans l'app (onglet visible et au premier plan) : pas de notification système */
-      if (!document.hidden && document.hasFocus()) return;
-      if (!('Notification' in window)) return;
-      var go = function(){ navigator.serviceWorker.ready.then(function(r){ r.showNotification(t, {body:b, icon:'icons/icon-192.png', badge:'icons/icon-192.png', vibrate:[60,40,60]}); }); };
-      if (Notification.permission === 'granted') go();
-      else if (Notification.permission === 'default') Notification.requestPermission().then(function(p){ if (p === 'granted') go(); });
-    } catch(e) {}
-  }
-  if (!window.Android) window.Android = {
-    notify: show,
-    vibrate: function(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch(e) {} },
-    copy: function(t){ try { navigator.clipboard.writeText(t); } catch(e) {} }
-  };
-  var seen = null;
-  if (!window.notifyNew) window.notifyNew = function(list){
-    try {
-      var ids = (list || []).map(function(o){ return String(o.id); });
-      if (seen) ids.filter(function(i){ return seen.indexOf(i) < 0; }).forEach(function(i){ show('Nouvelle mission', 'Commande ' + i + ' vous est attribuée'); });
-      seen = ids;
-    } catch(e) {}
-  };
-  document.addEventListener('click', function once(){ try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch(e) {} document.removeEventListener('click', once, true); }, true);
-})();
-</script>
 
 <!-- connexion -->
 <div class="login" id="login">
@@ -549,6 +567,7 @@ body{font-family:PJS,system-ui,sans-serif}
       <div style="height:96px"></div>
     </section>
     <section class="view" data-view="settings" id="vSettings"></section>
+    <section class="view" data-view="users" id="vUsers"></section>
   </div>
   <nav class="nav">
     <button data-go="home" class="on" aria-label="Tableau de bord"><svg viewBox="0 0 24 24"><path d="M10.3 3.1a2.6 2.6 0 0 1 3.4 0l6.4 5.5c.6.5.9 1.2.9 2V19a2.5 2.5 0 0 1-2.5 2.5H15a1 1 0 0 1-1-1v-4.2a2 2 0 0 0-4 0v4.2a1 1 0 0 1-1 1H5.5A2.5 2.5 0 0 1 3 19v-8.4c0-.8.3-1.5.9-2Z"/></svg></button>
@@ -560,8 +579,39 @@ body{font-family:PJS,system-ui,sans-serif}
 </div>
 
 <section class="view" data-view="detail" id="vDetail" style="display:none"></section>
+<section class="view" data-view="userdetail" id="vUserDetail" style="display:none"></section>
 <div class="toast" id="toast"></div>
 
+<script>
+/* version web : notifications du navigateur à la place du pont Android */
+(function(){
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.0').catch(function(){});
+  function show(t, b){
+    try {
+      /* dans l'app (onglet visible et au premier plan) : pas de notification système */
+      if (!document.hidden && document.hasFocus()) return;
+      if (!('Notification' in window)) return;
+      var go = function(){ navigator.serviceWorker.ready.then(function(r){ r.showNotification(t, {body:b, icon:'icons/icon-192.png', badge:'icons/icon-192.png', vibrate:[60,40,60]}); }); };
+      if (Notification.permission === 'granted') go();
+      else if (Notification.permission === 'default') Notification.requestPermission().then(function(p){ if (p === 'granted') go(); });
+    } catch(e) {}
+  }
+  if (!window.Android) window.Android = {
+    notify: show,
+    vibrate: function(ms){ try { navigator.vibrate && navigator.vibrate(ms); } catch(e) {} },
+    copy: function(t){ try { navigator.clipboard.writeText(t); } catch(e) {} }
+  };
+  var seen = null;
+  if (!window.notifyNew) window.notifyNew = function(list){
+    try {
+      var ids = (list || []).map(function(o){ return String(o.id); });
+      if (seen) ids.filter(function(i){ return seen.indexOf(i) < 0; }).forEach(function(i){ show('Nouvelle mission', 'Commande ' + i + ' vous est attribuée'); });
+      seen = ids;
+    } catch(e) {}
+  };
+  document.addEventListener('click', function once(){ try { if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission(); } catch(e) {} document.removeEventListener('click', once, true); }, true);
+})();
+</script>
 <script>
 'use strict';
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
@@ -672,13 +722,145 @@ function go(v){
   $('#app').style.display = 'flex';
   $('#vDetail').style.display = 'none';
   $('#vDetail').classList.remove('on');
+  $('#vUserDetail').style.display = 'none';
+  $('#vUserDetail').classList.remove('on');
   const el = document.querySelector('.view[data-view="' + v + '"]'); if (el) el.scrollTop = 0;
   if (v === 'settings') paintSettings();
   if (v === 'products') paintProducts();
   if (v === 'orders') paintOrders();
   if (v === 'compta' && window.__ledger) window.__ledger.paint();
+  if (v === 'users') paintUsers();
 }
 document.querySelectorAll('.nav button').forEach(b => b.onclick = () => { vib(); go(b.dataset.go); });
+/* ════════════════ CLIENTS ════════════════ */
+let USERS = [], usersQuery = '', userDetailId = '';
+function openUsers(){ go('users'); paintUsers(); }
+async function paintUsers(){
+  const v = $('#vUsers'); if (!v) return;
+  v.innerHTML = `
+    <div class="topbar"><button class="ibtn" id="uBack">${ICON.back}</button><h1>Clients</h1><button class="ibtn" id="uRefresh"><img src="assets/img/refresh.png" alt="" class="rf-ico"></button></div>
+    <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="uq" placeholder="Nom, téléphone, email" autocomplete="off"></div>
+    <div id="usersList"><div class="empty">Chargement…</div></div>`;
+  $('#uBack').onclick = () => go('settings');
+  $('#uRefresh').onclick = () => load();
+  let t = null;
+  $('#uq').oninput = () => { clearTimeout(t); t = setTimeout(load, 260); };
+  await load();
+  async function load(){
+    const list = $('#usersList'); if (!list) return;
+    const q = ($('#uq') ? $('#uq').value : '').trim();
+    list.innerHTML = '<div class="empty">Chargement…</div>';
+    try {
+      const j = await api('/api/admin/users' + (q ? '?q=' + encodeURIComponent(q) : ''));
+      USERS = j.users || [];
+      renderUsers(j.users || [], Number(j.total) || 0, q);
+    } catch(e) {
+      list.innerHTML = '<div class="empty"><b>Impossible de charger</b>Vérifiez la connexion au serveur.</div>';
+    }
+  }
+}
+function renderUsers(users, total, q){
+  const list = $('#usersList'); if (!list) return;
+  if (!users.length) {
+    list.innerHTML = `<div class="empty"><b>${q ? 'Aucun résultat' : 'Aucun client'}</b>${q ? 'Essayez un autre nom ou numéro.' : 'Les comptes créés apparaîtront ici.'}</div>`;
+    return;
+  }
+  list.innerHTML = `<div class="sec" style="margin:16px 2px 8px"><h2>${q ? 'Résultats' : 'Clients'}</h2><span class="cnt">${users.length}${q ? ' / ' + total : ''}</span></div>` +
+    users.map(u => {
+      const active = u.status !== 'disabled';
+      return `<button class="usr ${active ? '' : 'banned'}" data-user="${esc(u.id)}">
+        <span class="usr-av">${esc((u.name || '?').trim().charAt(0).toUpperCase())}</span>
+        <span class="usr-main"><b>${esc(u.name || 'Client')}</b><span>${esc(u.phone || '—')} · ${Number(u.orders_count) || 0} commande${Number(u.orders_count) > 1 ? 's' : ''}</span></span>
+        <span class="usr-end"><b>${fcfa(u.total_spent)}</b><span class="usr-tag ${active ? 'active' : 'banni'}">${active ? 'Actif' : 'Banni'}</span></span>
+      </button>`;
+    }).join('');
+  list.querySelectorAll('[data-user]').forEach(b => b.onclick = () => openUser(b.dataset.user));
+}
+async function openUser(id){
+  userDetailId = id;
+  const v = $('#vUserDetail');
+  v.style.display = 'block'; v.classList.add('on'); v.scrollTop = 0;
+  $('#app').style.display = 'none';
+  v.innerHTML = `<div class="topbar"><button class="ibtn" id="udBack">${ICON.back}</button><h1>Client</h1><div style="width:40px"></div></div><div class="empty">Chargement…</div>`;
+  $('#udBack').onclick = () => { go('users'); paintUsers(); };
+  try {
+    const j = await api('/api/admin/users/' + encodeURIComponent(id));
+    renderUserDetail(j.user);
+  } catch(e) {
+    v.innerHTML = `<div class="topbar"><button class="ibtn" id="udBack">${ICON.back}</button><h1>Client</h1><div style="width:40px"></div></div><div class="empty"><b>Fiche indisponible</b>Réessayez.</div>`;
+    $('#udBack').onclick = () => { go('users'); paintUsers(); };
+  }
+}
+function renderUserDetail(u){
+  const v = $('#vUserDetail'); if (!v) return;
+  const active = u.status !== 'disabled';
+  const orders = (u.orders || []).slice().sort((a,b) => String(b.created_at || '').localeCompare(String(a.created_at || '')));
+  const orderRows = orders.length ? orders.map(o => `<div class="uord">
+      <span><b>${esc(o.id)}</b><small>${frDate(o.created_at)} · ${frTime(o.created_at)}</small></span>
+      <span><b>${fcfa(o.total)}</b><small>${esc(STATUS[o.status] || o.status || '—')}</small></span>
+    </div>`).join('') : '<div class="empty" style="padding:22px 10px">Aucun achat enregistré.</div>';
+  v.innerHTML = `
+    <div class="topbar"><button class="ibtn" id="udBack">${ICON.back}</button><h1>Fiche client</h1><div style="width:40px"></div></div>
+    <div class="card uprof">
+      <div class="uavatar">${esc((u.name || '?').trim().charAt(0).toUpperCase())}</div>
+      <div class="uprof-main"><b>${esc(u.name || 'Client')}</b><span>${esc(u.phone || '—')}</span>${u.email ? `<span>${esc(u.email)}</span>` : ''}</div>
+      <span class="usr-tag ${active ? 'active' : 'banni'}">${active ? 'Actif' : 'Banni'}</span>
+    </div>
+    <div class="ustats">
+      <div><b>${Number(u.orders_count) || 0}</b><span>achats</span></div>
+      <div><b>${fcfa(u.total_spent)}</b><span>total dépensé</span></div>
+      <div><b>${Number(u.points) || 0}</b><span>points</span></div>
+    </div>
+    ${!active ? `<div class="ban-note"><b>Compte banni</b><span>${esc(u.ban_reason || 'Conditions d’utilisation non respectées')}</span>${u.banned_at ? `<small>Depuis le ${frDate(u.banned_at)} à ${frTime(u.banned_at)}</small>` : ''}</div>` : ''}
+    <div class="card" style="padding:14px 16px;margin-top:12px">
+      <div class="row"><span class="k">Identifiant</span><span class="v" style="font-family:ui-monospace,monospace;font-size:12px">${esc(u.id)}</span></div>
+      <div class="row"><span class="k">Inscription</span><span class="v">${u.created_at ? frDate(u.created_at) : '—'}</span></div>
+      <div class="row"><span class="k">Dernière connexion</span><span class="v">${u.last_login ? frDate(u.last_login) + ' · ' + frTime(u.last_login) : '—'}</span></div>
+      <div class="row"><span class="k">Adresses</span><span class="v">${Array.isArray(u.addresses) ? u.addresses.length : (Number(u.addresses) || 0)}</span></div>
+    </div>
+    <div class="sec"><h2>Historique d’achat</h2><span class="cnt">${orders.length}</span></div>
+    <div class="card uorders">${orderRows}</div>
+    <div class="uact">
+      ${active ? `<button class="pill acc" id="uBan">Bannir ce client</button>
+      <div class="ban-box" id="banBox" style="display:none">
+        <label>Motif du bannissement</label>
+        <textarea id="banReason" maxlength="240" placeholder="Ex. non-respect des conditions d’utilisation, commandes abusives…"></textarea>
+        <p>Le client sera déconnecté et ne pourra plus se connecter ni commander avec ce numéro.</p>
+        <div class="acts"><button id="banCancel">Annuler</button><button class="pill acc" id="banConfirm">Confirmer le bannissement</button></div>
+      </div>` : `<button class="pill" id="uUnban">Réactiver le compte</button>`}
+    </div>
+    <p class="hint">Bannir un client est réservé aux manquements aux conditions d’utilisation.</p>`;
+  $('#udBack').onclick = () => { go('users'); paintUsers(); };
+  if (active) {
+    $('#uBan').onclick = () => { const b = $('#banBox'); b.style.display = 'block'; $('#banReason').focus(); };
+    $('#banCancel').onclick = () => { $('#banBox').style.display = 'none'; };
+    $('#banConfirm').onclick = async () => {
+      const reason = $('#banReason').value.trim();
+      if (reason.length < 4) { toast('Indiquez un motif (4 caractères minimum)'); return; }
+      const btn = $('#banConfirm'); btn.disabled = true; btn.textContent = 'Bannissement…';
+      try {
+        await api('/api/admin/users/' + encodeURIComponent(u.id), {method:'PATCH', body:{status:'disabled', ban_reason:reason}});
+        toast('Client banni'); vib(20); await openUser(u.id);
+      } catch(e) { btn.disabled = false; btn.textContent = 'Confirmer le bannissement'; toast('Bannissement impossible'); }
+    };
+  } else {
+    let armed = false;
+    $('#uUnban').onclick = async () => {
+      const btn = $('#uUnban');
+      if (!armed) {
+        armed = true; btn.textContent = 'Confirmer la réactivation';
+        setTimeout(() => { if (btn && document.body.contains(btn)) { armed = false; btn.textContent = 'Réactiver le compte'; } }, 4000);
+        return;
+      }
+      btn.disabled = true; btn.textContent = 'Réactivation…';
+      try {
+        await api('/api/admin/users/' + encodeURIComponent(u.id), {method:'PATCH', body:{status:'active'}});
+        toast('Compte réactivé'); vib(20); await openUser(u.id);
+      } catch(e) { btn.disabled = false; btn.textContent = 'Réactiver le compte'; toast('Réactivation impossible'); }
+    };
+  }
+}
+
 function openDetail(id){
   detailId = id;
   const o = ORDERS.find(x => x.id === id); if (!o) return;
@@ -1039,7 +1221,7 @@ function paintSettings(){
     catch(e) { toast('Réglages non enregistrés'); }
   };
   $('#mClient').onclick = () => openClientApp();
-  $('#mUsers').onclick = () => openExt(API().replace('/api', '') + '/x');
+  $('#mUsers').onclick = openUsers;
   $('#mBackup').onclick = async () => {
     try { const j = await api('/api/admin/backup'); const t = JSON.stringify(j); if (NATIVE && NATIVE.saveFile) NATIVE.saveFile('drc-sauvegarde-' + new Date().toISOString().slice(0,10) + '.json', t); else { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([t], {type:'application/json'})); a.download = 'drc-sauvegarde.json'; a.click(); } toast('Sauvegarde prête'); }
     catch(e) { toast('Sauvegarde impossible'); }
