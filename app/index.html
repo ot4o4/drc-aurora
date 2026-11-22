@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220655">
+<link rel="manifest" href="manifest.json?v=202611220713">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -755,6 +755,16 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 
 .card.chat.chat-open{box-shadow:0 0 0 2px var(--acc),0 18px 34px -24px rgba(229,29,38,.55);transition:box-shadow .25s ease}
 .card.chat.chat-open .chat-row input{background:#fff;box-shadow:0 0 0 2px rgba(229,29,38,.18)}
+
+@media print{
+  html,body{background:#fff!important}
+  body.print-invoice *{visibility:hidden!important}
+  body.print-invoice #vInvoice,body.print-invoice #vInvoice *{visibility:visible!important}
+  body.print-invoice #vInvoice{position:absolute!important;inset:0!important;display:block!important;padding:0!important;overflow:visible!important;background:#fff!important}
+  body.print-invoice #vInvoice .topbar,body.print-invoice #vInvoice [data-back],body.print-invoice #vInvoice #invPrint,body.print-invoice #vInvoice #invClose{display:none!important}
+  body.print-invoice #vInvoice .inv-paper{box-shadow:none!important;border-radius:0!important;margin:0!important;padding:0!important;max-width:none!important}
+  @page{margin:12mm}
+}
 </style>
 </head>
 <body>
@@ -987,7 +997,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.36', APP_BUILD = 97, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.37', APP_BUILD = 98, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1809,9 +1819,11 @@ async function openInvoice(id){
       <div class="inv-note"><small>${inv.ai_source === 'ai' ? 'NOTE GÉNÉRÉE PAR IA' : 'NOTE PERSONNALISÉE'}</small><p>${esc(inv.note || '')}</p></div>
       <div class="inv-foot">Merci de votre confiance · Darou Rahmane Chicken</div>
     </div>
-    <button class="pill-btn light" id="invClose" style="margin-top:10px">Fermer</button>`;
+    <button class="pill-btn acc" id="invPrint" style="margin-top:10px">Imprimer la facture</button>
+    <button class="pill-btn light" id="invClose" style="margin-top:8px">Fermer</button>`;
   v.querySelector('[data-back]').onclick = pop;
   $('#invClose').onclick = pop;
+  $('#invPrint').onclick = printInvoice;
   if (!inv.seen_at) {
     api('/api/orders/' + encodeURIComponent(id) + '/invoice/seen', {method:'POST', headers:{'X-Order-Token':tokenOf(id)}}).then(j => {
       inv.seen_at = (j && j.seen_at) || new Date().toISOString();
@@ -2152,6 +2164,16 @@ function openChatPanel(){
   setTimeout(() => chat.classList.remove('chat-open'), 2200);
 }
 
+function printInvoice(){
+  document.body.classList.add('print-invoice');
+  setTimeout(() => {
+    try {
+      if (window.Android && window.Android.printPage) window.Android.printPage();
+      else window.print();
+    } catch(e) { try { window.print(); } catch(_) {} }
+  }, 80);
+  setTimeout(() => document.body.classList.remove('print-invoice'), 12000);
+}
 function updateBells(){
   const unread = notifUnread();
   ['#bellDot', '#bellDot2', '#bellDot3'].forEach(s => $(s) && $(s).classList.toggle('on', unread > 0));
@@ -2196,7 +2218,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.36 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.37 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `

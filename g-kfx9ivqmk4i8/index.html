@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '5.7';
+window.DRC_WEB = '5.8';
 </script>
 
 <meta charset="utf-8">
@@ -344,6 +344,16 @@ details.adv .fld{margin-top:12px}
 .upd-card .pill{height:52px;margin-top:0}
 .upd-later{display:block;margin:10px auto 0;padding:8px 12px;font-size:12px;font-weight:600;color:#8A827C}
 .upd-hint{font-size:9.5px;line-height:1.45;color:#9A9188;text-align:center;margin:8px 8px 0}
+
+@media print{
+  html,body{background:#fff!important}
+  body.print-invoice *{visibility:hidden!important}
+  body.print-invoice #invOverlay,body.print-invoice #invOverlay *{visibility:visible!important}
+  body.print-invoice #invOverlay{position:static!important;inset:auto!important;display:block!important;background:#fff!important;backdrop-filter:none!important;padding:0!important}
+  body.print-invoice .inv-sheet{box-shadow:none!important;border-radius:0!important;max-width:none!important;max-height:none!important;padding:0!important;overflow:visible!important}
+  body.print-invoice .inv-x,body.print-invoice #invPrint{display:none!important}
+  @page{margin:12mm}
+}
 </style>
 
 <style id="compta">
@@ -664,7 +674,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.7').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.8').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -695,7 +705,7 @@ body{font-family:PJS,system-ui,sans-serif}
 'use strict';
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = () => DEFAULT_API;
-const APP_VERSION = '5.7', APP_BUILD = 48;
+const APP_VERSION = '5.8', APP_BUILD = 49;
 let updateInfo = null;
 const NATIVE = window.Android || null;
 /* On n'alerte le téléphone que si l'utilisateur N'EST PAS dans l'app (écran éteint, autre app,
@@ -1118,10 +1128,12 @@ function showInvoice(inv){
     <div class="inv-pay">${esc(PAY[inv.payment_method] || 'Paiement')} · ${inv.payment_status === 'paid' ? 'réglé' : inv.payment_method === 'cod' ? 'à la livraison' : 'à vérifier'}</div>
     <div class="inv-note"><small>${inv.ai_source === 'ai' ? 'NOTE GÉNÉRÉE PAR IA' : 'NOTE PERSONNALISÉE'}</small><p>${esc(inv.note || '')}</p></div>
     <div class="inv-foot">Merci de votre confiance · ${esc((inv.shop && inv.shop.site) || 'drc.sn')}</div>
+    <button class="pill acc" id="invPrint" style="margin-top:14px">Imprimer la facture</button>
   </div>`;
   document.body.appendChild(el);
   const close = () => el.remove();
   el.querySelector('#invClose').onclick = close;
+  el.querySelector('#invPrint').onclick = printInvoice;
   el.addEventListener('click', e => { if (e.target === el) close(); });
 }
 function renderDriverSelect(o){
@@ -1431,6 +1443,16 @@ function downloadUpdate(){
   openExt(url);
 }
 
+function printInvoice(){
+  document.body.classList.add('print-invoice');
+  setTimeout(() => {
+    try {
+      if (window.Android && window.Android.printPage) window.Android.printPage();
+      else window.print();
+    } catch(e) { try { window.print(); } catch(_) {} }
+  }, 80);
+  setTimeout(() => document.body.classList.remove('print-invoice'), 12000);
+}
 /* ── rafraîchissement + notifications ── */
 async function refreshAll(){
   await Promise.all([refreshStats(), refreshOrders(), refreshProducts(), refreshDrivers(), refreshSettings()]);
