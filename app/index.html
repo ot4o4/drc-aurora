@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611220743">
+<link rel="manifest" href="manifest.json?v=202611220746">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1060,7 +1060,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.44', APP_BUILD = 105, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.45', APP_BUILD = 106, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1104,7 +1104,7 @@ const N_ICON = {
   code: '<svg viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="8" cy="8" r="4.5"/><path d="m11.2 11.2 8.3 8.3M16 16l2-2M18.5 18.5l2-2"/></svg>',
   update: '<svg viewBox="0 0 24 24"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16.9l-5.7-5.6 1.4-1.4 3.3 3.3V3ZM5 18h14v2H5v-2Z"/></svg>'
 };
-const CATS = [['tout','Tout','cat-tout'],['entier','Entier','cat-entier'],['blancs','Filets','cat-blancs'],['cuisses','Cuisses','cat-cuisses'],['abats','Abats','cat-abats'],['oeufs','Œufs','cat-oeufs']];
+const CATS = [['tout','Tout','cat-tout'],['entier','Entier','cat-entier'],['blancs','Filets','cat-blancs'],['cuisses','Cuisses','cat-cuisses'],['oeufs','Œufs','cat-oeufs']];
 const ORDER_IDS = [1,2,3,9,4,5,8];
 
 const STATUS = {
@@ -2348,7 +2348,7 @@ function paintAccount(){
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.44 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br>Version de l’application 1.8.45 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
