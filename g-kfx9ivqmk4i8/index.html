@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '5.0';
+window.DRC_WEB = '5.1';
 </script>
 
 <meta charset="utf-8">
@@ -289,6 +289,22 @@ details.adv .fld{margin-top:12px}
 #vUserDetail .sec h2{color:#1A1A1A}
 #vUserDetail .topbar .ibtn{background:#fff;color:#1A1A1A}
 #vUserDetail .hint{color:#8D8178}
+
+.usr.pending{background:linear-gradient(150deg,#FFF8E8,var(--card));box-shadow:0 12px 28px -22px rgba(160,100,0,.4)}
+.usr-av.reset{background:#FFF1D6;color:#8A5B00;font-size:18px}
+.usr-tag.reset{background:#FFF1D6;color:#8A5B00}
+.reset-note{background:#FFF8E8;border:1px solid #F0DFC0;border-radius:16px;padding:12px 14px;margin-top:12px;color:#7A5410}
+.reset-note b{display:block;font-size:13px;margin-bottom:3px}
+.reset-note span{display:block;font-size:12px;line-height:1.4}
+.reset-note small{display:block;font-size:9.5px;color:#A08050;margin-top:5px}
+.uact .pill.light{margin-bottom:9px}
+.temp-pwd{margin-top:10px;padding:14px;border-radius:18px;background:#F0FAF2;border:1px solid #CDE8D4}
+.temp-pwd small{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:#3D7A50;margin-bottom:4px}
+.temp-pwd b{display:block;font-size:24px;letter-spacing:.12em;font-family:ui-monospace,monospace;color:#1F5C33;margin:2px 0 10px;word-break:break-all}
+.temp-pwd .acts{display:flex;gap:7px}
+.temp-pwd .acts button{flex:1;height:40px;border-radius:999px;font-size:11.5px;font-weight:700;background:#fff;color:#1F5C33}
+.temp-pwd .acts button:last-child{background:#25D366;color:#fff}
+.temp-pwd p{font-size:10px;line-height:1.4;color:#4C7A5B;margin:8px 2px 0}
 </style>
 
 <style id="compta">
@@ -585,7 +601,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.0').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.1').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -764,7 +780,14 @@ function renderUsers(users, total, q){
     list.innerHTML = `<div class="empty"><b>${q ? 'Aucun résultat' : 'Aucun client'}</b>${q ? 'Essayez un autre nom ou numéro.' : 'Les comptes créés apparaîtront ici.'}</div>`;
     return;
   }
-  list.innerHTML = `<div class="sec" style="margin:16px 2px 8px"><h2>${q ? 'Résultats' : 'Clients'}</h2><span class="cnt">${users.length}${q ? ' / ' + total : ''}</span></div>` +
+  const pendingUsers = users.filter(u => u.password_reset_requested_at);
+  const pendingHtml = pendingUsers.length ? `<div class="sec" style="margin:16px 2px 8px"><h2>Demandes de récupération</h2><span class="cnt">${pendingUsers.length}</span></div>` +
+    pendingUsers.map(u => `<button class="usr pending" data-user="${esc(u.id)}">
+      <span class="usr-av reset">🔑</span>
+      <span class="usr-main"><b>${esc(u.name || 'Client')}</b><span>${esc(u.phone || '—')} · mot de passe oublié</span></span>
+      <span class="usr-end"><b>${frDate(u.password_reset_requested_at)}</b><span class="usr-tag reset">À TRAITER</span></span>
+    </button>`).join('') : '';
+  list.innerHTML = pendingHtml + `<div class="sec" style="margin:16px 2px 8px"><h2>${q ? 'Résultats' : 'Clients'}</h2><span class="cnt">${users.length}${q ? ' / ' + total : ''}</span></div>` +
     users.map(u => {
       const active = u.status !== 'disabled';
       return `<button class="usr ${active ? '' : 'banned'}" data-user="${esc(u.id)}">
@@ -790,6 +813,22 @@ async function openUser(id){
     $('#udBack').onclick = () => { go('users'); paintUsers(); };
   }
 }
+function showTempPassword(password, u){
+  const box = $('#tempPwdBox'); if (!box) return;
+  const phone = String(u.phone || '').replace(/\D/g, '').replace(/^0/, '221');
+  box.innerHTML = `<div class="temp-pwd">
+    <small>MOT DE PASSE TEMPORAIRE</small>
+    <b>${esc(password)}</b>
+    <div class="acts">
+      <button id="copyTmp">Copier</button>
+      <button id="waTmp">Envoyer sur WhatsApp</button>
+    </div>
+    <p>À transmettre au client après vérification. Il devra le remplacer dans « Mon compte ».</p>
+  </div>`;
+  $('#copyTmp').onclick = () => { if (NATIVE && NATIVE.copy) { NATIVE.copy(password); toast('Copié'); } else if (navigator.clipboard) navigator.clipboard.writeText(password).then(() => toast('Copié')).catch(() => toast(password)); else toast(password); };
+  $('#waTmp').onclick = () => openExternal(`https://wa.me/${phone}?text=${encodeURIComponent('Bonjour ' + (u.name || '') + ', votre mot de passe temporaire Darou Rahmane Chicken est : ' + password + ' . Connectez-vous puis changez-le dans Mon compte.')}`);
+}
+
 function renderUserDetail(u){
   const v = $('#vUserDetail'); if (!v) return;
   const active = u.status !== 'disabled';
@@ -811,6 +850,7 @@ function renderUserDetail(u){
       <div><b>${Number(u.points) || 0}</b><span>points</span></div>
     </div>
     ${!active ? `<div class="ban-note"><b>Compte banni</b><span>${esc(u.ban_reason || 'Conditions d’utilisation non respectées')}</span>${u.banned_at ? `<small>Depuis le ${frDate(u.banned_at)} à ${frTime(u.banned_at)}</small>` : ''}</div>` : ''}
+    ${u.password_reset_requested_at ? `<div class="reset-note"><b>Demande de récupération</b><span>Le client a demandé un nouveau mot de passe.</span><small>${frDate(u.password_reset_requested_at)} · ${frTime(u.password_reset_requested_at)}</small></div>` : ''}
     <div class="card" style="padding:14px 16px;margin-top:12px">
       <div class="row"><span class="k">Identifiant</span><span class="v" style="font-family:ui-monospace,monospace;font-size:12px">${esc(u.id)}</span></div>
       <div class="row"><span class="k">Inscription</span><span class="v">${u.created_at ? frDate(u.created_at) : '—'}</span></div>
@@ -820,6 +860,8 @@ function renderUserDetail(u){
     <div class="sec"><h2>Historique d’achat</h2><span class="cnt">${orders.length}</span></div>
     <div class="card uorders">${orderRows}</div>
     <div class="uact">
+      <button class="pill light" id="uResetPwd">Réinitialiser le mot de passe</button>
+      <div id="tempPwdBox"></div>
       ${active ? `<button class="pill acc" id="uBan">Bannir ce client</button>
       <div class="ban-box" id="banBox" style="display:none">
         <label>Motif du bannissement</label>
@@ -830,6 +872,22 @@ function renderUserDetail(u){
     </div>
     <p class="hint">Bannir un client est réservé aux manquements aux conditions d’utilisation.</p>`;
   $('#udBack').onclick = () => { go('users'); paintUsers(); };
+  let pwdArmed = false;
+  $('#uResetPwd').onclick = async () => {
+    const btn = $('#uResetPwd');
+    if (!pwdArmed) {
+      pwdArmed = true; btn.textContent = 'Confirmer la réinitialisation';
+      setTimeout(() => { if (btn && document.body.contains(btn)) { pwdArmed = false; btn.textContent = 'Réinitialiser le mot de passe'; } }, 4000);
+      return;
+    }
+    btn.disabled = true; btn.textContent = 'Génération…';
+    try {
+      const j = await api('/api/admin/users/' + encodeURIComponent(u.id) + '/reset-password', { method:'POST', body:{} });
+      showTempPassword(j.password, u);
+      toast('Mot de passe temporaire généré'); vib(20);
+    } catch(e) { toast('Réinitialisation impossible'); }
+    finally { btn.disabled = false; btn.textContent = 'Réinitialiser le mot de passe'; pwdArmed = false; }
+  };
   if (active) {
     $('#uBan').onclick = () => { const b = $('#banBox'); b.style.display = 'block'; $('#banReason').focus(); };
     $('#banCancel').onclick = () => { $('#banBox').style.display = 'none'; };

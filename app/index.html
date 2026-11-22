@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220502">
+<link rel="manifest" href="manifest.json?v=202611220516">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -704,6 +704,29 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .pcard:nth-child(2n)::after{animation-delay:1.4s}
 .pcard:nth-child(3n)::after{animation-delay:2.6s}
 @media (prefers-reduced-motion: reduce){.pcard::after{animation:none}}
+
+/* ── récupération / mot de passe 1.8.20 ── */
+.ag-forgot{display:block;margin:9px 3px 0 auto;font-size:11px;font-weight:700;color:var(--acc-ink)}
+.a-forgot{display:block;margin:10px auto 0;font-size:11.5px;font-weight:700;color:var(--acc-ink)}
+.fp-sheet{position:fixed;inset:0;z-index:240;display:none;align-items:flex-end;justify-content:center;background:rgba(20,12,10,.5);backdrop-filter:blur(4px)}
+.fp-sheet.on{display:flex;animation:agFade .24s ease both}
+.fp-card{width:100%;max-width:460px;max-height:92vh;overflow-y:auto;background:var(--card);border-radius:28px 28px 0 0;padding:20px 20px calc(22px + var(--sb));color:var(--ink);box-shadow:0 -20px 60px -20px rgba(0,0,0,.4);animation:updUp .38s cubic-bezier(.2,.8,.2,1) both}
+.fp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.fp-ic{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:var(--acc-soft);color:var(--acc-ink)}
+.fp-ic svg{width:25px;height:25px;fill:currentColor}
+.fp-close{width:38px;height:38px;border-radius:50%;background:var(--seg);display:grid;place-items:center}
+.fp-close svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.fp-kicker{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc-ink);font-weight:800;margin:0 0 5px}
+.fp-card h2{font-size:25px;line-height:1.08;letter-spacing:-.03em;margin:0}
+.fp-sub{font-size:12.5px;line-height:1.5;color:var(--ink2);margin:9px 0 14px}
+.fp-err{min-height:16px;margin:8px 2px 0;font-size:11.5px;font-weight:600;color:#B10E17}
+.fp-card .ag-field{margin-top:11px}
+.fp-card .ag-field > input{background:#F7F1EA}
+.fp-card .pill-btn{width:100%;height:52px;margin-top:10px;background:linear-gradient(155deg,#FF3D46,#D4111A 74%,#C00E17)!important;color:#fff}
+.fp-card .pill-btn.fp-wa{background:linear-gradient(155deg,#25D366,#128C4A)!important}
+.fp-later{display:block;margin:10px auto 0;padding:8px 12px;font-size:12px;font-weight:600;color:var(--muted)}
+.fp-hint{font-size:10px;line-height:1.45;color:var(--muted);text-align:center;margin:9px 8px 0}
+.fp-ok{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;margin:4px 0 12px;background:#E5F5EA;color:#1F8A4C;font-size:26px;font-weight:800}
 </style>
 </head>
 <body>
@@ -757,6 +780,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
       <div class="ag-field" id="agNameField" hidden><label>Nom complet</label><input id="agName" placeholder="Awa Diop" autocomplete="name"></div>
       <div class="ag-field"><label>Téléphone</label><div class="ag-in"><span>+221</span><input id="agPhone" inputmode="tel" placeholder="77 123 45 67" autocomplete="tel"></div></div>
       <div class="ag-field"><label>Mot de passe</label><div class="ag-in"><input id="agPass" type="password" placeholder="••••••" autocomplete="current-password"><button type="button" class="ag-eye" id="agEye" aria-label="Afficher le mot de passe"><svg viewBox="0 0 24 24"><path d="M12 5c5 0 9 4.4 10 7-1 2.6-5 7-10 7S3 14.6 2 12c1-2.6 5-7 10-7Zm0 2c-3.3 0-6.2 2.7-7.5 5 1.3 2.3 4.2 5 7.5 5s6.2-2.7 7.5-5C18.2 9.7 15.3 7 12 7Zm0 1.8a3.2 3.2 0 1 1 0 6.4 3.2 3.2 0 0 1 0-6.4Z"/></svg></button></div></div>
+      <button type="button" class="ag-forgot" id="agForgot">Mot de passe oublié ?</button>
       <p class="ag-err" id="agErr"></p>
       <button class="pill-btn" id="agGo">Se connecter</button>
       <p class="ag-legal">En continuant, vous acceptez nos conditions d’utilisation et notre politique de confidentialité.</p>
@@ -777,6 +801,44 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
     <button class="pill-btn" id="updGo">Télécharger et installer</button>
     <button class="upd-later" id="updLater">Plus tard</button>
     <p class="upd-hint">Le fichier se télécharge dans votre navigateur. Ouvrez-le pour installer la mise à jour.</p>
+  </div>
+</div>
+
+<!-- récupération de mot de passe -->
+<div class="fp-sheet" id="fpSheet" aria-hidden="true">
+  <div class="fp-card">
+    <div class="fp-head"><span class="fp-ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 8V7a3 3 0 0 1 6 0v3H9Z"/></svg></span><button class="fp-close" id="fpClose" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="fpForm">
+      <p class="fp-kicker">Récupération</p>
+      <h2>Mot de passe oublié ?</h2>
+      <p class="fp-sub">Indiquez le numéro de votre compte. La boutique vérifiera votre identité et vous enverra un mot de passe temporaire sur WhatsApp.</p>
+      <div class="ag-field"><label>Téléphone</label><div class="ag-in"><span>+221</span><input id="fpPhone" inputmode="tel" placeholder="77 123 45 67" autocomplete="tel"></div></div>
+      <p class="fp-err" id="fpErr"></p>
+      <button class="pill-btn" id="fpGo">Envoyer la demande</button>
+    </div>
+    <div id="fpDone" style="display:none">
+      <div class="fp-ok">✓</div>
+      <h2>Demande envoyée</h2>
+      <p class="fp-sub">Contactez la boutique sur WhatsApp avec votre numéro. Après vérification, elle vous donnera un mot de passe temporaire.</p>
+      <button class="pill-btn fp-wa" id="fpWa">Contacter la boutique sur WhatsApp</button>
+      <button class="fp-later" id="fpLater">Fermer</button>
+      <p class="fp-hint">Une fois connecté, changez votre mot de passe dans Mon compte pour sécuriser l’accès.</p>
+    </div>
+  </div>
+</div>
+
+<!-- changement de mot de passe -->
+<div class="fp-sheet" id="pwdSheet" aria-hidden="true">
+  <div class="fp-card">
+    <div class="fp-head"><span class="fp-ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 8V7a3 3 0 0 1 6 0v3H9Z"/></svg></span><button class="fp-close" id="pwdClose" aria-label="Fermer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <p class="fp-kicker">Mon compte</p>
+    <h2>Changer mon mot de passe</h2>
+    <p class="fp-sub">Choisissez un mot de passe de 6 caractères minimum.</p>
+    <div class="ag-field"><label>Mot de passe actuel</label><input id="pwdOld" type="password" autocomplete="current-password" placeholder="Votre mot de passe actuel"></div>
+    <div class="ag-field"><label>Nouveau mot de passe</label><input id="pwdNew" type="password" autocomplete="new-password" placeholder="6 caractères minimum"></div>
+    <div class="ag-field"><label>Confirmer</label><input id="pwdConfirm" type="password" autocomplete="new-password" placeholder="Répétez le nouveau mot de passe"></div>
+    <p class="fp-err" id="pwdErr"></p>
+    <button class="pill-btn" id="pwdGo">Enregistrer le nouveau mot de passe</button>
   </div>
 </div>
 
@@ -896,7 +958,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.19', APP_BUILD = 80, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.20', APP_BUILD = 81, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1904,6 +1966,7 @@ function bindAuthGate(){
   $('#agGo').onclick = gateAuth;
   $('#agEye').onclick = () => { const i = $('#agPass'); const on = i.type === 'password'; i.type = on ? 'text' : 'password'; $('#agEye').classList.toggle('on', on); };
   $('#agPass').addEventListener('keydown', e => { if (e.key === 'Enter') gateAuth(); });
+  $('#agForgot').onclick = () => openForgotPassword($('#agPhone').value);
   $('#agPhone').addEventListener('keydown', e => { if (e.key === 'Enter') $('#agPass').focus(); });
 }
 function maybeShowAuthGate(delay = 0){
@@ -1957,6 +2020,81 @@ function bindUpdateSheet(){
   $('#updLater').onclick = () => closeUpdateSheet(true);
 }
 
+/* ════════════════ MOT DE PASSE OUBLIÉ / CHANGEMENT ════════════════ */
+function openForgotPassword(phone){
+  const sh = $('#fpSheet'); if (!sh) return;
+  $('#fpForm').style.display = 'block'; $('#fpDone').style.display = 'none';
+  $('#fpPhone').value = phone || buyer.phone || '';
+  $('#fpErr').textContent = '';
+  sh.classList.add('on'); sh.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closeForgotPassword(){
+  const sh = $('#fpSheet'); if (!sh) return;
+  sh.classList.remove('on'); sh.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+async function requestPasswordReset(){
+  const phone = $('#fpPhone').value.trim();
+  if (phoneDigits(phone).length < 9) { $('#fpErr').textContent = 'Numéro de téléphone invalide.'; return; }
+  $('#fpErr').textContent = '';
+  const btn = $('#fpGo'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+  try {
+    await api('/api/auth/forgot-password', { method:'POST', body:{ phone }, timeout:30000 });
+    $('#fpForm').style.display = 'none'; $('#fpDone').style.display = 'block';
+  } catch(e) {
+    $('#fpErr').textContent = e.message === 'rate_limited' ? 'Trop de demandes, patientez quelques minutes.' : e.status === 0 ? 'Pas de connexion, réessayez.' : 'Demande impossible, réessayez.';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Envoyer la demande';
+  }
+}
+function forgotWhatsApp(){
+  const phone = $('#fpPhone').value.trim() || '—';
+  openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour Darou Rahmane Chicken, je souhaite récupérer mon mot de passe. Mon numéro de compte : ' + phone)}`);
+}
+function openPwdSheet(){
+  if (!auth) return;
+  const sh = $('#pwdSheet'); if (!sh) return;
+  $('#pwdOld').value = ''; $('#pwdNew').value = ''; $('#pwdConfirm').value = ''; $('#pwdErr').textContent = '';
+  sh.classList.add('on'); sh.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closePwdSheet(){
+  const sh = $('#pwdSheet'); if (!sh) return;
+  sh.classList.remove('on'); sh.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+async function changePassword(){
+  const current = $('#pwdOld').value, next = $('#pwdNew').value, confirm = $('#pwdConfirm').value;
+  const err = m => { $('#pwdErr').textContent = m; };
+  if (!current) return err('Saisissez votre mot de passe actuel.');
+  if (next.length < 6) return err('Le nouveau mot de passe doit faire 6 caractères minimum.');
+  if (next !== confirm) return err('Les deux nouveaux mots de passe ne correspondent pas.');
+  err('');
+  const btn = $('#pwdGo'); btn.disabled = true; btn.textContent = 'Enregistrement…';
+  try {
+    const j = await api('/api/auth/password', { method:'POST', body:{current, new:next}, timeout:30000 });
+    auth = { token:j.token, user:j.user }; store.set('drc_app_auth', auth);
+    closePwdSheet(); toast('Mot de passe modifié'); vib(20);
+    if (route.name === 'account') paintAccount();
+  } catch(e) {
+    err(e.message === 'invalid_current_password' ? 'Mot de passe actuel incorrect.' : e.message === 'rate_limited' ? 'Trop d’essais, patientez.' : e.status === 0 ? 'Pas de connexion.' : 'Modification impossible.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Enregistrer le nouveau mot de passe';
+  }
+}
+function bindPasswordSheets(){
+  if (!$('#fpSheet')) return;
+  $('#fpClose').onclick = closeForgotPassword;
+  $('#fpLater').onclick = closeForgotPassword;
+  $('#fpGo').onclick = requestPasswordReset;
+  $('#fpWa').onclick = forgotWhatsApp;
+  $('#pwdClose').onclick = closePwdSheet;
+  $('#pwdGo').onclick = changePassword;
+  $('#fpPhone').addEventListener('keydown', e => { if (e.key === 'Enter') requestPasswordReset(); });
+  $('#pwdConfirm').addEventListener('keydown', e => { if (e.key === 'Enter') changePassword(); });
+}
+
 function updateBells(){
   const unread = notifUnread();
   ['#bellDot', '#bellDot2', '#bellDot3'].forEach(s => $(s) && $(s).classList.toggle('on', unread > 0));
@@ -1997,9 +2135,10 @@ function paintAccount(){
       <button class="mi" id="mCall"><span class="mi-ic">${ICON.phone}</span><div>Appeler la boutique<small>70 917 09 20</small></div>${ICON.chev}</button>
       <button class="mi" id="mPro"><span class="mi-ic">${ICON.shop}</span><div>Devenir revendeur<small>Tarifs pros, commande hebdomadaire</small></div>${ICON.chev}</button>
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
+      ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.19 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.20 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -2016,11 +2155,13 @@ function paintAccount(){
           <div class="field"><label>Téléphone</label><input id="aPhone" inputmode="tel" placeholder="77 123 45 67" value="${esc(buyer.phone)}" autocomplete="tel"></div>
           <div class="field"><label>Mot de passe</label><input id="aPass" type="password" placeholder="${authMode === 'register' ? '6 caractères minimum' : '••••••'}" autocomplete="${authMode === 'register' ? 'new-password' : 'current-password'}"></div>
         </div>
+        ${authMode === 'login' ? '<button type="button" class="a-forgot" id="aForgot">Mot de passe oublié ?</button>' : ''}
         <button class="pill-btn" id="aGo" style="margin-top:16px">${authMode === 'register' ? 'Créer mon compte' : 'Se connecter'}</button>
         <p class="hint">Un compte garde vos commandes sur tous vos téléphones et cumule vos points fidélité.</p>
       </div>` + contact;
     b.querySelectorAll('[data-am]').forEach(x => x.onclick = () => { authMode = x.dataset.am; paintAccount(); });
     $('#aGo').onclick = doAuth;
+    if ($('#aForgot')) $('#aForgot').onclick = () => openForgotPassword($('#aPhone').value);
   }
   const seg = document.getElementById('themeSeg');
   if (seg) seg.querySelectorAll('[data-th]').forEach(b => b.onclick = () => setTheme(b.dataset.th));
@@ -2029,6 +2170,7 @@ function paintAccount(){
   $('#mCall').onclick = () => dial(SHOP_CALL);
   $('#mPro').onclick = () => openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour, je souhaite devenir revendeur Darou Rahmane Chicken (commande pro hebdomadaire).')}`);
   $('#mSite').onclick = () => openExternal(SITE_URL);
+  if ($('#mPwd')) $('#mPwd').onclick = openPwdSheet;
   if ($('#mOut')) $('#mOut').onclick = () => logout();
 }
 async function doAuth(){
@@ -2336,7 +2478,7 @@ function initOnb(){
 }
 
 /* ════════════════ DÉMARRAGE ════════════════ */
-renderHome(); paintBadge(); updateBells(); initOnb(); bindAuthGate(); bindUpdateSheet(); checkAppUpdate();
+renderHome(); paintBadge(); updateBells(); initOnb(); bindAuthGate(); bindUpdateSheet(); bindPasswordSheets(); checkAppUpdate();
 setTimeout(() => { if ($('#onb').classList.contains('hidden')) maybeShowAuthGate(0); }, 1100);
 window.addEventListener('load', () => setTimeout(() => $('#boot').classList.add('out'), 250));
 setTimeout(() => $('#boot').classList.add('out'), 2500);
