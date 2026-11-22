@@ -16,7 +16,7 @@
 <script>
 /* jamais dans un cadre d'un autre site */
 if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.style.display = 'none'; } }
-window.DRC_WEB = '5.9';
+window.DRC_WEB = '5.10';
 </script>
 
 <meta charset="utf-8">
@@ -536,7 +536,7 @@ body{font-family:PJS,system-ui,sans-serif}
 /* 2. Bouton d'actualisation : icône fournie par l'utilisateur + rotation fluide au toucher */
 .ibtn{width:42px!important;height:42px!important;flex:0 0 42px!important;border-radius:50%!important;
   background:#fff!important;box-shadow:var(--shadow)!important;display:grid!important;place-items:center!important}
-.ibtn .rf-ico{width:20px;height:20px;display:block;object-fit:contain;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .45s cubic-bezier(.22,1,.36,1)}
+.ibtn .rf-ico{width:22px;height:22px;display:block;object-fit:contain;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .45s cubic-bezier(.22,1,.36,1)}
 .ibtn.spin .rf-ico{transform:rotate(360deg)}
 
 /* 3. Barre du bas : plus de gros cadre carré rouge ; icônes uniformes, onglet actif en rouge + trait fin */
@@ -574,7 +574,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <div class="app" id="app">
   <div class="stage" id="stage">
     <section class="view on" data-view="home" id="vHome">
-      <div class="topbar"><div class="logoTile"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div><h1>Tableau de bord<span class="liveDot" id="liveDot" title="En direct avec le serveur"></span></h1><button class="ibtn" id="bRefresh" aria-label="Actualiser"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.35 6.65"/><path d="M20 5v6h-6"/></svg></button></div>
+      <div class="topbar"><div class="logoTile"><img src="assets/img/logo.png" alt="Darou Rahmane Chicken"></div><h1>Tableau de bord<span class="liveDot" id="liveDot" title="En direct avec le serveur"></span></h1><button class="ibtn" id="bRefresh" aria-label="Actualiser"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.7-4.7"/><path d="M4 4v6h6"/><path d="M4 13a8 8 0 0 0 14.7 4.7"/><path d="M20 20v-6h-6"/></svg></button></div>
       <div class="gauge" id="dashGauge"></div>
       <div class="stats" id="dashStats"></div>
       <div class="card switch"><span class="swico"><svg viewBox="0 0 24 24"><path d="M20 4H4v2h16V4zm1 10v-2l-1-5H4l-1 5v2h1v6h10v-6h4v6h2v-6h1zm-9 4H6v-4h6v4z"/></svg></span><div><b>Boutique ouverte</b><span id="shopSub">Les clients peuvent commander</span></div><button class="tg on" id="shopTg" aria-label="Ouvrir ou fermer la boutique"><i></i></button></div>
@@ -583,14 +583,14 @@ body{font-family:PJS,system-ui,sans-serif}
     </section>
 
     <section class="view" data-view="orders" id="vOrders">
-      <div class="topbar"><div style="width:40px"></div><h1>Commandes</h1><button class="ibtn" id="oRefresh" aria-label="Actualiser"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.35 6.65"/><path d="M20 5v6h-6"/></svg></button></div>
+      <div class="topbar"><div style="width:40px"></div><h1>Commandes</h1><button class="ibtn" id="oRefresh" aria-label="Actualiser"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.7-4.7"/><path d="M4 4v6h6"/><path d="M4 13a8 8 0 0 0 14.7 4.7"/><path d="M20 20v-6h-6"/></svg></button></div>
       <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="Numéro, client, téléphone" autocomplete="off"></div>
       <div class="chips" id="chips"></div>
       <div id="ordersList"></div>
     </section>
 
     <section class="view" data-view="products" id="vProducts">
-      <div class="topbar"><div style="width:40px"></div><h1>Produits</h1><button class="ibtn" id="prRefresh" aria-label="Actualiser"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.35 6.65"/><path d="M20 5v6h-6"/></svg></button></div>
+      <div class="topbar"><div style="width:40px"></div><h1>Produits</h1><button class="ibtn" id="prRefresh" aria-label="Actualiser"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.7-4.7"/><path d="M4 4v6h6"/><path d="M4 13a8 8 0 0 0 14.7 4.7"/><path d="M20 20v-6h-6"/></svg></button></div>
       <p class="hint" style="text-align:left;margin:0 2px 12px">Le prix enregistré ici est celui facturé au client.</p>
       <div class="products" id="prodList"></div>
     </section>
@@ -598,7 +598,7 @@ body{font-family:PJS,system-ui,sans-serif}
 
     <section class="view" data-view="compta" id="vCompta">
       <div class="topbar"><div style="width:40px"></div><h1>Registre de compte<span class="liveDot" id="lgDot"></span></h1>
-        <button class="ibtn" id="bLedger" aria-label="Recalculer"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.35 6.65"/><path d="M20 5v6h-6"/></svg></button></div>
+        <button class="ibtn" id="bLedger" aria-label="Recalculer"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.7-4.7"/><path d="M4 4v6h6"/><path d="M4 13a8 8 0 0 0 14.7 4.7"/><path d="M20 20v-6h-6"/></svg></button></div>
 
       <div class="lg-hero">
         <svg class="lg-wm" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm9 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM5 9v2a2 2 0 0 0 2-2Zm12 0a2 2 0 0 0 2 2V9ZM5 13v2h2a2 2 0 0 0-2-2Zm14 0a2 2 0 0 0-2 2h2Z"/></svg>
@@ -676,7 +676,7 @@ body{font-family:PJS,system-ui,sans-serif}
 <script>
 /* version web : notifications du navigateur à la place du pont Android */
 (function(){
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.9').catch(function(){});
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js?v=5.10').catch(function(){});
   function show(t, b){
     try {
       /* dans l'app (onglet visible et au premier plan) : pas de notification système */
@@ -707,7 +707,7 @@ body{font-family:PJS,system-ui,sans-serif}
 'use strict';
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = () => DEFAULT_API;
-const APP_VERSION = '5.9', APP_BUILD = 50;
+const APP_VERSION = '5.10', APP_BUILD = 51;
 let updateInfo = null;
 const NATIVE = window.Android || null;
 /* On n'alerte le téléphone que si l'utilisateur N'EST PAS dans l'app (écran éteint, autre app,
@@ -831,7 +831,7 @@ function openUsers(){ go('users'); paintUsers(); }
 async function paintUsers(){
   const v = $('#vUsers'); if (!v) return;
   v.innerHTML = `
-    <div class="topbar"><button class="ibtn" id="uBack">${ICON.back}</button><h1>Clients</h1><button class="ibtn" id="uRefresh"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.35 6.65"/><path d="M20 5v6h-6"/></svg></button></div>
+    <div class="topbar"><button class="ibtn" id="uBack">${ICON.back}</button><h1>Clients</h1><button class="ibtn" id="uRefresh"><svg class="rf-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.7-4.7"/><path d="M4 4v6h6"/><path d="M4 13a8 8 0 0 0 14.7 4.7"/><path d="M20 20v-6h-6"/></svg></button></div>
     <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="uq" placeholder="Nom, téléphone, email" autocomplete="off"></div>
     <div id="usersList"><div class="empty">Chargement…</div></div>`;
   $('#uBack').onclick = () => go('settings');

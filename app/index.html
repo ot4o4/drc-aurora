@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DRC">
 <link rel="apple-touch-icon" href="assets/img/icon-192.png">
-<link rel="manifest" href="manifest.json?v=202611220901">
+<link rel="manifest" href="manifest.json?v=202611220912">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -763,7 +763,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .upd-home .uh-txt span{display:block;font-size:10.5px;color:#8A6A2A;margin-top:1px}
 .upd-home .uh-go{flex:none;background:var(--acc);color:#fff;border-radius:99px;padding:7px 10px;font-size:10.5px;font-weight:800}
 
-.ref-ico{fill:none!important;stroke:currentColor!important;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ref-ico{width:22px!important;height:22px!important;fill:none!important;stroke:currentColor!important;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 .card.chat.chat-open{box-shadow:0 0 0 2px var(--acc),0 18px 34px -24px rgba(229,29,38,.55);transition:box-shadow .25s ease}
 .card.chat.chat-open .chat-row input{background:#fff;box-shadow:0 0 0 2px rgba(229,29,38,.18)}
@@ -1117,7 +1117,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.50', APP_BUILD = 111;
+const APP_VERSION = '1.8.51', APP_BUILD = 112;
 const PLAY_BUILD = false; /* remplacé par true dans le bundle Play Store */ APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
@@ -1762,7 +1762,7 @@ function openPay(id, refresh){
   }
   v.innerHTML = `
     <div class="topbar"><button class="back" data-back aria-label="Retour">${ICON.back}</button><h1>Paiement</h1>
-      <button class="ibtn" id="payRefresh" style="width:52px;height:52px;flex-basis:52px" aria-label="Actualiser"><svg class="ref-ico" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.35 6.65"/><path d="M20 5v6h-6"/></svg></button></div>
+      <button class="ibtn" id="payRefresh" style="width:52px;height:52px;flex-basis:52px" aria-label="Actualiser"><svg class="ref-ico" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.7-4.7"/><path d="M4 4v6h6"/><path d="M4 13a8 8 0 0 0 14.7 4.7"/><path d="M20 20v-6h-6"/></svg></button></div>
     <div class="payhead"><div class="ref">COMMANDE ${esc(o.id)} · ${PAY_LABEL[m] || ''}</div><div class="amt">${fcfa(o.total)}</div>
       <span class="status-pill ${paid || m === 'cod' ? 'ok' : refused ? 'bad' : ''}"><i></i>${paid ? 'Payée' : m === 'cod' ? 'Paiement à la livraison' : refused ? 'Refusé' : claimed ? 'Vérification en cours' : 'En attente de paiement'}</span></div>
     ${body}`;
@@ -2068,7 +2068,7 @@ function renderHistory(){
     </button>`;
   }).join('');
   v.innerHTML = `<div class="topbar"><button class="back" data-back aria-label="Retour">${ICON.back}</button><h1>Historique</h1>
-    <button class="ibtn" id="histRefresh" aria-label="Actualiser"><svg class="ref-ico" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.35 6.65"/><path d="M20 5v6h-6"/></svg></button></div>
+    <button class="ibtn" id="histRefresh" aria-label="Actualiser"><svg class="ref-ico" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.7-4.7"/><path d="M4 4v6h6"/><path d="M4 13a8 8 0 0 0 14.7 4.7"/><path d="M20 20v-6h-6"/></svg></button></div>
     <div class="card hist-summary"><div><small>CE MOIS-CI</small><b>${monthOrders.length} achat${monthOrders.length > 1 ? 's' : ''}</b></div><div><small>TOTAL</small><b>${fcfa(monthTotal)}</b></div></div>
     <div class="card hist-cal">
       <div class="hist-month"><button id="histPrev" aria-label="Mois précédent">‹</button><b>${esc(monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1))}</b><button id="histNext" aria-label="Mois suivant">›</button></div>
@@ -2535,7 +2535,7 @@ function paintAccount(){
       ${auth ? `<button class="mi danger" id="mDelete"><span class="mi-ic"><svg viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 12H7L6 9Zm4 3v6h2v-6h-2Zm4 0v6h2v-6h-2Z"/></svg></span><div>Supprimer mon compte<small>Efface vos données personnelles</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.50 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Selleu té Saff · Dakar, Sénégal<br><span style="font-size:9px">Photo ailes crues : <a href="https://commons.wikimedia.org/wiki/File:Raw_chicken_wings.jpg" style="color:inherit">Wikimedia Commons</a> · CC BY-SA 3.0</span><br>Version de l’application 1.8.51 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -2658,7 +2658,7 @@ function paintTrack(){
   const live = isLive(o);
   v.innerHTML = `
     <div class="topbar"><div style="width:56px"></div><h1>Suivi de commande</h1>
-      <button class="ibtn" id="tkRefresh" aria-label="Actualiser"><svg class="ref-ico" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.35 6.65"/><path d="M20 5v6h-6"/></svg></button></div>
+      <button class="ibtn" id="tkRefresh" aria-label="Actualiser"><svg class="ref-ico" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.7-4.7"/><path d="M4 4v6h6"/><path d="M4 13a8 8 0 0 0 14.7 4.7"/><path d="M20 20v-6h-6"/></svg></button></div>
     <div class="gauge">${gaugeHTML(progress(o), esc(o.id), fcfa(o.total), statusText(o))}</div>
     <div class="card mapcard"><div id="trackMap"></div>
       <div class="maplegend"><span><i class="d1"></i>Votre adresse</span><span><i class="d2"></i>Dépôt DRC</span>${pos ? '<span><i class="d3"></i>Livreur en direct</span>' : ''}</div>
