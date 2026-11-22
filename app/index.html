@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#F4F4F3">
 <title>Darou Rahmane Chicken</title>
-<link rel="manifest" href="manifest.json?v=202611220546">
+<link rel="manifest" href="manifest.json?v=202611220555">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -738,6 +738,16 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
 .fp-later{display:block;margin:10px auto 0;padding:8px 12px;font-size:12px;font-weight:600;color:var(--muted)}
 .fp-hint{font-size:10px;line-height:1.45;color:var(--muted);text-align:center;margin:9px 8px 0}
 .fp-ok{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;margin:4px 0 12px;background:#E5F5EA;color:#1F8A4C;font-size:26px;font-weight:800}
+
+/* ── mise à jour visible 1.8.28 ── */
+.upd-home{display:none;width:100%;align-items:center;gap:11px;padding:11px 13px;margin:0 0 12px;border-radius:17px;text-align:left;
+  background:linear-gradient(145deg,#FFF4E2,#FFF9F1);border:1px solid #F1D9A8;color:#5E4404;box-shadow:0 12px 26px -20px rgba(160,100,0,.5)}
+.upd-home .uh-ic{width:34px;height:34px;border-radius:11px;background:#FFE7B6;color:#8A5B00;display:grid;place-items:center;flex:none}
+.upd-home .uh-ic svg{width:18px;height:18px;fill:currentColor}
+.upd-home .uh-txt{flex:1;min-width:0}
+.upd-home .uh-txt b{display:block;font-size:12.5px;font-weight:700}
+.upd-home .uh-txt span{display:block;font-size:10.5px;color:#8A6A2A;margin-top:1px}
+.upd-home .uh-go{flex:none;background:var(--acc);color:#fff;border-radius:99px;padding:7px 10px;font-size:10.5px;font-weight:800}
 </style>
 </head>
 <body>
@@ -864,6 +874,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
         <button class="ibtn" id="favBtn" aria-label="Mes favoris"><svg viewBox="0 0 24 24"><path d="M12.9 2.6a1 1 0 0 0-1.8 0L8.7 7.5l-5.3.8a1 1 0 0 0-.6 1.7l3.9 3.8-.9 5.3a1 1 0 0 0 1.5 1L12 17.6l4.7 2.5a1 1 0 0 0 1.5-1l-.9-5.3 3.9-3.8a1 1 0 0 0-.6-1.7l-5.3-.8Z"/></svg><span class="dot" id="favDot"></span></button>
         <button class="ibtn" id="bell" aria-label="Mes commandes"><svg viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.84V3.5a1.5 1.5 0 0 0-3 0v.66A7 7 0 0 0 5 11v5l-1.7 1.7A1 1 0 0 0 4 19.4h16a1 1 0 0 0 .7-1.7Z"/></svg><span class="dot" id="bellDot"></span></button>
       </div>
+      <button class="upd-home" id="updHome" style="display:none"></button>
       <div class="cats" id="cats"></div>
       <div class="banner" id="promoBanner">
         <div><b id="bnT">Livraison offerte dès&nbsp;25&nbsp;000&nbsp;F</b><span id="bnS">Commande avant 18 h, livrée en 2 h partout à Dakar.</span><div class="wo">Ci sa keur</div></div>
@@ -969,7 +980,7 @@ html[data-theme="dark"] .ag-close svg{stroke:#fff}
    ════════════════════════════════════════════════════════════════ */
 const DEFAULT_API = 'https://hermes11.vps.webdock.cloud/drc-api';
 const API = (localStorage.getItem('drc_api') || DEFAULT_API).replace(/\/+$/, '');
-const APP_VERSION = '1.8.27', APP_BUILD = 88, APK_URL = 'https://drc.sn/app/drc-android.apk';
+const APP_VERSION = '1.8.28', APP_BUILD = 89, APK_URL = 'https://drc.sn/app/drc-android.apk';
 let updateInfo = null;
 const WA_PHONE = '221789249555';
 const SHOP_CALL = '+221709170920';
@@ -1992,17 +2003,33 @@ function maybeShowAuthGate(delay = 0){
 }
 
 /* ════════════════ MISE À JOUR IN-APP ════════════════ */
-async function checkAppUpdate(){
+async function checkAppUpdate(manual = false){
   try {
     const j = await api('/api/app/version');
     const code = Number(j.code) || 0;
     if (code > APP_BUILD) {
       updateInfo = { version: j.version || '', code, apk_url: j.apk_url || APK_URL, notes: j.notes || '' };
+      renderUpdateBanner();
       updateBells();
       const seen = Number(store.get('drc_upd_seen', 0)) || 0;
-      if (seen < code) setTimeout(showUpdateSheet, 1400);
+      if (manual || seen < code) setTimeout(showUpdateSheet, manual ? 100 : 1400);
+      if (manual) toast('Mise à jour ' + updateInfo.version + ' disponible');
+    } else {
+      updateInfo = null;
+      renderUpdateBanner();
+      updateBells();
+      if (manual) toast('Application à jour · ' + APP_VERSION);
     }
-  } catch(e) { /* pas bloquant */ }
+  } catch(e) {
+    if (manual) toast('Vérification impossible, réessayez');
+  }
+}
+function renderUpdateBanner(){
+  const b = $('#updHome'); if (!b) return;
+  if (!updateInfo) { b.style.display = 'none'; b.innerHTML = ''; return; }
+  b.style.display = 'flex';
+  b.innerHTML = `<span class="uh-ic">${ICON.update}</span><span class="uh-txt"><b>Mise à jour ${esc(updateInfo.version)}</b><span>Nouvelle version disponible — installer</span></span><span class="uh-go">Installer</span>`;
+  b.onclick = () => showUpdateSheet();
 }
 function showUpdateSheet(){
   if (!updateInfo) return;
@@ -2147,10 +2174,11 @@ function paintAccount(){
       <button class="mi" id="mCall"><span class="mi-ic">${ICON.phone}</span><div>Appeler la boutique<small>70 917 09 20</small></div>${ICON.chev}</button>
       <button class="mi" id="mPro"><span class="mi-ic">${ICON.shop}</span><div>Devenir revendeur<small>Tarifs pros, commande hebdomadaire</small></div>${ICON.chev}</button>
       <button class="mi" id="mSite"><span class="mi-ic">${ICON.pin}</span><div>Notre boutique<small>Parcelles Assainies U20, Dakar · drc.sn</small></div>${ICON.chev}</button>
+      <button class="mi" id="mUpdate"><span class="mi-ic">${ICON.update}</span><div>Mise à jour de l’application<small>Version ${APP_VERSION} · vérifier</small></div>${ICON.chev}</button>
       ${auth ? `<button class="mi" id="mPwd"><span class="mi-ic">${ICON.key}</span><div>Changer mon mot de passe<small>Sécurisez votre compte</small></div>${ICON.chev}</button>` : ''}
       ${auth ? `<button class="mi" id="mOut"><span class="mi-ic">${ICON.out}</span><div>Se déconnecter</div>${ICON.chev}</button>` : ''}
     </div>
-    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.27 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
+    <p class="legal">Darou Rahmane Chicken · Poulet Saf Sap · Dakar, Sénégal<br>Version de l’application 1.8.28 · <span class="net ${online === false ? 'off' : ''}"><i></i>${online === false ? 'serveur injoignable' : 'en ligne'}</span></p>`;
   if (auth && auth.user) {
     const u = auth.user; const pts = Number(u.points) || 0;
     b.innerHTML = `
@@ -2182,6 +2210,7 @@ function paintAccount(){
   $('#mCall').onclick = () => dial(SHOP_CALL);
   $('#mPro').onclick = () => openExternal(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Bonjour, je souhaite devenir revendeur Darou Rahmane Chicken (commande pro hebdomadaire).')}`);
   $('#mSite').onclick = () => openExternal(SITE_URL);
+  $('#mUpdate').onclick = () => checkAppUpdate(true);
   if ($('#mPwd')) $('#mPwd').onclick = openPwdSheet;
   if ($('#mOut')) $('#mOut').onclick = () => logout();
 }
